@@ -1,6 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import ResumeWorkOverview from "./ResumeWorkOverview";
+import ResumeContactInfo from "./ResumeContactInfo";
 
 export default class ResumeBody extends React.Component {
   render() {
@@ -11,15 +12,15 @@ export default class ResumeBody extends React.Component {
         sx={{
           display: "flex",
           width: "100%",
-          //bgcolor: "primary.dark",
         }}
       >
         <Box
           sx={{
             width: "33%",
-            bgcolor: "primary.dark",
           }}
-        ></Box>
+        >
+          <ResumeContactInfo contactInformation={resume._contactInformation} />
+        </Box>
         <ResumeWorkOverview workHistory={resume._workHistory} />
       </Box>
     );

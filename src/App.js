@@ -14,6 +14,9 @@ export default class App extends React.Component {
     contactInfo._firstName = "Craig";
     contactInfo._lastName = "McLean";
     contactInfo._title = "Full Stack Web Developer";
+    contactInfo._email = "craig@craigmclean.dev";
+    contactInfo._phoneNumber = "604-555-5555";
+    contactInfo._website = "www.craigmclean.dev";
 
     const workExp1 = new WorkExp();
     workExp1._jobTitle = "Software Developer";
