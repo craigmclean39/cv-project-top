@@ -4,6 +4,7 @@ import "./styles/normalize.css";
 import Resume from "./cv/Resume";
 import ContactInformation from "./cv/ContactInformation";
 import WorkExp from "./cv/WorkExp";
+import Skills from "./cv/Skills";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -47,6 +48,13 @@ export default class App extends React.Component {
     myResume._contactInformation = contactInfo;
     myResume._workHistory.push(workExp1);
     myResume._workHistory.push(workExp2);
+
+    const skills = new Skills();
+    skills._skills.push("Nunchuck");
+    skills._skills.push("Bow Hunting");
+    skills._skills.push("Computer Hacking");
+
+    myResume._skills = skills;
 
     this.state = {
       resume: myResume,
