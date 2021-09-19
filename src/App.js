@@ -1,7 +1,19 @@
-import Button from "@mui/material/Button";
+import React from "react";
+import "./styles/normalize.css";
 
-function App() {
-  return <Button variant="contained">Hello World</Button>;
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+  render() {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+        }}
+      ></div>
+    );
+  }
 }
-
-export default App;
