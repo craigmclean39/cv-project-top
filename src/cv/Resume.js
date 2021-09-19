@@ -4,7 +4,7 @@ import WorkExp from "./WorkExp";
 
 export default class Resume {
   constructor() {
-    this._contactInfomration = new ContactInformation();
+    this._contactInformation = undefined;
     this._educationHistory = [];
     this._workHistory = [];
   }

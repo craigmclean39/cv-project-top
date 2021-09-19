@@ -2,9 +2,9 @@ export default class WorkExp {
   constructor() {
     this._jobTitle = "";
     this._orgName = "";
-    this._jobLocation = "";
-    this._jobDescription = [];
-    this._startDate = undefined;
-    this._endDate = undefined;
+    this._location = "";
+    this._description = [];
+    this._startDate = "";
+    this._endDate = "";
   }
 }

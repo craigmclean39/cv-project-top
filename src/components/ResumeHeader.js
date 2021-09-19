@@ -16,7 +16,8 @@ export default class ResumeHeader extends React.Component {
         <Typography
           sx={{
             color: "text.primary",
-            pl: 1,
+            pl: 2,
+            pt: 1,
           }}
           variant="h4"
           variantMapping="h2"
@@ -25,7 +26,7 @@ export default class ResumeHeader extends React.Component {
           sx={{
             color: "text.secondary",
             pb: 1,
-            pl: 2,
+            pl: 3,
           }}
         >
           {contactInformation._title}
