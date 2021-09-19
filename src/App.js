@@ -1,11 +1,21 @@
 import React from "react";
+import ResumeOutput from "./components/ResumeOutput";
 import "./styles/normalize.css";
+import Resume from "./cv/Resume";
+import ContactInformation from "./cv/ContactInformation";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    const contactInfo = new ContactInformation();
+    contactInfo._firstName = "Craig";
+    contactInfo._lastName = "McLean";
+    contactInfo._title = "Full Stack Web Developer";
+
+    this.state = {
+      contactInformation: contactInfo,
+    };
   }
   render() {
     return (
@@ -13,7 +23,9 @@ export default class App extends React.Component {
         style={{
           minHeight: "100vh",
         }}
-      ></div>
+      >
+        <ResumeOutput contactInformation={this.state.contactInformation} />
+      </div>
     );
   }
 }
