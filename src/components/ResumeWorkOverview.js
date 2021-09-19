@@ -15,6 +15,7 @@ export default class ResumeWorkOverview extends React.Component {
         sx={{
           width: "100%",
           ml: 1,
+          mt: 1,
         }}
       >
         <Typography variant="button" variantMapping="h3">

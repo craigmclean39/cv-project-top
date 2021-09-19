@@ -13,17 +13,33 @@ export default class ResumeContactInfo extends React.Component {
     return (
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          p: 1,
+          boxSizing: "border-box",
+          m: 1,
         }}
       >
-        <ContactField
-          icon={PhoneAndroidSharpIcon}
-          data={contactInformation._phoneNumber}
-        />
-        <ContactField icon={EmailSharpIcon} data={contactInformation._email} />
-        <ContactField icon={HttpSharpIcon} data={contactInformation._website} />
+        <Typography variant="button" variantMapping="h4">
+          Contact
+        </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            p: 1,
+          }}
+        >
+          <ContactField
+            icon={PhoneAndroidSharpIcon}
+            data={contactInformation._phoneNumber}
+          />
+          <ContactField
+            icon={EmailSharpIcon}
+            data={contactInformation._email}
+          />
+          <ContactField
+            icon={HttpSharpIcon}
+            data={contactInformation._website}
+          />
+        </Box>
       </Box>
     );
   }

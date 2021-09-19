@@ -9,7 +9,7 @@ export default class ResumeHeader extends React.Component {
       <Box
         sx={{
           width: "100%",
-          bgcolor: "primary.light",
+          bgcolor: "primary.dark",
           mt: 2,
         }}
       >

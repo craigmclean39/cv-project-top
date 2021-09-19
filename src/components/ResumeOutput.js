@@ -21,6 +21,7 @@ export default class ResumeOutput extends React.Component {
             width: "600px",
             height: "776px",
             m: 2,
+            bgcolor: "background.paper",
           }}
           elevation={12}
           classes

@@ -17,6 +17,7 @@ export default class ContactField extends React.Component {
           sx={{
             pr: 1,
           }}
+          color="primary"
           fontSize="10px"
         />
         <Typography

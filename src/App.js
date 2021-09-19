@@ -5,6 +5,14 @@ import Resume from "./cv/Resume";
 import ContactInformation from "./cv/ContactInformation";
 import WorkExp from "./cv/WorkExp";
 import Skills from "./cv/Skills";
+import { createTheme } from "@mui/material";
+import { ThemeProvider } from "@mui/private-theming";
+
+const myTheme = createTheme({
+  palette: {
+    mode: "light",
+  },
+});
 
 export default class App extends React.Component {
   constructor(props) {
@@ -67,7 +75,9 @@ export default class App extends React.Component {
           minHeight: "100vh",
         }}
       >
-        <ResumeOutput resume={this.state.resume} />
+        <ThemeProvider theme={myTheme}>
+          <ResumeOutput resume={this.state.resume} />
+        </ThemeProvider>
       </div>
     );
   }
