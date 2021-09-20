@@ -8,8 +8,10 @@ import Skills from "./cv/Skills";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@mui/private-theming";
 import { Box } from "@mui/system";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, Button } from "@mui/material";
 import AddDataButtons from "./components/AddDataButtons";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const myTheme = createTheme({
   palette: {
@@ -72,6 +74,7 @@ export default class App extends React.Component {
     };
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
+    this.saveResumeToPdf = this.saveResumeToPdf.bind(this);
   }
 
   updateContactInfo(info) {
@@ -85,6 +88,22 @@ export default class App extends React.Component {
       resume._contactInformation._phoneNumber = info.phone;
       resume._contactInformation._website = info.website;
       return { resume };
+    });
+  }
+
+  saveResumeToPdf() {
+    console.log("capture");
+    html2canvas(document.querySelector(".resume-to-capture")).then(function (
+      canvas
+    ) {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        unit: "in",
+        format: [8.5, 11],
+      });
+      pdf.addImage(imgData, "JPEG", 0, 0.25, 8.5, 10.75);
+      pdf.save("download.pdf");
+      document.body.appendChild(canvas);
     });
   }
 
@@ -103,6 +122,11 @@ export default class App extends React.Component {
             resume={this.state.resume}
             updateContactInfo={this.updateContactInfo}
           />
+          <Box>
+            <Button variant="contained" onClick={this.saveResumeToPdf}>
+              Save as PDF
+            </Button>
+          </Box>
           <ResumeOutput resume={this.state.resume} />
         </Box>
       </ThemeProvider>

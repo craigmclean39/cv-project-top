@@ -6,6 +6,11 @@ import ResumeBody from "./ResumeBody";
 const ResumeOutput = (props) => {
   const { resume } = props;
 
+  const mystyle = {
+    width: "600px",
+    height: "776px",
+  };
+
   return (
     <Box
       sx={{
@@ -23,8 +28,10 @@ const ResumeOutput = (props) => {
         }}
         elevation={12}
       >
-        <ResumeHeader contactInformation={resume._contactInformation} />
-        <ResumeBody resume={resume} />
+        <div class="resume-to-capture" style={mystyle}>
+          <ResumeHeader contactInformation={resume._contactInformation} />
+          <ResumeBody resume={resume} />
+        </div>
       </Paper>
     </Box>
   );

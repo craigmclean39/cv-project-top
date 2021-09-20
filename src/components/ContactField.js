@@ -22,8 +22,8 @@ const ContactField = (props) => {
       <Typography
         sx={{
           fontSize: "12px",
+          mb: "3px",
         }}
-        gutterBottom
       >
         {data}
       </Typography>
