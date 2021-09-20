@@ -4,30 +4,30 @@ import ResumeWorkOverview from "./ResumeWorkOverview";
 import ResumeContactInfo from "./ResumeContactInfo";
 import ResumeSkills from "./ResumeSkills";
 
-export default class ResumeBody extends React.Component {
-  render() {
-    const { resume } = this.props;
+const ResumeBody = (props) => {
+  const { resume } = props;
 
-    return (
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+      }}
+    >
       <Box
         sx={{
+          boxSizing: "border-box",
+          width: "33%",
           display: "flex",
-          width: "100%",
+          flexDirection: "column",
         }}
       >
-        <Box
-          sx={{
-            boxSizing: "border-box",
-            width: "33%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <ResumeContactInfo contactInformation={resume._contactInformation} />
-          <ResumeSkills skills={resume._skills._skills} />
-        </Box>
-        <ResumeWorkOverview workHistory={resume._workHistory} />
+        <ResumeContactInfo contactInformation={resume._contactInformation} />
+        <ResumeSkills skills={resume._skills._skills} />
       </Box>
-    );
-  }
-}
+      <ResumeWorkOverview workHistory={resume._workHistory} />
+    </Box>
+  );
+};
+
+export default ResumeBody;

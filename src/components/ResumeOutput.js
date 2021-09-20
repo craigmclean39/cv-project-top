@@ -1,35 +1,34 @@
 import React from "react";
 import { Paper, Box } from "@mui/material";
 import ResumeHeader from "./ResumeHeader";
-import ResumeWorkOverview from "./ResumeWorkOverview";
 import ResumeBody from "./ResumeBody";
 
-export default class ResumeOutput extends React.Component {
-  render() {
-    const { resume } = this.props;
+const ResumeOutput = (props) => {
+  const { resume } = props;
 
-    return (
-      <Box
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <Paper
         sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
+          width: "600px",
+          height: "776px",
+          m: 2,
+          bgcolor: "background.paper",
         }}
+        elevation={12}
+        classes
       >
-        <Paper
-          sx={{
-            width: "600px",
-            height: "776px",
-            m: 2,
-            bgcolor: "background.paper",
-          }}
-          elevation={12}
-          classes
-        >
-          <ResumeHeader contactInformation={resume._contactInformation} />
-          <ResumeBody resume={resume} />
-        </Paper>
-      </Box>
-    );
-  }
-}
+        <ResumeHeader contactInformation={resume._contactInformation} />
+        <ResumeBody resume={resume} />
+      </Paper>
+    </Box>
+  );
+};
+
+export default ResumeOutput;
