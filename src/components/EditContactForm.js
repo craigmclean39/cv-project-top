@@ -30,14 +30,14 @@ export default class EditContactForm extends React.Component {
   };
 
   saveFormInfo() {
-    const { contactInformation, updateContactInfo } = this.props;
+    const { updateContactInfo } = this.props;
     console.log(this.state);
     updateContactInfo(this.state);
     this.props.handleClose();
   }
 
   render() {
-    const { open, handleClose } = this.props;
+    const { open, handleClose, contactInformation } = this.props;
     return (
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Contact Details</DialogTitle>
@@ -51,6 +51,11 @@ export default class EditContactForm extends React.Component {
               type="text"
               fullWidth
               variant="outlined"
+              value={
+                contactInformation._firstName +
+                " " +
+                contactInformation._lastName
+              }
               onChange={this.handleChange("name")}
             />
             <TextField
@@ -60,6 +65,7 @@ export default class EditContactForm extends React.Component {
               type="text"
               fullWidth
               variant="outlined"
+              value={contactInformation._title}
               onChange={this.handleChange("title")}
             />
             <TextField
@@ -69,6 +75,7 @@ export default class EditContactForm extends React.Component {
               type="email"
               fullWidth
               variant="outlined"
+              value={contactInformation._email}
               onChange={this.handleChange("email")}
             />
             <TextField
@@ -78,6 +85,7 @@ export default class EditContactForm extends React.Component {
               type="text"
               fullWidth
               variant="outlined"
+              value={contactInformation._phoneNumber}
               onChange={this.handleChange("phone")}
             />
             <TextField
@@ -87,6 +95,7 @@ export default class EditContactForm extends React.Component {
               type="text"
               fullWidth
               variant="outlined"
+              value={contactInformation._website}
               onChange={this.handleChange("website")}
             />
           </form>
