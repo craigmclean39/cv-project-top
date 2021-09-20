@@ -6,14 +6,14 @@ const ResumeWorkExperience = (props) => {
 
   const descriptions = workExperience._description.map((value) => {
     return (
-      <ListItem>
+      <ListItem key={value.id}>
         <Typography
           sx={{
             m: -0.5,
           }}
           variant="caption"
         >
-          {value}
+          {value.description}
         </Typography>
       </ListItem>
     );

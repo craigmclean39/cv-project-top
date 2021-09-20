@@ -22,7 +22,6 @@ const ResumeOutput = (props) => {
           bgcolor: "background.paper",
         }}
         elevation={12}
-        classes
       >
         <ResumeHeader contactInformation={resume._contactInformation} />
         <ResumeBody resume={resume} />

@@ -5,7 +5,15 @@ const ResumeSkills = (props) => {
   const { skills } = props;
 
   const mySkills = skills.map((value) => {
-    return <Chip sx={{ m: 0 }} label={value} size="small" color="primary" />;
+    return (
+      <Chip
+        sx={{ m: 0 }}
+        label={value.skill}
+        key={value.id}
+        size="small"
+        color="primary"
+      />
+    );
   });
 
   return (
@@ -15,7 +23,7 @@ const ResumeSkills = (props) => {
         m: 1,
       }}
     >
-      <Typography variant="button" variantMapping="h4">
+      <Typography variant="button" component="h4">
         Skills
       </Typography>
       <Box

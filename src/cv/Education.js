@@ -1,3 +1,5 @@
+import uniqid from "uniqid";
+
 export default class Education {
   constructor() {
     this._educationTitle = "";
@@ -6,5 +8,6 @@ export default class Education {
     this._educationDescription = [];
     this._startDate = undefined;
     this._endDate = undefined;
+    this._id = uniqid();
   }
 }

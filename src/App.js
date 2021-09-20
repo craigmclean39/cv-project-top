@@ -7,16 +7,21 @@ import WorkExp from "./cv/WorkExp";
 import Skills from "./cv/Skills";
 import { createTheme } from "@mui/material";
 import { ThemeProvider } from "@mui/private-theming";
+import { Box } from "@mui/system";
+import { CssBaseline } from "@mui/material";
+import AddDataButtons from "./components/AddDataButtons";
 
 const myTheme = createTheme({
   palette: {
-    mode: "light",
+    mode: "dark",
   },
 });
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.openContactDialog = this.openContactDialog.bind(this);
 
     const myResume = new Resume();
     const contactInfo = new ContactInformation();
@@ -33,10 +38,10 @@ export default class App extends React.Component {
     workExp1._location = "Squamish, BC, CA";
     workExp1._startDate = "Jan 1, 2001";
     workExp1._endDate = "Mar 1, 2020";
-    workExp1._description.push(
+    workExp1.addDescription(
       "I did some work, it was work. I was good at the work."
     );
-    workExp1._description.push(
+    workExp1.addDescription(
       "I also did some other work, I was great at that work."
     );
 
@@ -46,10 +51,10 @@ export default class App extends React.Component {
     workExp2._location = "Squamish, BC, CA";
     workExp2._startDate = "Jan 1, 2001";
     workExp2._endDate = "Mar 1, 2020";
-    workExp2._description.push(
+    workExp2.addDescription(
       "I did some work, it was work. I was good at the work."
     );
-    workExp2._description.push(
+    workExp2.addDescription(
       "I also did some other work, I was great at that work."
     );
 
@@ -58,9 +63,9 @@ export default class App extends React.Component {
     myResume._workHistory.push(workExp2);
 
     const skills = new Skills();
-    skills._skills.push("Nunchuck");
-    skills._skills.push("Bow Hunting");
-    skills._skills.push("Computer Hacking");
+    skills.addSkill("Nunchuck");
+    skills.addSkill("Bow Hunting");
+    skills.addSkill("Computer Hacking");
 
     myResume._skills = skills;
 
@@ -68,17 +73,26 @@ export default class App extends React.Component {
       resume: myResume,
     };
   }
+
+  openContactDialog(e) {
+    console.log(e);
+  }
+
   render() {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-        }}
-      >
-        <ThemeProvider theme={myTheme}>
+      <ThemeProvider theme={myTheme}>
+        <CssBaseline />
+        <Box
+          sx={{
+            minHeight: "100vh",
+            display: "flex",
+            bgcolor: "background.paper",
+          }}
+        >
+          <AddDataButtons contactClick={this.openContactDialog} />
           <ResumeOutput resume={this.state.resume} />
-        </ThemeProvider>
-      </div>
+        </Box>
+      </ThemeProvider>
     );
   }
 }

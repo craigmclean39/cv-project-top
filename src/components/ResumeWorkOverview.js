@@ -6,7 +6,7 @@ const ResumeWorkOverview = (props) => {
   const { workHistory } = props;
 
   const workExperiences = workHistory.map((value) => {
-    return <ResumeWorkExperience workExperience={value} />;
+    return <ResumeWorkExperience workExperience={value} key={value._id} />;
   });
 
   return (
@@ -17,7 +17,7 @@ const ResumeWorkOverview = (props) => {
         mt: 1,
       }}
     >
-      <Typography variant="button" variantMapping="h3">
+      <Typography variant="button" component="h3">
         Work Experience
       </Typography>
       {workExperiences}

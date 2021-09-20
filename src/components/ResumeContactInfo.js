@@ -16,9 +16,7 @@ const ResumeContactInfo = (props) => {
         m: 1,
       }}
     >
-      <Typography variant="button" variantMapping="h4">
-        Contact
-      </Typography>
+      <Typography variant="button">Contact</Typography>
       <Box
         sx={{
           display: "flex",

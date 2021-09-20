@@ -10,6 +10,7 @@ const ContactField = (props) => {
       sx={{
         display: "flex",
         flexDirection: "row",
+        alignItems: "flex-end",
       }}
     >
       <DisplayIcon
@@ -17,7 +18,6 @@ const ContactField = (props) => {
           pr: 1,
         }}
         color="primary"
-        fontSize="10px"
       />
       <Typography
         sx={{
