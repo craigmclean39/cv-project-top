@@ -51,7 +51,7 @@ export default class EditContactForm extends React.Component {
               type="text"
               fullWidth
               variant="outlined"
-              value={
+              defaultValue={
                 contactInformation._firstName +
                 " " +
                 contactInformation._lastName
@@ -65,7 +65,7 @@ export default class EditContactForm extends React.Component {
               type="text"
               fullWidth
               variant="outlined"
-              value={contactInformation._title}
+              defaultValue={contactInformation._title}
               onChange={this.handleChange("title")}
             />
             <TextField
@@ -75,7 +75,7 @@ export default class EditContactForm extends React.Component {
               type="email"
               fullWidth
               variant="outlined"
-              value={contactInformation._email}
+              defaultValue={contactInformation._email}
               onChange={this.handleChange("email")}
             />
             <TextField
@@ -85,7 +85,7 @@ export default class EditContactForm extends React.Component {
               type="text"
               fullWidth
               variant="outlined"
-              value={contactInformation._phoneNumber}
+              defaultValue={contactInformation._phoneNumber}
               onChange={this.handleChange("phone")}
             />
             <TextField
@@ -95,7 +95,7 @@ export default class EditContactForm extends React.Component {
               type="text"
               fullWidth
               variant="outlined"
-              value={contactInformation._website}
+              defaultValue={contactInformation._website}
               onChange={this.handleChange("website")}
             />
           </form>

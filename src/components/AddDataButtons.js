@@ -16,7 +16,11 @@ const AddDataButtons = (props) => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        m: 1,
+      }}
+    >
       <Button variant="contained" onClick={handleClickOpen}>
         Edit Contact Details
       </Button>

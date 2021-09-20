@@ -33,7 +33,7 @@ export default class App extends React.Component {
     const workExp1 = new WorkExp();
     workExp1._jobTitle = "Software Developer";
     workExp1._orgName = "WFH International";
-    workExp1._location = "Squamish, BC, CA";
+    workExp1._location = "Vancouver, BC, CA";
     workExp1._startDate = "Jan 1, 2001";
     workExp1._endDate = "Mar 1, 2020";
     workExp1.addDescription(
