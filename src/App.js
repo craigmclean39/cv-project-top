@@ -13,15 +13,13 @@ import AddDataButtons from "./components/AddDataButtons";
 
 const myTheme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
   },
 });
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-
-    this.openContactDialog = this.openContactDialog.bind(this);
 
     const myResume = new Resume();
     const contactInfo = new ContactInformation();
@@ -72,10 +70,22 @@ export default class App extends React.Component {
     this.state = {
       resume: myResume,
     };
+
+    this.updateContactInfo = this.updateContactInfo.bind(this);
   }
 
-  openContactDialog(e) {
-    console.log(e);
+  updateContactInfo(info) {
+    this.setState((prevState) => {
+      let resume = Object.assign({}, prevState.resume);
+
+      resume._contactInformation._firstName = info.name;
+      resume._contactInformation._lastName = "";
+      resume._contactInformation._title = info.title;
+      resume._contactInformation._email = info.email;
+      resume._contactInformation._phoneNumber = info.phone;
+      resume._contactInformation._website = info.website;
+      return { resume };
+    });
   }
 
   render() {
@@ -89,7 +99,10 @@ export default class App extends React.Component {
             bgcolor: "background.paper",
           }}
         >
-          <AddDataButtons contactClick={this.openContactDialog} />
+          <AddDataButtons
+            resume={this.state.resume}
+            updateContactInfo={this.updateContactInfo}
+          />
           <ResumeOutput resume={this.state.resume} />
         </Box>
       </ThemeProvider>
