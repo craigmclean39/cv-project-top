@@ -1,6 +1,6 @@
 import React from "react";
 import ResumeOutput from "./components/ResumeOutput";
-import "./styles/normalize.css";
+//import "./styles/normalize.css";
 import Resume from "./cv/Resume";
 import ContactInformation from "./cv/ContactInformation";
 import WorkExp from "./cv/WorkExp";
@@ -12,12 +12,6 @@ import { CssBaseline, Button } from "@mui/material";
 import AddDataButtons from "./components/AddDataButtons";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-
-const myTheme = createTheme({
-  palette: {
-    mode: "light",
-  },
-});
 
 export default class App extends React.Component {
   constructor(props) {
@@ -109,27 +103,24 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <ThemeProvider theme={myTheme}>
-        <CssBaseline />
-        <Box
-          sx={{
-            minHeight: "100vh",
-            display: "flex",
-            bgcolor: "background.paper",
-          }}
-        >
-          <AddDataButtons
-            resume={this.state.resume}
-            updateContactInfo={this.updateContactInfo}
-          />
-          <Box>
-            <Button variant="contained" onClick={this.saveResumeToPdf}>
-              Save as PDF
-            </Button>
-          </Box>
-          <ResumeOutput resume={this.state.resume} />
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          bgcolor: "background.paper",
+        }}
+      >
+        <AddDataButtons
+          resume={this.state.resume}
+          updateContactInfo={this.updateContactInfo}
+        />
+        <Box>
+          <Button variant="contained" onClick={this.saveResumeToPdf}>
+            Save as PDF
+          </Button>
         </Box>
-      </ThemeProvider>
+        <ResumeOutput resume={this.state.resume} />
+      </Box>
     );
   }
 }

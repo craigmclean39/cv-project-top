@@ -9,17 +9,19 @@ import {
 } from "@mui/material";
 
 export default class EditContactForm extends React.Component {
-  state = {
-    name: "",
-    title: "",
-    email: "",
-    phone: "",
-    website: "",
-  };
-
   constructor(props) {
     super(props);
+
+    const { contactInformation } = this.props;
     this.saveFormInfo = this.saveFormInfo.bind(this);
+
+    this.state = {
+      name: contactInformation._firstName + " " + contactInformation._lastName,
+      title: contactInformation._title,
+      email: contactInformation._email,
+      phone: contactInformation._phoneNumber,
+      website: contactInformation._website,
+    };
   }
 
   handleChange = (name) => (event) => {

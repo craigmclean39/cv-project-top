@@ -28,7 +28,7 @@ const ResumeOutput = (props) => {
         }}
         elevation={12}
       >
-        <div class="resume-to-capture" style={mystyle}>
+        <div className="resume-to-capture" style={mystyle}>
           <ResumeHeader contactInformation={resume._contactInformation} />
           <ResumeBody resume={resume} />
         </div>
