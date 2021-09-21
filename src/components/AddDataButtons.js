@@ -12,7 +12,11 @@ const AddDataButtons = (props) => {
   const { resume, updateContactInfo } = props;
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if (open) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {
@@ -41,7 +45,7 @@ const AddDataButtons = (props) => {
         ariaLabel="Add to Resume"
         icon={<SpeedDialIcon />}
         onClose={handleClose}
-        onOpen={handleClickOpen}
+        onClick={handleClickOpen}
         open={open}
         direction="down"
         sx={{ position: "absolute", top: 16, left: 16 }}
