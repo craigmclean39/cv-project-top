@@ -3,6 +3,8 @@ import { Box } from "@mui/system";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import EditContactForm from "./EditContactForm";
 import PersonIcon from "@mui/icons-material/Person";
+import WorkIcon from "@mui/icons-material/Work";
+import SchoolIcon from "@mui/icons-material/School";
 
 const AddDataButtons = (props) => {
   const [open, setOpen] = useState(false);
@@ -45,12 +47,43 @@ const AddDataButtons = (props) => {
         sx={{ position: "absolute", top: 16, left: 16 }}
       >
         <SpeedDialAction
-          key="Edit Contact Information"
+          key="Contact Information"
           icon={<PersonIcon />}
-          tooltipTitle="Edit Contact Information"
+          tooltipTitle="Contact Information"
           tooltipOpen
           onClick={openEditContactInformationDialog}
           tooltipPlacement="right"
+          sx={{
+            "& .MuiSpeedDialAction-staticTooltipLabel": {
+              width: "max-content",
+            },
+          }}
+        />
+        <SpeedDialAction
+          key="Work Experience"
+          icon={<WorkIcon />}
+          tooltipTitle="Work Experience"
+          tooltipOpen
+          onClick={handleClose}
+          tooltipPlacement="right"
+          sx={{
+            "& .MuiSpeedDialAction-staticTooltipLabel": {
+              width: "max-content",
+            },
+          }}
+        />
+        <SpeedDialAction
+          key="Education"
+          icon={<SchoolIcon />}
+          tooltipTitle="Education"
+          tooltipOpen
+          onClick={handleClose}
+          tooltipPlacement="right"
+          sx={{
+            "& .MuiSpeedDialAction-staticTooltipLabel": {
+              width: "max-content",
+            },
+          }}
         />
       </SpeedDial>
       <EditContactForm
