@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import { validate } from "email-validator";
 
 export default class EditContactForm extends React.Component {
   constructor(props) {
@@ -21,8 +22,12 @@ export default class EditContactForm extends React.Component {
       email: contactInformation._email,
       phone: contactInformation._phoneNumber,
       website: contactInformation._website,
-      error: false,
-      helperText: "",
+      phoneError: false,
+      phoneHelperText: "",
+      phoneColor: "",
+      emailError: false,
+      emailHelperText: "",
+      emailColor: "",
     };
   }
 
@@ -38,15 +43,33 @@ export default class EditContactForm extends React.Component {
       /^\(?\d{3}\)?(\s*)?-?(\s*)?\d{3}(\s*)?-?(\s*)?(\s*)?\d{4}$/;
     if (!event.target.value.match(phoneRegex)) {
       this.setState({
-        error: true,
-        helperText: "Enter 10 digit Phone Number, ###-###-####",
+        phoneError: true,
+        phoneHelperText: "Enter 10 digit Phone Number, ###-###-####",
       });
     } else {
       this.setState({
         ...this.state,
         [name]: event.target.value,
-        error: false,
-        helperText: "",
+        phoneError: false,
+        phoneHelperText: "",
+        phoneColor: "success",
+      });
+    }
+  };
+
+  validateEmail = (name) => (event) => {
+    if (!validate(event.target.value)) {
+      this.setState({
+        emailError: true,
+        emailHelperText: "Enter valid email address",
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        [name]: event.target.value,
+        emailError: false,
+        emailHelperText: "",
+        emailColor: "success",
       });
     }
   };
@@ -97,7 +120,10 @@ export default class EditContactForm extends React.Component {
               fullWidth
               variant="outlined"
               defaultValue={contactInformation._email}
-              onChange={this.handleChange("email")}
+              onChange={this.validateEmail("email")}
+              error={this.state.emailError}
+              helperText={this.state.emailHelperText}
+              color={this.state.emailColor}
             />
             <TextField
               margin="dense"
@@ -108,8 +134,9 @@ export default class EditContactForm extends React.Component {
               variant="outlined"
               defaultValue={contactInformation._phoneNumber}
               onChange={this.validatePhoneNumber("phone")}
-              error={this.state.error}
-              helperText={this.state.helperText}
+              error={this.state.phoneError}
+              helperText={this.state.phoneHelperText}
+              color={this.state.phoneColor}
             />
             <TextField
               margin="dense"
