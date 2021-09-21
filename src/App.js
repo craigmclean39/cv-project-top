@@ -5,10 +5,8 @@ import Resume from "./cv/Resume";
 import ContactInformation from "./cv/ContactInformation";
 import WorkExp from "./cv/WorkExp";
 import Skills from "./cv/Skills";
-import { createTheme } from "@mui/material";
-import { ThemeProvider } from "@mui/private-theming";
 import { Box } from "@mui/system";
-import { CssBaseline, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import AddDataButtons from "./components/AddDataButtons";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
@@ -86,7 +84,6 @@ export default class App extends React.Component {
   }
 
   saveResumeToPdf() {
-    console.log("capture");
     html2canvas(document.querySelector(".resume-to-capture")).then(function (
       canvas
     ) {
