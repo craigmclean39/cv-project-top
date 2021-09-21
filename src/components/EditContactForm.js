@@ -21,6 +21,8 @@ export default class EditContactForm extends React.Component {
       email: contactInformation._email,
       phone: contactInformation._phoneNumber,
       website: contactInformation._website,
+      error: false,
+      helperText: "",
     };
   }
 
@@ -31,9 +33,26 @@ export default class EditContactForm extends React.Component {
     });
   };
 
+  validatePhoneNumber = (name) => (event) => {
+    const phoneRegex =
+      /^\(?\d{3}\)?(\s*)?-?(\s*)?\d{3}(\s*)?-?(\s*)?(\s*)?\d{4}$/;
+    if (!event.target.value.match(phoneRegex)) {
+      this.setState({
+        error: true,
+        helperText: "Enter 10 digit Phone Number, ###-###-####",
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        [name]: event.target.value,
+        error: false,
+        helperText: "",
+      });
+    }
+  };
+
   saveFormInfo() {
     const { updateContactInfo } = this.props;
-    console.log(this.state);
     updateContactInfo(this.state);
     this.props.handleClose();
   }
@@ -88,7 +107,9 @@ export default class EditContactForm extends React.Component {
               fullWidth
               variant="outlined"
               defaultValue={contactInformation._phoneNumber}
-              onChange={this.handleChange("phone")}
+              onChange={this.validatePhoneNumber("phone")}
+              error={this.state.error}
+              helperText={this.state.helperText}
             />
             <TextField
               margin="dense"
