@@ -5,6 +5,7 @@ import EditContactForm from "./EditContactForm";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import SchoolIcon from "@mui/icons-material/School";
+import BuildIcon from "@mui/icons-material/Build";
 
 const AddDataButtons = (props) => {
   const [open, setOpen] = useState(false);
@@ -19,8 +20,10 @@ const AddDataButtons = (props) => {
     }
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = (e, reason) => {
+    if (reason !== "mouseLeave") {
+      setOpen(false);
+    }
   };
 
   const openEditContactInformationDialog = () => {
@@ -80,6 +83,19 @@ const AddDataButtons = (props) => {
           key="Education"
           icon={<SchoolIcon />}
           tooltipTitle="Education"
+          tooltipOpen
+          onClick={handleClose}
+          tooltipPlacement="right"
+          sx={{
+            "& .MuiSpeedDialAction-staticTooltipLabel": {
+              width: "max-content",
+            },
+          }}
+        />
+        <SpeedDialAction
+          key="Skills"
+          icon={<BuildIcon />}
+          tooltipTitle="Skills"
           tooltipOpen
           onClick={handleClose}
           tooltipPlacement="right"
