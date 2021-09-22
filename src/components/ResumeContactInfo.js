@@ -9,6 +9,31 @@ import ContactField from "./ContactField";
 const ResumeContactInfo = (props) => {
   const { contactInformation } = props;
 
+  let contactFields = [];
+  if (contactInformation._phoneNumber !== "") {
+    contactFields.push(
+      <ContactField
+        icon={PhoneAndroidSharpIcon}
+        data={contactInformation._phoneNumber}
+      />
+    );
+  }
+
+  if (contactInformation._email !== "") {
+    contactFields.push(
+      <ContactField icon={EmailSharpIcon} data={contactInformation._email} />
+    );
+  }
+
+  if (contactInformation._website !== "") {
+    contactFields.push(
+      <ContactField
+        icon={ComputerSharpIcon}
+        data={contactInformation._website}
+      />
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -24,15 +49,7 @@ const ResumeContactInfo = (props) => {
           p: 1,
         }}
       >
-        <ContactField
-          icon={PhoneAndroidSharpIcon}
-          data={contactInformation._phoneNumber}
-        />
-        <ContactField icon={EmailSharpIcon} data={contactInformation._email} />
-        <ContactField
-          icon={ComputerSharpIcon}
-          data={contactInformation._website}
-        />
+        {contactFields}
       </Box>
     </Box>
   );

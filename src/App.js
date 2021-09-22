@@ -17,12 +17,12 @@ export default class App extends React.Component {
 
     const myResume = new Resume();
     const contactInfo = new ContactInformation();
-    contactInfo._firstName = "Craig";
-    contactInfo._lastName = "McLean";
-    contactInfo._title = "Full Stack Web Developer";
-    contactInfo._email = "craig@craigmclean.dev";
-    contactInfo._phoneNumber = "604-555-5555";
-    contactInfo._website = "www.craigmclean.dev";
+    contactInfo._firstName = "Your";
+    contactInfo._lastName = "Name";
+    contactInfo._title = "Your Title";
+    contactInfo._email = "";
+    contactInfo._phoneNumber = "";
+    contactInfo._website = "";
 
     const workExp1 = new WorkExp();
     workExp1._jobTitle = "Software Developer";

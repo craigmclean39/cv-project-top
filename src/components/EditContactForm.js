@@ -41,7 +41,7 @@ export default class EditContactForm extends React.Component {
   validatePhoneNumber = (name) => (event) => {
     const phoneRegex =
       /^\(?\d{3}\)?(\s*)?-?(\s*)?\d{3}(\s*)?-?(\s*)?(\s*)?\d{4}$/;
-    if (!event.target.value.match(phoneRegex)) {
+    if (!event.target.value.match(phoneRegex) && event.target.value !== "") {
       this.setState({
         phoneError: true,
         phoneHelperText: "Enter 10 digit Phone Number, ###-###-####",
@@ -58,7 +58,7 @@ export default class EditContactForm extends React.Component {
   };
 
   validateEmail = (name) => (event) => {
-    if (!validate(event.target.value)) {
+    if (!validate(event.target.value) && event.target.value !== "") {
       this.setState({
         emailError: true,
         emailHelperText: "Enter valid email address",
