@@ -84,18 +84,19 @@ export default class App extends React.Component {
   }
 
   saveResumeToPdf() {
-    html2canvas(document.querySelector(".resume-to-capture")).then(function (
-      canvas
-    ) {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF({
-        unit: "in",
-        format: [8.5, 11],
-      });
-      pdf.addImage(imgData, "JPEG", 0, 0.25, 8.5, 10.75);
-      pdf.save("download.pdf");
-      document.body.appendChild(canvas);
-    });
+    const options = { scale: 2 };
+    html2canvas(document.querySelector(".resume-to-capture"), options).then(
+      function (canvas) {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF({
+          unit: "in",
+          format: [8.5, 11],
+        });
+        pdf.addImage(imgData, "JPEG", 0, 0.25, 8.5, 10.75);
+        pdf.save("download.pdf");
+        document.body.appendChild(canvas);
+      }
+    );
   }
 
   render() {
