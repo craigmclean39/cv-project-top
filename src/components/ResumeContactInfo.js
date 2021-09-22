@@ -3,8 +3,8 @@ import { Typography, Box } from "@mui/material";
 import PhoneAndroidSharpIcon from "@mui/icons-material/PhoneAndroidSharp";
 import EmailSharpIcon from "@mui/icons-material/EmailSharp";
 import ComputerSharpIcon from "@mui/icons-material/ComputerSharp";
-
 import ContactField from "./ContactField";
+import uniqid from "uniqid";
 
 const ResumeContactInfo = (props) => {
   const { contactInformation } = props;
@@ -13,6 +13,7 @@ const ResumeContactInfo = (props) => {
   if (contactInformation._phoneNumber !== "") {
     contactFields.push(
       <ContactField
+        key={uniqid()}
         icon={PhoneAndroidSharpIcon}
         data={contactInformation._phoneNumber}
       />
@@ -21,13 +22,18 @@ const ResumeContactInfo = (props) => {
 
   if (contactInformation._email !== "") {
     contactFields.push(
-      <ContactField icon={EmailSharpIcon} data={contactInformation._email} />
+      <ContactField
+        key={uniqid()}
+        icon={EmailSharpIcon}
+        data={contactInformation._email}
+      />
     );
   }
 
   if (contactInformation._website !== "") {
     contactFields.push(
       <ContactField
+        key={uniqid()}
         icon={ComputerSharpIcon}
         data={contactInformation._website}
       />
