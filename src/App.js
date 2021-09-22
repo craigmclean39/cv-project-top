@@ -28,8 +28,8 @@ export default class App extends React.Component {
     workExp1._jobTitle = "Software Developer";
     workExp1._orgName = "WFH International";
     workExp1._location = "Vancouver, BC, CA";
-    workExp1._startDate = "Jan 1, 2001";
-    workExp1._endDate = "Mar 1, 2020";
+    workExp1._startDate = Date.now();
+    workExp1._endDate = Date.now();
     workExp1.addDescription(
       "I did some work, it was work. I was good at the work."
     );
@@ -41,8 +41,8 @@ export default class App extends React.Component {
     workExp2._jobTitle = "Software Developer";
     workExp2._orgName = "WFH International";
     workExp2._location = "Squamish, BC, CA";
-    workExp2._startDate = "Jan 1, 2001";
-    workExp2._endDate = "Mar 1, 2020";
+    workExp2._startDate = Date.now();
+    workExp2._endDate = Date.now();
     workExp2.addDescription(
       "I did some work, it was work. I was good at the work."
     );

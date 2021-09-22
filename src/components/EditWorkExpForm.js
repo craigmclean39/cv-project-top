@@ -25,6 +25,11 @@ export default class EditWorkExpForm extends React.Component {
       website: contactInformation._website,*/
       mode: "add",
       currentDate: Date.now(),
+      startDate: Date.now(),
+      endDate: Date.now(),
+      title: "",
+      company: "",
+      location: "",
     };
 
     this.modes = {
@@ -34,16 +39,23 @@ export default class EditWorkExpForm extends React.Component {
   }
 
   handleChange = (name) => (event) => {
-    /* this.setState({
-      ...this.state,
-      [name]: event.target.value,
-    }); */
-  };
-
-  handleDateChange = (newValue) => {
     this.setState({
       ...this.state,
-      currentDate: newValue,
+      [name]: event.target.value,
+    });
+  };
+
+  handleStartDateChange = (newValue) => {
+    this.setState({
+      ...this.state,
+      startDate: newValue,
+    });
+  };
+
+  handleEndDateChange = (newValue) => {
+    this.setState({
+      ...this.state,
+      endDate: newValue,
     });
   };
 
@@ -62,38 +74,48 @@ export default class EditWorkExpForm extends React.Component {
           <form>
             <TextField
               autoFocus
-              margin="dense"
+              margin="normal"
               id="title"
               label="Job Title"
               type="text"
               fullWidth
               variant="outlined"
               defaultValue=""
-              onChange={this.handleChange("name")}
-            />
-            <TextField
-              margin="dense"
-              id="company"
-              label="Workplace/Company"
-              type="text"
-              fullWidth
-              variant="outlined"
-              defaultValue=""
               onChange={this.handleChange("title")}
             />
+            <div>
+              <Stack sx={{ my: 1 }} direction="row" spacing={2}>
+                <TextField
+                  id="company"
+                  label="Workplace/Company"
+                  type="text"
+                  variant="outlined"
+                  defaultValue=""
+                  onChange={this.handleChange("company")}
+                />
+                <TextField
+                  id="location"
+                  label="Location"
+                  type="text"
+                  variant="outlined"
+                  defaultValue=""
+                  onChange={this.handleChange("location")}
+                />
+              </Stack>
+            </div>
             <Stack sx={{ my: 2 }} direction="row" spacing={2}>
               <DesktopDatePicker
                 label="Start Date"
                 inputFormat="MM/dd/yyyy"
-                value={this.state.currentDate}
-                onChange={this.handleDateChange}
+                value={this.state.startDate}
+                onChange={this.handleStartDateChange}
                 renderInput={(params) => <TextField {...params} />}
               />
               <DesktopDatePicker
                 label="End Date"
                 inputFormat="MM/dd/yyyy"
-                value={this.state.currentDate}
-                onChange={this.handleDateChange}
+                value={this.state.endDate}
+                onChange={this.handleEndDateChange}
                 renderInput={(params) => <TextField {...params} />}
               />
             </Stack>
