@@ -83,6 +83,10 @@ export default class App extends React.Component {
     });
   }
 
+  updateWorkInfo() {
+    console.log("Update Work Info");
+  }
+
   saveResumeToPdf() {
     const options = { scale: 2 };
     html2canvas(document.querySelector(".resume-to-capture"), options).then(
@@ -111,6 +115,7 @@ export default class App extends React.Component {
         <AddDataButtons
           resume={this.state.resume}
           updateContactInfo={this.updateContactInfo}
+          updateWorkInfo={this.updateWorkInfo}
         />
         <Box>
           <Button variant="contained" onClick={this.saveResumeToPdf}>

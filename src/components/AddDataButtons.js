@@ -2,15 +2,19 @@ import { useState } from "react";
 import { Box } from "@mui/system";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import EditContactForm from "./EditContactForm";
+import EditWorkExpForm from "./EditWorkExpForm";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import SchoolIcon from "@mui/icons-material/School";
 import BuildIcon from "@mui/icons-material/Build";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { LocalizationProvider } from "@mui/lab";
 
 const AddDataButtons = (props) => {
   const [open, setOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
-  const { resume, updateContactInfo } = props;
+  const [workOpen, setWorkOpen] = useState(false);
+  const { resume, updateContactInfo, updateWorkInfo } = props;
 
   const handleClickOpen = () => {
     if (open) {
@@ -31,9 +35,19 @@ const AddDataButtons = (props) => {
     setOpen(false);
   };
 
+  const openEditWorkExpDialog = () => {
+    setWorkOpen(true);
+    setOpen(false);
+  };
+
   const handleContactClose = () => {
     setOpen(false);
     setContactOpen(false);
+  };
+
+  const handleWorkClose = () => {
+    setOpen(false);
+    setWorkOpen(false);
   };
 
   return (
@@ -71,7 +85,7 @@ const AddDataButtons = (props) => {
           icon={<WorkIcon />}
           tooltipTitle="Work Experience"
           tooltipOpen
-          onClick={handleClose}
+          onClick={openEditWorkExpDialog}
           tooltipPlacement="right"
           sx={{
             "& .MuiSpeedDialAction-staticTooltipLabel": {
@@ -106,12 +120,20 @@ const AddDataButtons = (props) => {
           }}
         />
       </SpeedDial>
-      <EditContactForm
-        open={contactOpen}
-        handleClose={handleContactClose}
-        contactInformation={resume._contactInformation}
-        updateContactInfo={updateContactInfo}
-      />
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <EditContactForm
+          open={contactOpen}
+          handleClose={handleContactClose}
+          contactInformation={resume._contactInformation}
+          updateContactInfo={updateContactInfo}
+        />
+        <EditWorkExpForm
+          open={workOpen}
+          handleClose={handleWorkClose}
+          workHistory={resume._workHistory}
+          updateWorkInfo={updateWorkInfo}
+        />
+      </LocalizationProvider>
     </Box>
   );
 };
