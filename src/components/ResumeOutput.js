@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Box } from "@mui/material";
+import { Card, Box } from "@mui/material";
 import ResumeHeader from "./ResumeHeader";
 import ResumeBody from "./ResumeBody";
 
@@ -19,12 +19,11 @@ const ResumeOutput = (props) => {
         justifyContent: "center",
       }}
     >
-      <Paper
+      <Card
         sx={{
           width: "600px",
           height: "776px",
           m: 2,
-          bgcolor: "background.paper",
         }}
         elevation={12}
       >
@@ -32,7 +31,7 @@ const ResumeOutput = (props) => {
           <ResumeHeader contactInformation={resume._contactInformation} />
           <ResumeBody resume={resume} />
         </div>
-      </Paper>
+      </Card>
     </Box>
   );
 };
