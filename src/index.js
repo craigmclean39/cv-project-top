@@ -2,11 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { createTheme, CssBaseline } from "@mui/material";
-import { ThemeProvider } from "@mui/private-theming";
+import { ThemeProvider } from "@mui/material/styles";
 
 const myTheme = createTheme({
   palette: {
-    mode: "light",
+    mode: "dark",
   },
 });
 
