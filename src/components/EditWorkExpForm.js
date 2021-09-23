@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  Box,
   Stack,
   Button,
   TextField,
@@ -93,8 +94,16 @@ export default class EditWorkExpForm extends React.Component {
               onChange={this.handleChange("title")}
             />
             <div>
-              <Stack sx={{ my: 1 }} direction="row" spacing={2}>
+              <Box
+                sx={{
+                  my: 1,
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
                 <TextField
+                  sx={{ flexGrow: 1, mr: 1 }}
                   id="company"
                   label="Workplace/Company"
                   type="text"
@@ -103,6 +112,7 @@ export default class EditWorkExpForm extends React.Component {
                   onChange={this.handleChange("company")}
                 />
                 <TextField
+                  sx={{ flexGrow: 1, ml: 1 }}
                   id="location"
                   label="Location"
                   type="text"
@@ -110,7 +120,7 @@ export default class EditWorkExpForm extends React.Component {
                   defaultValue=""
                   onChange={this.handleChange("location")}
                 />
-              </Stack>
+              </Box>
             </div>
             <Stack sx={{ my: 2 }} direction="row" spacing={2}>
               <DesktopDatePicker
