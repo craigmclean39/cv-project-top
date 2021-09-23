@@ -74,7 +74,8 @@ export default class EditContactForm extends React.Component {
     }
   };
 
-  saveFormInfo() {
+  saveFormInfo(e) {
+    e.preventDefault();
     const { updateContactInfo } = this.props;
     updateContactInfo(this.state);
     this.props.handleClose();
@@ -148,12 +149,15 @@ export default class EditContactForm extends React.Component {
               defaultValue={contactInformation._website}
               onChange={this.handleChange("website")}
             />
+
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit" onClick={this.saveFormInfo}>
+                Save
+              </Button>
+            </DialogActions>
           </form>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={this.saveFormInfo}>Save</Button>
-        </DialogActions>
       </Dialog>
     );
   }

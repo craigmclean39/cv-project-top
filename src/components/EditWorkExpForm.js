@@ -53,7 +53,8 @@ export default class EditWorkExpForm extends React.Component {
     });
   };
 
-  saveFormInfo() {
+  saveFormInfo(e) {
+    e.preventDefault();
     const { updateWorkInfo, handleClose } = this.props;
     updateWorkInfo(this.state);
     handleClose();
@@ -113,12 +114,14 @@ export default class EditWorkExpForm extends React.Component {
                 renderInput={(params) => <TextField {...params} />}
               />
             </Stack>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit" onClick={this.saveFormInfo}>
+                Save
+              </Button>
+            </DialogActions>
           </form>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={this.saveFormInfo}>Save</Button>
-        </DialogActions>
       </Dialog>
     );
   }
