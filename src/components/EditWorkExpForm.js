@@ -15,6 +15,7 @@ export default class EditWorkExpForm extends React.Component {
     super(props);
 
     this.saveFormInfo = this.saveFormInfo.bind(this);
+    this.resetState = this.resetState.bind(this);
 
     this.state = {
       mode: "add",
@@ -30,6 +31,18 @@ export default class EditWorkExpForm extends React.Component {
       add: "Add Work Experience",
       edit: "Edit Work Experience",
     };
+  }
+
+  resetState() {
+    this.setState({
+      mode: "add",
+      currentDate: Date.now(),
+      startDate: Date.now(),
+      endDate: Date.now(),
+      title: "",
+      company: "",
+      location: "",
+    });
   }
 
   handleChange = (name) => (event) => {
@@ -57,6 +70,7 @@ export default class EditWorkExpForm extends React.Component {
     e.preventDefault();
     const { updateWorkInfo, handleClose } = this.props;
     updateWorkInfo(this.state);
+    this.resetState();
     handleClose();
   }
 
