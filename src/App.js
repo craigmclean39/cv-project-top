@@ -83,7 +83,7 @@ export default class App extends React.Component {
         });
         pdf.addImage(imgData, "JPEG", 0, 0.25, 8.5, 10.75);
         pdf.save("download.pdf");
-        document.body.appendChild(canvas);
+        //document.body.appendChild(canvas);
       }
     );
   }
