@@ -10,6 +10,8 @@ import { Button } from "@mui/material";
 import AddDataButtons from "./components/AddDataButtons";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { createTheme, CssBaseline } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -35,11 +37,13 @@ export default class App extends React.Component {
 
     this.state = {
       resume: myResume,
+      mode: "light",
     };
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
     this.updateWorkInfo = this.updateWorkInfo.bind(this);
     this.saveResumeToPdf = this.saveResumeToPdf.bind(this);
+    this.toggleMode = this.toggleMode.bind(this);
   }
 
   updateContactInfo(info) {
@@ -88,27 +92,44 @@ export default class App extends React.Component {
     );
   }
 
+  toggleMode() {
+    let newMode = this.state.mode === "light" ? "dark" : "light";
+    this.setState({
+      mode: newMode,
+    });
+  }
+
   render() {
+    const myTheme = createTheme({
+      palette: {
+        mode: this.state.mode,
+      },
+    });
+
     return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          display: "flex",
-          bgcolor: "background.paper",
-        }}
-      >
-        <AddDataButtons
-          resume={this.state.resume}
-          updateContactInfo={this.updateContactInfo}
-          updateWorkInfo={this.updateWorkInfo}
-        />
-        <Box>
-          <Button variant="contained" onClick={this.saveResumeToPdf}>
-            Save as PDF
-          </Button>
+      <ThemeProvider theme={myTheme}>
+        <CssBaseline />
+        <Box
+          sx={{
+            minHeight: "100vh",
+            display: "flex",
+            bgcolor: "background.paper",
+          }}
+        >
+          <AddDataButtons
+            resume={this.state.resume}
+            updateContactInfo={this.updateContactInfo}
+            updateWorkInfo={this.updateWorkInfo}
+          />
+          <Box>
+            <Button variant="contained" onClick={this.saveResumeToPdf}>
+              Save as PDF
+            </Button>
+            <Button variant="contained" onClick={this.toggleMode}></Button>
+          </Box>
+          <ResumeOutput resume={this.state.resume} />
         </Box>
-        <ResumeOutput resume={this.state.resume} />
-      </Box>
+      </ThemeProvider>
     );
   }
 }
