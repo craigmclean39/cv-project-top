@@ -14,15 +14,9 @@ export default class EditWorkExpForm extends React.Component {
   constructor(props) {
     super(props);
 
-    //const { contactInformation } = this.props;
     this.saveFormInfo = this.saveFormInfo.bind(this);
 
     this.state = {
-      /* name: contactInformation._firstName + " " + contactInformation._lastName,
-      title: contactInformation._title,
-      email: contactInformation._email,
-      phone: contactInformation._phoneNumber,
-      website: contactInformation._website,*/
       mode: "add",
       currentDate: Date.now(),
       startDate: Date.now(),
@@ -105,15 +99,15 @@ export default class EditWorkExpForm extends React.Component {
             </div>
             <Stack sx={{ my: 2 }} direction="row" spacing={2}>
               <DesktopDatePicker
+                views={["year", "month"]}
                 label="Start Date"
-                inputFormat="MM/dd/yyyy"
                 value={this.state.startDate}
                 onChange={this.handleStartDateChange}
                 renderInput={(params) => <TextField {...params} />}
               />
               <DesktopDatePicker
+                views={["year", "month"]}
                 label="End Date"
-                inputFormat="MM/dd/yyyy"
                 value={this.state.endDate}
                 onChange={this.handleEndDateChange}
                 renderInput={(params) => <TextField {...params} />}

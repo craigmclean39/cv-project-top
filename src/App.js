@@ -24,35 +24,7 @@ export default class App extends React.Component {
     contactInfo._phoneNumber = "";
     contactInfo._website = "";
 
-    const workExp1 = new WorkExp();
-    workExp1._jobTitle = "Software Developer";
-    workExp1._orgName = "WFH International";
-    workExp1._location = "Vancouver, BC, CA";
-    workExp1._startDate = Date.now();
-    workExp1._endDate = Date.now();
-    workExp1.addDescription(
-      "I did some work, it was work. I was good at the work."
-    );
-    workExp1.addDescription(
-      "I also did some other work, I was great at that work."
-    );
-
-    const workExp2 = new WorkExp();
-    workExp2._jobTitle = "Software Developer";
-    workExp2._orgName = "WFH International";
-    workExp2._location = "Squamish, BC, CA";
-    workExp2._startDate = Date.now();
-    workExp2._endDate = Date.now();
-    workExp2.addDescription(
-      "I did some work, it was work. I was good at the work."
-    );
-    workExp2.addDescription(
-      "I also did some other work, I was great at that work."
-    );
-
     myResume._contactInformation = contactInfo;
-    myResume._workHistory.push(workExp1);
-    myResume._workHistory.push(workExp2);
 
     const skills = new Skills();
     skills.addSkill("Nunchuck");
@@ -66,6 +38,7 @@ export default class App extends React.Component {
     };
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
+    this.updateWorkInfo = this.updateWorkInfo.bind(this);
     this.saveResumeToPdf = this.saveResumeToPdf.bind(this);
   }
 
@@ -83,8 +56,20 @@ export default class App extends React.Component {
     });
   }
 
-  updateWorkInfo() {
-    console.log("Update Work Info");
+  updateWorkInfo(info) {
+    const work = new WorkExp();
+    work._jobTitle = info.title;
+    work._orgName = info.company;
+    work._location = info.location;
+    work._startDate = info.startDate;
+    work._endDate = info.endDate;
+
+    this.setState((prevState) => {
+      let resume = Object.assign({}, prevState.resume);
+
+      resume._workHistory = [...resume._workHistory, work];
+      return { resume };
+    });
   }
 
   saveResumeToPdf() {
