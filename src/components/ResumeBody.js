@@ -1,8 +1,9 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import ResumeWorkOverview from "./ResumeWorkOverview";
 import ResumeContactInfo from "./ResumeContactInfo";
 import ResumeSkills from "./ResumeSkills";
+import ResumeEducationOverview from "./ResumeEducationOverview";
 
 const ResumeBody = (props) => {
   const { resume } = props;
@@ -25,7 +26,15 @@ const ResumeBody = (props) => {
         <ResumeContactInfo contactInformation={resume._contactInformation} />
         <ResumeSkills skills={resume._skills._skills} />
       </Box>
-      <ResumeWorkOverview workHistory={resume._workHistory} />
+      <Stack
+        sx={{
+          boxSizing: "border-box",
+          width: "66%",
+        }}
+      >
+        <ResumeWorkOverview workHistory={resume._workHistory} />
+        <ResumeEducationOverview educationHistory={resume._educationHistory} />
+      </Stack>
     </Box>
   );
 };

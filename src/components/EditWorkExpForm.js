@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+import uniqid from "uniqid";
 
 export default class EditWorkExpForm extends React.Component {
   constructor(props) {
@@ -26,11 +27,22 @@ export default class EditWorkExpForm extends React.Component {
       title: "",
       company: "",
       location: "",
+      description: [""],
     };
 
     this.modes = {
-      add: "Add Work Experience",
-      edit: "Edit Work Experience",
+      work: {
+        add: "Add Work Experience",
+        edit: "Edit Work Experience",
+        title: "Job Title",
+        company: "Workplace/Company",
+      },
+      education: {
+        add: "Add Education",
+        edit: "Edit Education",
+        title: "Education Program",
+        company: "University/College",
+      },
     };
   }
 
@@ -43,6 +55,7 @@ export default class EditWorkExpForm extends React.Component {
       title: "",
       company: "",
       location: "",
+      description: [""],
     });
   }
 
@@ -69,24 +82,45 @@ export default class EditWorkExpForm extends React.Component {
 
   saveFormInfo(e) {
     e.preventDefault();
-    const { updateWorkInfo, handleClose } = this.props;
-    updateWorkInfo(this.state);
+    const { updateWorkInfo, handleClose, updateEducationInfo, workMode } =
+      this.props;
+
+    workMode === "work"
+      ? updateWorkInfo(this.state)
+      : updateEducationInfo(this.state);
     this.resetState();
     handleClose();
   }
 
   render() {
-    const { open, handleClose } = this.props;
+    const { open, handleClose, workMode } = this.props;
+
+    let descriptions = this.state.description.map((value) => {
+      return (
+        <TextField
+          margin="normal"
+          id="description"
+          label="Description"
+          type="text"
+          fullWidth
+          variant="outlined"
+          defaultValue=""
+          key={uniqid()}
+          onChange={this.handleChange("description")}
+        />
+      );
+    });
+
     return (
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{this.modes[this.state.mode]}</DialogTitle>
+        <DialogTitle>{this.modes[workMode][this.state.mode]}</DialogTitle>
         <DialogContent>
           <form>
             <TextField
               autoFocus
               margin="normal"
               id="title"
-              label="Job Title"
+              label={this.modes[workMode]["title"]}
               type="text"
               fullWidth
               variant="outlined"
@@ -105,7 +139,7 @@ export default class EditWorkExpForm extends React.Component {
                 <TextField
                   sx={{ flexGrow: 1, mr: 1 }}
                   id="company"
-                  label="Workplace/Company"
+                  label={this.modes[workMode]["company"]}
                   type="text"
                   variant="outlined"
                   defaultValue=""
@@ -138,6 +172,8 @@ export default class EditWorkExpForm extends React.Component {
                 renderInput={(params) => <TextField {...params} />}
               />
             </Stack>
+            {descriptions}
+
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
               <Button type="submit" onClick={this.saveFormInfo}>

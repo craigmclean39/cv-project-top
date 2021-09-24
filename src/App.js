@@ -5,6 +5,7 @@ import Resume from "./cv/Resume";
 import ContactInformation from "./cv/ContactInformation";
 import WorkExp from "./cv/WorkExp";
 import Skills from "./cv/Skills";
+import Education from "./cv/Education";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
 import AddDataButtons from "./components/AddDataButtons";
@@ -42,6 +43,7 @@ export default class App extends React.Component {
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
     this.updateWorkInfo = this.updateWorkInfo.bind(this);
+    this.updateEducationInfo = this.updateEducationInfo.bind(this);
     this.saveResumeToPdf = this.saveResumeToPdf.bind(this);
     this.toggleMode = this.toggleMode.bind(this);
   }
@@ -72,6 +74,22 @@ export default class App extends React.Component {
       let resume = Object.assign({}, prevState.resume);
 
       resume._workHistory = [...resume._workHistory, work];
+      return { resume };
+    });
+  }
+
+  updateEducationInfo(info) {
+    const education = new Education();
+    education._educationTitle = info.title;
+    education._orgName = info.company;
+    education._location = info.location;
+    education._startDate = info.startDate;
+    education._endDate = info.endDate;
+
+    this.setState((prevState) => {
+      let resume = Object.assign({}, prevState.resume);
+
+      resume._educationHistory = [...resume._educationHistory, education];
       return { resume };
     });
   }
@@ -120,6 +138,7 @@ export default class App extends React.Component {
             resume={this.state.resume}
             updateContactInfo={this.updateContactInfo}
             updateWorkInfo={this.updateWorkInfo}
+            updateEducationInfo={this.updateEducationInfo}
           />
           <Box>
             <Button variant="contained" onClick={this.saveResumeToPdf}>

@@ -14,7 +14,9 @@ const AddDataButtons = (props) => {
   const [open, setOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [workOpen, setWorkOpen] = useState(false);
-  const { resume, updateContactInfo, updateWorkInfo } = props;
+  const [workMode, setWorkMode] = useState("work");
+  const { resume, updateContactInfo, updateWorkInfo, updateEducationInfo } =
+    props;
 
   const handleClickOpen = () => {
     if (open) {
@@ -36,6 +38,13 @@ const AddDataButtons = (props) => {
   };
 
   const openEditWorkExpDialog = () => {
+    setWorkMode("work");
+    setWorkOpen(true);
+    setOpen(false);
+  };
+
+  const openEditEducationExpDialog = () => {
+    setWorkMode("education");
     setWorkOpen(true);
     setOpen(false);
   };
@@ -98,7 +107,7 @@ const AddDataButtons = (props) => {
           icon={<SchoolIcon />}
           tooltipTitle="Education"
           tooltipOpen
-          onClick={handleClose}
+          onClick={openEditEducationExpDialog}
           tooltipPlacement="right"
           sx={{
             "& .MuiSpeedDialAction-staticTooltipLabel": {
@@ -131,7 +140,10 @@ const AddDataButtons = (props) => {
           open={workOpen}
           handleClose={handleWorkClose}
           workHistory={resume._workHistory}
+          educationHistory={resume._educationHistory}
           updateWorkInfo={updateWorkInfo}
+          updateEducationInfo={updateEducationInfo}
+          workMode={workMode}
         />
       </LocalizationProvider>
     </Box>
