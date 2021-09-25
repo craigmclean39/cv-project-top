@@ -45,6 +45,7 @@ const ResumeContactInfo = (props) => {
       sx={{
         boxSizing: "border-box",
         m: 1,
+        overflow: "hidden",
       }}
     >
       <Typography variant="button">Contact</Typography>
