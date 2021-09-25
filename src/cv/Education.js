@@ -6,14 +6,10 @@ export default class Education {
     this._educationTitle = "";
     this._orgName = "";
     this._location = "";
-    this._description = [];
+    this._description = "";
     this._startDate = "";
     this._endDate = "";
     this._id = uniqid();
-  }
-
-  addDescription(newDescription) {
-    this._description.push({ description: newDescription, id: uniqid() });
   }
 
   get startDate() {

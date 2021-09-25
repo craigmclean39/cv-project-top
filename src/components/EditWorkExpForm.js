@@ -10,7 +10,6 @@ import {
   DialogTitle,
 } from "@mui/material";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
-import uniqid from "uniqid";
 
 export default class EditWorkExpForm extends React.Component {
   constructor(props) {
@@ -55,7 +54,7 @@ export default class EditWorkExpForm extends React.Component {
       title: "",
       company: "",
       location: "",
-      description: [""],
+      description: "",
     });
   }
 
@@ -94,22 +93,6 @@ export default class EditWorkExpForm extends React.Component {
 
   render() {
     const { open, handleClose, workMode } = this.props;
-
-    let descriptions = this.state.description.map((value) => {
-      return (
-        <TextField
-          margin="normal"
-          id="description"
-          label="Description"
-          type="text"
-          fullWidth
-          variant="outlined"
-          defaultValue=""
-          key={uniqid()}
-          onChange={this.handleChange("description")}
-        />
-      );
-    });
 
     return (
       <Dialog open={open} onClose={handleClose}>
@@ -172,7 +155,16 @@ export default class EditWorkExpForm extends React.Component {
                 renderInput={(params) => <TextField {...params} />}
               />
             </Stack>
-            {descriptions}
+            <TextField
+              margin="normal"
+              id="description"
+              label="Description"
+              type="text"
+              fullWidth
+              variant="outlined"
+              defaultValue=""
+              onChange={this.handleChange("description")}
+            />
 
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>

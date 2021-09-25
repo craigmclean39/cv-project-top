@@ -69,6 +69,7 @@ export default class App extends React.Component {
     work._location = info.location;
     work._startDate = info.startDate;
     work._endDate = info.endDate;
+    work._description = info.description;
 
     this.setState((prevState) => {
       let resume = Object.assign({}, prevState.resume);
@@ -79,12 +80,14 @@ export default class App extends React.Component {
   }
 
   updateEducationInfo(info) {
+    console.log(info);
     const education = new Education();
     education._educationTitle = info.title;
     education._orgName = info.company;
     education._location = info.location;
     education._startDate = info.startDate;
     education._endDate = info.endDate;
+    education._description = info.description;
 
     this.setState((prevState) => {
       let resume = Object.assign({}, prevState.resume);

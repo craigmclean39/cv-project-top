@@ -1,23 +1,8 @@
 import React from "react";
-import { Typography, Box, List, ListItem } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 const ResumeWorkExperience = (props) => {
   const { workExperience } = props;
-
-  const descriptions = workExperience._description.map((value) => {
-    return (
-      <ListItem key={value.id}>
-        <Typography
-          sx={{
-            m: -0.5,
-          }}
-          variant="caption"
-        >
-          {value.description}
-        </Typography>
-      </ListItem>
-    );
-  });
 
   return (
     <Box
@@ -26,7 +11,9 @@ const ResumeWorkExperience = (props) => {
         mt: 0,
       }}
     >
-      <Typography variant="subtitle2">{workExperience._jobTitle}</Typography>
+      <Typography variant="subtitle2" sx={{ mb: -0.5 }}>
+        {workExperience._jobTitle}
+      </Typography>
       <Typography variant="caption">{workExperience._orgName}</Typography>
       <Box
         sx={{
@@ -38,7 +25,14 @@ const ResumeWorkExperience = (props) => {
         <Typography variant="caption">{`${workExperience.startDate} - ${workExperience.endDate}`}</Typography>
         <Typography variant="caption">{workExperience._location}</Typography>
       </Box>
-      <List dense>{descriptions}</List>
+      <Typography
+        sx={{
+          m: -0.5,
+        }}
+        variant="caption"
+      >
+        {workExperience._description}
+      </Typography>
     </Box>
   );
 };
