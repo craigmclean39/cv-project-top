@@ -4,7 +4,6 @@ import ResumeOutput from "./components/ResumeOutput";
 import Resume from "./cv/Resume";
 import ContactInformation from "./cv/ContactInformation";
 import WorkExp from "./cv/WorkExp";
-import Skills from "./cv/Skills";
 import Education from "./cv/Education";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
@@ -13,6 +12,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { createTheme, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
+import uniqid from "uniqid";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -29,13 +29,16 @@ export default class App extends React.Component {
 
     myResume._contactInformation = contactInfo;
 
-    const skills = new Skills();
-    skills.addSkill("Nunchuck");
-    skills.addSkill("Bow Hunting");
-    skills.addSkill("Computer Hacking");
-
-    myResume._skills = skills;
-
+    /*     myResume.addSkill("Nunchuck");
+    myResume.addSkill("Bow Hunting");
+    myResume.addSkill("Computer Hacking");
+    myResume.addSkill("Test");
+    myResume.addSkill("Skill");
+    myResume.addSkill("What?");
+    myResume.addSkill("Dancing");
+    myResume.addSkill("Running");
+    myResume.addSkill("Climbing");
+ */
     this.state = {
       resume: myResume,
       mode: "light",
@@ -44,6 +47,7 @@ export default class App extends React.Component {
     this.updateContactInfo = this.updateContactInfo.bind(this);
     this.updateWorkInfo = this.updateWorkInfo.bind(this);
     this.updateEducationInfo = this.updateEducationInfo.bind(this);
+    this.updateSkills = this.updateSkills.bind(this);
     this.saveResumeToPdf = this.saveResumeToPdf.bind(this);
     this.toggleMode = this.toggleMode.bind(this);
   }
@@ -80,7 +84,7 @@ export default class App extends React.Component {
   }
 
   updateEducationInfo(info) {
-    console.log(info);
+    // console.log(info);
     const education = new Education();
     education._educationTitle = info.title;
     education._orgName = info.company;
@@ -93,6 +97,16 @@ export default class App extends React.Component {
       let resume = Object.assign({}, prevState.resume);
 
       resume._educationHistory = [...resume._educationHistory, education];
+      return { resume };
+    });
+  }
+
+  updateSkills(info) {
+    this.setState((prevState) => {
+      let resume = Object.assign({}, prevState.resume);
+
+      resume._skills = [...resume._skills, { skill: info, id: uniqid() }];
+
       return { resume };
     });
   }
@@ -142,6 +156,7 @@ export default class App extends React.Component {
             updateContactInfo={this.updateContactInfo}
             updateWorkInfo={this.updateWorkInfo}
             updateEducationInfo={this.updateEducationInfo}
+            updateSkills={this.updateSkills}
           />
           <Box>
             <Button variant="contained" onClick={this.saveResumeToPdf}>

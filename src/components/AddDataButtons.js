@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import EditContactForm from "./EditContactForm";
 import EditWorkExpForm from "./EditWorkExpForm";
+import EditSkillsForm from "./EditSkillsForm";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import SchoolIcon from "@mui/icons-material/School";
@@ -15,8 +16,14 @@ const AddDataButtons = (props) => {
   const [contactOpen, setContactOpen] = useState(false);
   const [workOpen, setWorkOpen] = useState(false);
   const [workMode, setWorkMode] = useState("work");
-  const { resume, updateContactInfo, updateWorkInfo, updateEducationInfo } =
-    props;
+  const [skillsOpen, setSkillsOpen] = useState(false);
+  const {
+    resume,
+    updateContactInfo,
+    updateWorkInfo,
+    updateEducationInfo,
+    updateSkills,
+  } = props;
 
   const handleClickOpen = () => {
     if (open) {
@@ -26,6 +33,7 @@ const AddDataButtons = (props) => {
     }
   };
 
+  // Don't Close the SpeedDial if the mouse leaves, I don't like that user experience
   const handleClose = (e, reason) => {
     if (reason !== "mouseLeave") {
       setOpen(false);
@@ -57,6 +65,16 @@ const AddDataButtons = (props) => {
   const handleWorkClose = () => {
     setOpen(false);
     setWorkOpen(false);
+  };
+
+  const handleSkillsClose = () => {
+    setOpen(false);
+    setSkillsOpen(false);
+  };
+
+  const openSkillsDialog = () => {
+    setSkillsOpen(true);
+    setOpen(false);
   };
 
   return (
@@ -120,7 +138,7 @@ const AddDataButtons = (props) => {
           icon={<BuildIcon />}
           tooltipTitle="Skills"
           tooltipOpen
-          onClick={handleClose}
+          onClick={openSkillsDialog}
           tooltipPlacement="right"
           sx={{
             "& .MuiSpeedDialAction-staticTooltipLabel": {
@@ -144,6 +162,12 @@ const AddDataButtons = (props) => {
           updateWorkInfo={updateWorkInfo}
           updateEducationInfo={updateEducationInfo}
           workMode={workMode}
+        />
+        <EditSkillsForm
+          open={skillsOpen}
+          handleClose={handleSkillsClose}
+          skills={resume._skills}
+          updateSkills={updateSkills}
         />
       </LocalizationProvider>
     </Box>

@@ -24,7 +24,7 @@ const ResumeBody = (props) => {
         }}
       >
         <ResumeContactInfo contactInformation={resume._contactInformation} />
-        <ResumeSkills skills={resume._skills._skills} />
+        <ResumeSkills skills={resume._skills} />
       </Box>
       <Stack
         sx={{
