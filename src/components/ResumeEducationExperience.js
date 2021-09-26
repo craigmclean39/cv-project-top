@@ -27,12 +27,7 @@ const ResumeEducationExperience = (props) => {
           {educationExperience._location}
         </Typography>
       </Box>
-      <Typography
-        sx={{
-          m: -0.5,
-        }}
-        variant="caption"
-      >
+      <Typography variant="caption">
         {educationExperience._description}
       </Typography>
     </Box>

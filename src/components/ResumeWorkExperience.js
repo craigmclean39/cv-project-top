@@ -25,14 +25,7 @@ const ResumeWorkExperience = (props) => {
         <Typography variant="caption">{`${workExperience.startDate} - ${workExperience.endDate}`}</Typography>
         <Typography variant="caption">{workExperience._location}</Typography>
       </Box>
-      <Typography
-        sx={{
-          m: -0.5,
-        }}
-        variant="caption"
-      >
-        {workExperience._description}
-      </Typography>
+      <Typography variant="caption">{workExperience._description}</Typography>
     </Box>
   );
 };
