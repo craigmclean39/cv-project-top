@@ -12,6 +12,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { createTheme, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
+import AppHeader from "./components/AppHeader";
 import uniqid from "uniqid";
 
 export default class App extends React.Component {
@@ -29,16 +30,6 @@ export default class App extends React.Component {
 
     myResume._contactInformation = contactInfo;
 
-    /*     myResume.addSkill("Nunchuck");
-    myResume.addSkill("Bow Hunting");
-    myResume.addSkill("Computer Hacking");
-    myResume.addSkill("Test");
-    myResume.addSkill("Skill");
-    myResume.addSkill("What?");
-    myResume.addSkill("Dancing");
-    myResume.addSkill("Running");
-    myResume.addSkill("Climbing");
- */
     this.state = {
       resume: myResume,
       mode: "light",
@@ -49,7 +40,7 @@ export default class App extends React.Component {
     this.updateEducationInfo = this.updateEducationInfo.bind(this);
     this.updateSkills = this.updateSkills.bind(this);
     this.saveResumeToPdf = this.saveResumeToPdf.bind(this);
-    this.toggleMode = this.toggleMode.bind(this);
+    this.toggleDarkMode = this.toggleDarkMode.bind(this);
   }
 
   updateContactInfo(info) {
@@ -127,7 +118,7 @@ export default class App extends React.Component {
     );
   }
 
-  toggleMode() {
+  toggleDarkMode() {
     let newMode = this.state.mode === "light" ? "dark" : "light";
     this.setState({
       mode: newMode,
@@ -144,9 +135,14 @@ export default class App extends React.Component {
     return (
       <ThemeProvider theme={myTheme}>
         <CssBaseline />
+
+        <AppHeader
+          saveResumeToPdf={this.saveResumeToPdf}
+          toggleDarkMode={this.toggleDarkMode}
+          mode={this.state.mode}
+        />
         <Box
           sx={{
-            minHeight: "100vh",
             display: "flex",
             bgcolor: "background.paper",
           }}
@@ -158,12 +154,6 @@ export default class App extends React.Component {
             updateEducationInfo={this.updateEducationInfo}
             updateSkills={this.updateSkills}
           />
-          <Box>
-            <Button variant="contained" onClick={this.saveResumeToPdf}>
-              Save as PDF
-            </Button>
-            <Button variant="contained" onClick={this.toggleMode}></Button>
-          </Box>
           <ResumeOutput resume={this.state.resume} />
         </Box>
       </ThemeProvider>
