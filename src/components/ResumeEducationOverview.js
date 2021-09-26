@@ -11,20 +11,23 @@ const ResumeEducationOverview = (props) => {
     );
   });
 
-  return (
-    <Box
-      sx={{
-        width: "100%",
-        ml: 1,
-        mt: 1,
-      }}
-    >
-      <Typography variant="button" component="h3">
-        Education
-      </Typography>
-      {educationExperiences}
-    </Box>
-  );
+  if (educationHistory.length > 0) {
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          ml: 1,
+          mt: 1,
+        }}
+      >
+        <Typography variant="button" component="h3">
+          Education
+        </Typography>
+        {educationExperiences}
+      </Box>
+    );
+  }
+  return null;
 };
 
 export default ResumeEducationOverview;

@@ -9,29 +9,32 @@ const ResumeWorkOverview = (props) => {
     return <ResumeWorkExperience workExperience={value} key={value._id} />;
   });
 
-  return (
-    <Box
-      sx={{
-        width: "100%",
-        ml: 1,
-        mt: 1,
-      }}
-    >
-      <Typography variant="button" component="h3" color="info.dark">
-        Work Experience
-      </Typography>
+  if (workHistory.length > 0) {
+    return (
       <Box
         sx={{
-          boxSizing: "border-box",
-          mx: 1,
-          height: "3px",
-          borderRadius: "3px",
-          bgcolor: "primary.dark",
+          width: "100%",
+          ml: 1,
+          mt: 1,
         }}
-      ></Box>
-      {workExperiences}
-    </Box>
-  );
+      >
+        <Typography variant="button" component="h3" color="info.dark">
+          Work Experience
+        </Typography>
+        <Box
+          sx={{
+            boxSizing: "border-box",
+            mx: 1,
+            height: "3px",
+            borderRadius: "3px",
+            bgcolor: "primary.dark",
+          }}
+        ></Box>
+        {workExperiences}
+      </Box>
+    );
+  }
+  return null;
 };
 
 export default ResumeWorkOverview;

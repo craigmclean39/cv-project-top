@@ -10,6 +10,7 @@ const ResumeHeader = (props) => {
         width: "100%",
         bgcolor: "primary.dark",
         mt: 2,
+        minHeight: "80px",
       }}
     >
       <Typography

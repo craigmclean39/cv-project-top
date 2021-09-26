@@ -40,26 +40,29 @@ const ResumeContactInfo = (props) => {
     );
   }
 
-  return (
-    <Box
-      sx={{
-        boxSizing: "border-box",
-        m: 1,
-        overflow: "hidden",
-      }}
-    >
-      <Typography variant="button">Contact</Typography>
+  if (contactFields.length > 0) {
+    return (
       <Box
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          p: 1,
+          boxSizing: "border-box",
+          m: 1,
+          overflow: "hidden",
         }}
       >
-        {contactFields}
+        <Typography variant="button">Contact</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            p: 1,
+          }}
+        >
+          {contactFields}
+        </Box>
       </Box>
-    </Box>
-  );
+    );
+  }
+  return null;
 };
 
 export default ResumeContactInfo;
