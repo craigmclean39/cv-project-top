@@ -1,23 +1,25 @@
 import React from "react";
-import ResumeOutput from "./components/ResumeOutput";
-//import "./styles/normalize.css";
 import Resume from "./cv/Resume";
 import ContactInformation from "./cv/ContactInformation";
 import WorkExp from "./cv/WorkExp";
 import Education from "./cv/Education";
-import { Box } from "@mui/system";
-import { Button } from "@mui/material";
+import ResumeOutput from "./components/ResumeOutput";
 import AddToResumeSpeedDial from "./components/AddToResumeSpeedDial";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import AppHeader from "./components/AppHeader";
+import { Box } from "@mui/system";
 import { createTheme, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import AppHeader from "./components/AppHeader";
 import uniqid from "uniqid";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { LocalStorageHelper } from "./localStorageHelper";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.storageHelper = new LocalStorageHelper();
+    let storedResume = this.storageHelper.retrieveItem("resume");
 
     const myResume = new Resume();
     const contactInfo = new ContactInformation();
@@ -28,11 +30,25 @@ export default class App extends React.Component {
     contactInfo._phoneNumber = "";
     contactInfo._website = "";
 
+    if (storedResume != null) {
+      contactInfo._firstName = storedResume._contactInformation._firstName;
+      contactInfo._lastName = "";
+      contactInfo._title = storedResume._contactInformation._title;
+      contactInfo._email = storedResume._contactInformation._email;
+      contactInfo._phoneNumber = storedResume._contactInformation._phoneNumber;
+      contactInfo._website = storedResume._contactInformation._website;
+    }
+
     myResume._contactInformation = contactInfo;
+
+    let mode = this.storageHelper.retrieveItem("mode");
+    if (mode === null) {
+      mode = "light";
+    }
 
     this.state = {
       resume: myResume,
-      mode: "light",
+      mode: mode,
     };
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
@@ -53,6 +69,7 @@ export default class App extends React.Component {
       resume._contactInformation._email = info.email;
       resume._contactInformation._phoneNumber = info.phone;
       resume._contactInformation._website = info.website;
+      this.storageHelper.saveItem("resume", resume);
       return { resume };
     });
   }
@@ -70,6 +87,7 @@ export default class App extends React.Component {
       let resume = Object.assign({}, prevState.resume);
 
       resume._workHistory = [...resume._workHistory, work];
+      this.storageHelper.saveItem("resume", resume);
       return { resume };
     });
   }
@@ -88,6 +106,7 @@ export default class App extends React.Component {
       let resume = Object.assign({}, prevState.resume);
 
       resume._educationHistory = [...resume._educationHistory, education];
+      this.storageHelper.saveItem("resume", resume);
       return { resume };
     });
   }
@@ -97,7 +116,7 @@ export default class App extends React.Component {
       let resume = Object.assign({}, prevState.resume);
 
       resume._skills = [...resume._skills, { skill: info, id: uniqid() }];
-
+      this.storageHelper.saveItem("resume", resume);
       return { resume };
     });
   }
@@ -123,6 +142,8 @@ export default class App extends React.Component {
     this.setState({
       mode: newMode,
     });
+
+    this.storageHelper.saveItem("mode", newMode);
   }
 
   render() {
