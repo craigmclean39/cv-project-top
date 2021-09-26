@@ -11,7 +11,7 @@ import BuildIcon from "@mui/icons-material/Build";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { LocalizationProvider } from "@mui/lab";
 
-const AddDataButtons = (props) => {
+const AddToResumeSpeedDial = (props) => {
   const [open, setOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [workOpen, setWorkOpen] = useState(false);
@@ -174,4 +174,4 @@ const AddDataButtons = (props) => {
   );
 };
 
-export default AddDataButtons;
+export default AddToResumeSpeedDial;

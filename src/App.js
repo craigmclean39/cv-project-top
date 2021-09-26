@@ -7,7 +7,7 @@ import WorkExp from "./cv/WorkExp";
 import Education from "./cv/Education";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
-import AddDataButtons from "./components/AddDataButtons";
+import AddToResumeSpeedDial from "./components/AddToResumeSpeedDial";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { createTheme, CssBaseline } from "@mui/material";
@@ -151,7 +151,7 @@ export default class App extends React.Component {
             bgcolor: "background.paper",
           }}
         >
-          <AddDataButtons
+          <AddToResumeSpeedDial
             resume={this.state.resume}
             updateContactInfo={this.updateContactInfo}
             updateWorkInfo={this.updateWorkInfo}
