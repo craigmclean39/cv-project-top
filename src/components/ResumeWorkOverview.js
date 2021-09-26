@@ -18,18 +18,9 @@ const ResumeWorkOverview = (props) => {
           mt: 1,
         }}
       >
-        <Typography variant="button" component="h3" color="info.dark">
+        <Typography variant="button" component="h3">
           Work Experience
         </Typography>
-        <Box
-          sx={{
-            boxSizing: "border-box",
-            mx: 1,
-            height: "3px",
-            borderRadius: "3px",
-            bgcolor: "primary.dark",
-          }}
-        ></Box>
         {workExperiences}
       </Box>
     );

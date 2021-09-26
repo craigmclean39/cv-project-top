@@ -11,7 +11,7 @@ const ResumeEducationExperience = (props) => {
         mt: 0,
       }}
     >
-      <Typography variant="subtitle2" sx={{ mb: -0.5 }}>
+      <Typography variant="subtitle2" sx={{ mb: -0.5 }} color="info.dark">
         {educationExperience._educationTitle}
       </Typography>
       <Typography variant="caption">{educationExperience._orgName}</Typography>
