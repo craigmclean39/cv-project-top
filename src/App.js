@@ -37,6 +37,32 @@ export default class App extends React.Component {
       contactInfo._email = storedResume._contactInformation._email;
       contactInfo._phoneNumber = storedResume._contactInformation._phoneNumber;
       contactInfo._website = storedResume._contactInformation._website;
+
+      for (let i = 0; i < storedResume._skills.length; i++) {
+        myResume.addSkill(storedResume._skills[i].skill);
+      }
+
+      for (let i = 0; i < storedResume._workHistory.length; i++) {
+        const work = new WorkExp();
+        work._jobTitle = storedResume._workHistory[i]._jobTitle;
+        work._orgName = storedResume._workHistory[i]._orgName;
+        work._location = storedResume._workHistory[i]._location;
+        work._startDate = storedResume._workHistory[i]._startDate;
+        work._endDate = storedResume._workHistory[i]._endDate;
+        work._description = storedResume._workHistory[i]._description;
+        myResume._workHistory.push(work);
+      }
+
+      for (let i = 0; i < storedResume._educationHistory.length; i++) {
+        const edu = new Education();
+        edu._educationTitle = storedResume._educationHistory[i]._educationTitle;
+        edu._orgName = storedResume._educationHistory[i]._orgName;
+        edu._location = storedResume._educationHistory[i]._location;
+        edu._startDate = storedResume._educationHistory[i]._startDate;
+        edu._endDate = storedResume._educationHistory[i]._endDate;
+        edu._description = storedResume._educationHistory[i]._description;
+        myResume._educationHistory.push(edu);
+      }
     }
 
     myResume._contactInformation = contactInfo;
