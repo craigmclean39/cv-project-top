@@ -21,9 +21,9 @@ export default class App extends React.Component {
 
     const myResume = new Resume();
     const contactInfo = new ContactInformation();
-    contactInfo._firstName = "Your";
-    contactInfo._lastName = "Name";
-    contactInfo._title = "Your Title";
+    contactInfo._firstName = "";
+    contactInfo._lastName = "";
+    contactInfo._title = "";
     contactInfo._email = "";
     contactInfo._phoneNumber = "";
     contactInfo._website = "";
@@ -133,20 +133,16 @@ export default class App extends React.Component {
     });
 
     return (
-      <ThemeProvider theme={myTheme}>
-        <CssBaseline />
+      <React.Fragment>
+        <ThemeProvider theme={myTheme}>
+          <CssBaseline />
 
-        <AppHeader
-          saveResumeToPdf={this.saveResumeToPdf}
-          toggleDarkMode={this.toggleDarkMode}
-          mode={this.state.mode}
-        />
-        <Box
-          sx={{
-            display: "flex",
-            bgcolor: "background.paper",
-          }}
-        >
+          <AppHeader
+            saveResumeToPdf={this.saveResumeToPdf}
+            toggleDarkMode={this.toggleDarkMode}
+            mode={this.state.mode}
+          />
+
           <AddToResumeSpeedDial
             resume={this.state.resume}
             updateContactInfo={this.updateContactInfo}
@@ -154,9 +150,16 @@ export default class App extends React.Component {
             updateEducationInfo={this.updateEducationInfo}
             updateSkills={this.updateSkills}
           />
+        </ThemeProvider>
+        <Box
+          sx={{
+            display: "flex",
+            bgcolor: "background.paper",
+          }}
+        >
           <ResumeOutput resume={this.state.resume} />
         </Box>
-      </ThemeProvider>
+      </React.Fragment>
     );
   }
 }
