@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Box } from "@mui/system";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
-import EditContactForm from "./EditContactForm";
 import EditWorkExpForm from "./EditWorkExpForm";
 import EditSkillsForm from "./EditSkillsForm";
 import PersonIcon from "@mui/icons-material/Person";
@@ -13,21 +12,11 @@ import { LocalizationProvider } from "@mui/lab";
 
 const AddToResumeSpeedDial = (props) => {
   const [open, setOpen] = useState(false);
-  const {
-    setContactOpen,
-    handleContactClose,
-    openEditContactInformationDialog,
-  } = props;
+  const { setContactOpen } = props;
   const [workOpen, setWorkOpen] = useState(false);
   const [workMode, setWorkMode] = useState("work");
   const [skillsOpen, setSkillsOpen] = useState(false);
-  const {
-    resume,
-    updateContactInfo,
-    updateWorkInfo,
-    updateEducationInfo,
-    updateSkills,
-  } = props;
+  const { resume, updateWorkInfo, updateEducationInfo, updateSkills } = props;
 
   const handleClickOpen = () => {
     if (open) {
@@ -93,7 +82,7 @@ const AddToResumeSpeedDial = (props) => {
           icon={<PersonIcon />}
           tooltipTitle="Contact Information"
           tooltipOpen
-          onClick={openEditContactInformationDialog}
+          onClick={setContactOpen}
           tooltipPlacement="right"
           sx={{
             "& .MuiSpeedDialAction-staticTooltipLabel": {
