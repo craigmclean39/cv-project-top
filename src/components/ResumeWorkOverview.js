@@ -3,10 +3,17 @@ import ResumeWorkExperience from "./ResumeWorkExperience";
 import { Typography, Box } from "@mui/material";
 
 const ResumeWorkOverview = (props) => {
-  const { workHistory } = props;
+  const { workHistory, editWorkInfo, deleteWorkInfo } = props;
 
   const workExperiences = workHistory.map((value) => {
-    return <ResumeWorkExperience workExperience={value} key={value._id} />;
+    return (
+      <ResumeWorkExperience
+        workExperience={value}
+        key={value._id}
+        editWorkInfo={editWorkInfo}
+        deleteWorkInfo={deleteWorkInfo}
+      />
+    );
   });
 
   if (workHistory.length > 0) {

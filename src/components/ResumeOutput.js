@@ -4,7 +4,7 @@ import ResumeHeader from "./ResumeHeader";
 import ResumeBody from "./ResumeBody";
 
 const ResumeOutput = (props) => {
-  const { resume } = props;
+  const { resume, editWorkInfo, deleteWorkInfo } = props;
 
   const mystyle = {
     width: "600px",
@@ -29,7 +29,11 @@ const ResumeOutput = (props) => {
       >
         <div className="resume-to-capture" style={mystyle}>
           <ResumeHeader contactInformation={resume._contactInformation} />
-          <ResumeBody resume={resume} />
+          <ResumeBody
+            resume={resume}
+            editWorkInfo={editWorkInfo}
+            deleteWorkInfo={deleteWorkInfo}
+          />
         </div>
       </Card>
     </Box>

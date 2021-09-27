@@ -13,6 +13,7 @@ import uniqid from "uniqid";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { LocalStorageHelper } from "./localStorageHelper";
+import DeleteConfirmation from "./components/DeleteConfirmation";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -75,6 +76,9 @@ export default class App extends React.Component {
     this.state = {
       resume: myResume,
       mode: mode,
+      deleteConfirmationOpen: false,
+      deleteWorkKey: "",
+      deleteEduKey: "",
     };
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
@@ -83,6 +87,8 @@ export default class App extends React.Component {
     this.updateSkills = this.updateSkills.bind(this);
     this.saveResumeToPdf = this.saveResumeToPdf.bind(this);
     this.toggleDarkMode = this.toggleDarkMode.bind(this);
+    this.closeDeleteConfirmation = this.closeDeleteConfirmation.bind(this);
+    this.confirmDeleteWorkInfo = this.confirmDeleteWorkInfo.bind(this);
   }
 
   updateContactInfo(info) {
@@ -116,6 +122,41 @@ export default class App extends React.Component {
       this.storageHelper.saveItem("resume", resume);
       return { resume };
     });
+  }
+
+  editWorkInfo = (info) => (event) => {};
+
+  deleteWorkInfo = (info) => (event) => {
+    this.setState({
+      deleteConfirmationOpen: true,
+      deleteWorkKey: info,
+    });
+  };
+
+  closeDeleteConfirmation() {
+    this.setState({
+      deleteConfirmationOpen: false,
+    });
+  }
+
+  confirmDeleteWorkInfo(e) {
+    e.preventDefault();
+    // console.log("DELETE " + this.state.deleteWorkKey);
+
+    this.setState((prevState) => {
+      let resume = Object.assign({}, prevState.resume);
+
+      resume._workHistory = resume._workHistory.filter((element) => {
+        if (element._id === this.state.deleteWorkKey) {
+          return false;
+        }
+        return true;
+      });
+      this.storageHelper.saveItem("resume", resume);
+      return { resume };
+    });
+
+    this.closeDeleteConfirmation();
   }
 
   updateEducationInfo(info) {
@@ -197,6 +238,11 @@ export default class App extends React.Component {
             updateEducationInfo={this.updateEducationInfo}
             updateSkills={this.updateSkills}
           />
+          <DeleteConfirmation
+            open={this.state.deleteConfirmationOpen}
+            handleClose={this.closeDeleteConfirmation}
+            deleteWork={this.confirmDeleteWorkInfo}
+          />
         </ThemeProvider>
         <Box
           sx={{
@@ -204,7 +250,11 @@ export default class App extends React.Component {
             bgcolor: "background.paper",
           }}
         >
-          <ResumeOutput resume={this.state.resume} />
+          <ResumeOutput
+            resume={this.state.resume}
+            editWorkInfo={this.editWorkInfo}
+            deleteWorkInfo={this.deleteWorkInfo}
+          />
         </Box>
       </React.Fragment>
     );

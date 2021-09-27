@@ -6,7 +6,7 @@ import ResumeSkills from "./ResumeSkills";
 import ResumeEducationOverview from "./ResumeEducationOverview";
 
 const ResumeBody = (props) => {
-  const { resume } = props;
+  const { resume, editWorkInfo, deleteWorkInfo } = props;
 
   return (
     <Box
@@ -32,7 +32,11 @@ const ResumeBody = (props) => {
           width: "66%",
         }}
       >
-        <ResumeWorkOverview workHistory={resume._workHistory} />
+        <ResumeWorkOverview
+          workHistory={resume._workHistory}
+          editWorkInfo={editWorkInfo}
+          deleteWorkInfo={deleteWorkInfo}
+        />
         <ResumeEducationOverview educationHistory={resume._educationHistory} />
       </Stack>
     </Box>
