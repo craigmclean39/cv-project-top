@@ -13,7 +13,11 @@ import { LocalizationProvider } from "@mui/lab";
 
 const AddToResumeSpeedDial = (props) => {
   const [open, setOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
+  const {
+    setContactOpen,
+    handleContactClose,
+    openEditContactInformationDialog,
+  } = props;
   const [workOpen, setWorkOpen] = useState(false);
   const [workMode, setWorkMode] = useState("work");
   const [skillsOpen, setSkillsOpen] = useState(false);
@@ -40,11 +44,6 @@ const AddToResumeSpeedDial = (props) => {
     }
   };
 
-  const openEditContactInformationDialog = () => {
-    setContactOpen(true);
-    setOpen(false);
-  };
-
   const openEditWorkExpDialog = () => {
     setWorkMode("work");
     setWorkOpen(true);
@@ -55,11 +54,6 @@ const AddToResumeSpeedDial = (props) => {
     setWorkMode("education");
     setWorkOpen(true);
     setOpen(false);
-  };
-
-  const handleContactClose = () => {
-    setOpen(false);
-    setContactOpen(false);
   };
 
   const handleWorkClose = () => {
@@ -148,12 +142,6 @@ const AddToResumeSpeedDial = (props) => {
         />
       </SpeedDial>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <EditContactForm
-          open={contactOpen}
-          handleClose={handleContactClose}
-          contactInformation={resume._contactInformation}
-          updateContactInfo={updateContactInfo}
-        />
         <EditWorkExpForm
           open={workOpen}
           handleClose={handleWorkClose}

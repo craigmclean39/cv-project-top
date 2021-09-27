@@ -14,6 +14,9 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { LocalStorageHelper } from "./localStorageHelper";
 import DeleteConfirmation from "./components/DeleteConfirmation";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { LocalizationProvider } from "@mui/lab";
+import EditContactForm from "./components/EditContactForm";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -80,6 +83,7 @@ export default class App extends React.Component {
       deleteWorkKey: "",
       deleteEduKey: "",
       deleteMode: "",
+      contactOpen: false,
     };
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
@@ -92,7 +96,25 @@ export default class App extends React.Component {
     this.confirmDeleteWorkInfo = this.confirmDeleteWorkInfo.bind(this);
     this.confirmDeleteEducationInfo =
       this.confirmDeleteEducationInfo.bind(this);
+    this.openEditContactInformationDialog =
+      this.openEditContactInformationDialog.bind(this);
+    this.setContactOpen = this.setContactOpen.bind(this);
+    this.handleContactClose = this.handleContactClose.bind(this);
   }
+
+  setContactOpen() {
+    this.setState({
+      contactOpen: true,
+    });
+  }
+
+  handleContactClose() {
+    this.setState({ contactOpen: false });
+  }
+
+  openEditContactInformationDialog = () => {
+    this.setContactOpen(true);
+  };
 
   updateContactInfo(info) {
     this.setState((prevState) => {
@@ -271,14 +293,24 @@ export default class App extends React.Component {
             updateWorkInfo={this.updateWorkInfo}
             updateEducationInfo={this.updateEducationInfo}
             updateSkills={this.updateSkills}
+            setContactOpen={this.setContactOpen}
           />
-          <DeleteConfirmation
-            open={this.state.deleteConfirmationOpen}
-            deleteMode={this.state.deleteMode}
-            handleClose={this.closeDeleteConfirmation}
-            deleteWork={this.confirmDeleteWorkInfo}
-            deleteEducation={this.confirmDeleteEducationInfo}
-          />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DeleteConfirmation
+              open={this.state.deleteConfirmationOpen}
+              deleteMode={this.state.deleteMode}
+              handleClose={this.closeDeleteConfirmation}
+              deleteWork={this.confirmDeleteWorkInfo}
+              deleteEducation={this.confirmDeleteEducationInfo}
+            />
+
+            <EditContactForm
+              open={this.state.contactOpen}
+              handleClose={this.handleContactClose}
+              contactInformation={this.state.resume._contactInformation}
+              updateContactInfo={this.updateContactInfo}
+            />
+          </LocalizationProvider>
         </ThemeProvider>
         <Box
           sx={{
