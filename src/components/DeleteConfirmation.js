@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 
 const DeleteConfirmation = (props) => {
-  const { handleClose, deleteWork, open } = props;
+  const { handleClose, deleteWork, deleteEducation, open, deleteMode } = props;
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -17,7 +17,10 @@ const DeleteConfirmation = (props) => {
         <form>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit" onClick={deleteWork}>
+            <Button
+              type="submit"
+              onClick={deleteMode === "work" ? deleteWork : deleteEducation}
+            >
               Delete
             </Button>
           </DialogActions>

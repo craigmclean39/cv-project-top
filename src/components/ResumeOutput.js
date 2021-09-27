@@ -4,7 +4,13 @@ import ResumeHeader from "./ResumeHeader";
 import ResumeBody from "./ResumeBody";
 
 const ResumeOutput = (props) => {
-  const { resume, editWorkInfo, deleteWorkInfo } = props;
+  const {
+    resume,
+    editWorkInfo,
+    deleteWorkInfo,
+    editEducationInfo,
+    deleteEducationInfo,
+  } = props;
 
   const mystyle = {
     width: "600px",
@@ -33,6 +39,8 @@ const ResumeOutput = (props) => {
             resume={resume}
             editWorkInfo={editWorkInfo}
             deleteWorkInfo={deleteWorkInfo}
+            editEducationInfo={editEducationInfo}
+            deleteEducationInfo={deleteEducationInfo}
           />
         </div>
       </Card>

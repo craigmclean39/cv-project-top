@@ -6,7 +6,13 @@ import ResumeSkills from "./ResumeSkills";
 import ResumeEducationOverview from "./ResumeEducationOverview";
 
 const ResumeBody = (props) => {
-  const { resume, editWorkInfo, deleteWorkInfo } = props;
+  const {
+    resume,
+    editWorkInfo,
+    deleteWorkInfo,
+    editEducationInfo,
+    deleteEducationInfo,
+  } = props;
 
   return (
     <Box
@@ -37,7 +43,11 @@ const ResumeBody = (props) => {
           editWorkInfo={editWorkInfo}
           deleteWorkInfo={deleteWorkInfo}
         />
-        <ResumeEducationOverview educationHistory={resume._educationHistory} />
+        <ResumeEducationOverview
+          educationHistory={resume._educationHistory}
+          editEducationInfo={editEducationInfo}
+          deleteEducationInfo={deleteEducationInfo}
+        />
       </Stack>
     </Box>
   );

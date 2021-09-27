@@ -4,7 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const ResumeEducationExperience = (props) => {
-  const { educationExperience } = props;
+  const { educationExperience, deleteEducationInfo, editEducationInfo } = props;
 
   return (
     <Box
@@ -20,6 +20,7 @@ const ResumeEducationExperience = (props) => {
         <Box data-html2canvas-ignore="true" sx={{ lineHeight: 0 }}>
           <IconButton
             aria-label="edit"
+            onClick={editEducationInfo(educationExperience._id)}
             sx={{ width: "16px", height: "16px", ml: 1 }}
           >
             <EditIcon
@@ -28,6 +29,7 @@ const ResumeEducationExperience = (props) => {
           </IconButton>
           <IconButton
             aria-label="delete"
+            onClick={deleteEducationInfo(educationExperience._id)}
             sx={{ width: "16px", height: "16px", mx: 0.5 }}
           >
             <DeleteIcon

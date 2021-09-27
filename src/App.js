@@ -79,6 +79,7 @@ export default class App extends React.Component {
       deleteConfirmationOpen: false,
       deleteWorkKey: "",
       deleteEduKey: "",
+      deleteMode: "",
     };
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
@@ -89,6 +90,8 @@ export default class App extends React.Component {
     this.toggleDarkMode = this.toggleDarkMode.bind(this);
     this.closeDeleteConfirmation = this.closeDeleteConfirmation.bind(this);
     this.confirmDeleteWorkInfo = this.confirmDeleteWorkInfo.bind(this);
+    this.confirmDeleteEducationInfo =
+      this.confirmDeleteEducationInfo.bind(this);
   }
 
   updateContactInfo(info) {
@@ -130,6 +133,7 @@ export default class App extends React.Component {
     this.setState({
       deleteConfirmationOpen: true,
       deleteWorkKey: info,
+      deleteMode: "work",
     });
   };
 
@@ -148,6 +152,36 @@ export default class App extends React.Component {
 
       resume._workHistory = resume._workHistory.filter((element) => {
         if (element._id === this.state.deleteWorkKey) {
+          return false;
+        }
+        return true;
+      });
+      this.storageHelper.saveItem("resume", resume);
+      return { resume };
+    });
+
+    this.closeDeleteConfirmation();
+  }
+
+  editEducationInfo = (info) => (event) => {};
+
+  deleteEducationInfo = (info) => (event) => {
+    this.setState({
+      deleteConfirmationOpen: true,
+      deleteEduKey: info,
+      deleteMode: "education",
+    });
+  };
+
+  confirmDeleteEducationInfo(e) {
+    e.preventDefault();
+    console.log("DELETE " + this.state.deleteEduKey);
+
+    this.setState((prevState) => {
+      let resume = Object.assign({}, prevState.resume);
+
+      resume._educationHistory = resume._educationHistory.filter((element) => {
+        if (element._id === this.state.deleteEduKey) {
           return false;
         }
         return true;
@@ -240,8 +274,10 @@ export default class App extends React.Component {
           />
           <DeleteConfirmation
             open={this.state.deleteConfirmationOpen}
+            deleteMode={this.state.deleteMode}
             handleClose={this.closeDeleteConfirmation}
             deleteWork={this.confirmDeleteWorkInfo}
+            deleteEducation={this.confirmDeleteEducationInfo}
           />
         </ThemeProvider>
         <Box
@@ -254,6 +290,8 @@ export default class App extends React.Component {
             resume={this.state.resume}
             editWorkInfo={this.editWorkInfo}
             deleteWorkInfo={this.deleteWorkInfo}
+            editEducationInfo={this.editEducationInfo}
+            deleteEducationInfo={this.deleteEducationInfo}
           />
         </Box>
       </React.Fragment>
