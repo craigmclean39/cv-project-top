@@ -108,6 +108,8 @@ export default class App extends React.Component {
     this.setWorkOpen = this.setWorkOpen.bind(this);
     this.setEducationOpen = this.setEducationOpen.bind(this);
     this.handleWorkClose = this.handleWorkClose.bind(this);
+    this.setSkillsOpen = this.setSkillsOpen.bind(this);
+    this.handleSkillsClose = this.handleSkillsClose.bind(this);
   }
 
   setContactOpen() {
@@ -335,6 +337,7 @@ export default class App extends React.Component {
             setContactOpen={this.setContactOpen}
             setWorkOpen={this.setWorkOpen}
             setEducationOpen={this.setEducationOpen}
+            setSkillsOpen={this.setSkillsOpen}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DeleteConfirmation
