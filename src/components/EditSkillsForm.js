@@ -35,7 +35,7 @@ export default class EditSkillsForm extends React.Component {
   }
 
   render() {
-    const { open, handleClose, skills } = this.props;
+    const { open, handleClose, skills, deleteSkill } = this.props;
 
     const skillChips = skills.map((value) => {
       return (
@@ -45,6 +45,7 @@ export default class EditSkillsForm extends React.Component {
           key={value.id}
           size="small"
           color="primary"
+          onDelete={deleteSkill(value.id)}
         />
       );
     });

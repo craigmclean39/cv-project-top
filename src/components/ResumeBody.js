@@ -27,6 +27,7 @@ const ResumeBody = (props) => {
           width: "33%",
           display: "flex",
           flexDirection: "column",
+          overflow: "hidden",
         }}
       >
         <ResumeContactInfo contactInformation={resume._contactInformation} />

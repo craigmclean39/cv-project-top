@@ -89,6 +89,7 @@ export default class App extends React.Component {
       workOpen: false,
       workMode: "work",
       skillsOpen: false,
+      idToPopulate: "",
     };
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
@@ -190,7 +191,9 @@ export default class App extends React.Component {
     });
   }
 
-  editWorkInfo = (info) => (event) => {};
+  editWorkInfo = (info) => (event) => {
+    console.log(info);
+  };
 
   deleteWorkInfo = (info) => (event) => {
     this.setState({
@@ -226,7 +229,9 @@ export default class App extends React.Component {
     this.closeDeleteConfirmation();
   }
 
-  editEducationInfo = (info) => (event) => {};
+  editEducationInfo = (info) => (event) => {
+    console.log(info);
+  };
 
   deleteEducationInfo = (info) => (event) => {
     this.setState({
@@ -238,7 +243,6 @@ export default class App extends React.Component {
 
   confirmDeleteEducationInfo(e) {
     e.preventDefault();
-    console.log("DELETE " + this.state.deleteEduKey);
 
     this.setState((prevState) => {
       let resume = Object.assign({}, prevState.resume);
@@ -284,6 +288,23 @@ export default class App extends React.Component {
       return { resume };
     });
   }
+
+  deleteSkill = (info) => (event) => {
+    event.preventDefault();
+
+    this.setState((prevState) => {
+      let resume = Object.assign({}, prevState.resume);
+
+      resume._skills = resume._skills.filter((element) => {
+        if (element.id === info) {
+          return false;
+        }
+        return true;
+      });
+      this.storageHelper.saveItem("resume", resume);
+      return { resume };
+    });
+  };
 
   saveResumeToPdf() {
     const options = { scale: 2 };
@@ -362,12 +383,14 @@ export default class App extends React.Component {
               updateWorkInfo={this.updateWorkInfo}
               updateEducationInfo={this.updateEducationInfo}
               workMode={this.state.workMode}
+              idToPopulate={this.state.idToPopulate}
             />
             <EditSkillsForm
               open={this.state.skillsOpen}
               handleClose={this.handleSkillsClose}
               skills={this.state.resume._skills}
               updateSkills={this.updateSkills}
+              deleteSkill={this.deleteSkill}
             />
           </LocalizationProvider>
         </ThemeProvider>
