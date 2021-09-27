@@ -17,6 +17,8 @@ import DeleteConfirmation from "./components/DeleteConfirmation";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { LocalizationProvider } from "@mui/lab";
 import EditContactForm from "./components/EditContactForm";
+import EditWorkExpForm from "./components/EditWorkExpForm";
+import EditSkillsForm from "./components/EditSkillsForm";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -84,6 +86,9 @@ export default class App extends React.Component {
       deleteEduKey: "",
       deleteMode: "",
       contactOpen: false,
+      workOpen: false,
+      workMode: "work",
+      skillsOpen: false,
     };
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
@@ -100,12 +105,46 @@ export default class App extends React.Component {
       this.openEditContactInformationDialog.bind(this);
     this.setContactOpen = this.setContactOpen.bind(this);
     this.handleContactClose = this.handleContactClose.bind(this);
+    this.setWorkOpen = this.setWorkOpen.bind(this);
+    this.setEducationOpen = this.setEducationOpen.bind(this);
+    this.handleWorkClose = this.handleWorkClose.bind(this);
   }
 
   setContactOpen() {
     this.setState({
       contactOpen: true,
     });
+  }
+
+  setWorkOpen() {
+    this.setWorkMode("work");
+
+    this.setState({
+      workOpen: true,
+    });
+  }
+
+  setEducationOpen() {
+    this.setWorkMode("education");
+    this.setState({ workOpen: true });
+  }
+
+  setSkillsOpen() {
+    this.setState({ skillsOpen: true });
+  }
+
+  setWorkMode(value) {
+    this.setState({
+      workMode: value,
+    });
+  }
+
+  handleWorkClose() {
+    this.setState({ workOpen: false });
+  }
+
+  handleSkillsClose() {
+    this.setState({ skillsOpen: false });
   }
 
   handleContactClose() {
@@ -294,6 +333,8 @@ export default class App extends React.Component {
             updateEducationInfo={this.updateEducationInfo}
             updateSkills={this.updateSkills}
             setContactOpen={this.setContactOpen}
+            setWorkOpen={this.setWorkOpen}
+            setEducationOpen={this.setEducationOpen}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DeleteConfirmation
@@ -309,6 +350,21 @@ export default class App extends React.Component {
               handleClose={this.handleContactClose}
               contactInformation={this.state.resume._contactInformation}
               updateContactInfo={this.updateContactInfo}
+            />
+            <EditWorkExpForm
+              open={this.state.workOpen}
+              handleClose={this.handleWorkClose}
+              workHistory={this.state.resume._workHistory}
+              educationHistory={this.state.resume._educationHistory}
+              updateWorkInfo={this.updateWorkInfo}
+              updateEducationInfo={this.updateEducationInfo}
+              workMode={this.state.workMode}
+            />
+            <EditSkillsForm
+              open={this.state.skillsOpen}
+              handleClose={this.handleSkillsClose}
+              skills={this.state.resume._skills}
+              updateSkills={this.updateSkills}
             />
           </LocalizationProvider>
         </ThemeProvider>

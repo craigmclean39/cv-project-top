@@ -1,22 +1,15 @@
 import { useState } from "react";
 import { Box } from "@mui/system";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
-import EditWorkExpForm from "./EditWorkExpForm";
-import EditSkillsForm from "./EditSkillsForm";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import SchoolIcon from "@mui/icons-material/School";
 import BuildIcon from "@mui/icons-material/Build";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { LocalizationProvider } from "@mui/lab";
 
 const AddToResumeSpeedDial = (props) => {
   const [open, setOpen] = useState(false);
-  const { setContactOpen } = props;
-  const [workOpen, setWorkOpen] = useState(false);
-  const [workMode, setWorkMode] = useState("work");
-  const [skillsOpen, setSkillsOpen] = useState(false);
-  const { resume, updateWorkInfo, updateEducationInfo, updateSkills } = props;
+  const { setContactOpen, setWorkOpen, setEducationOpen, setSkillsOpen } =
+    props;
 
   const handleClickOpen = () => {
     if (open) {
@@ -31,33 +24,6 @@ const AddToResumeSpeedDial = (props) => {
     if (reason !== "mouseLeave") {
       setOpen(false);
     }
-  };
-
-  const openEditWorkExpDialog = () => {
-    setWorkMode("work");
-    setWorkOpen(true);
-    setOpen(false);
-  };
-
-  const openEditEducationExpDialog = () => {
-    setWorkMode("education");
-    setWorkOpen(true);
-    setOpen(false);
-  };
-
-  const handleWorkClose = () => {
-    setOpen(false);
-    setWorkOpen(false);
-  };
-
-  const handleSkillsClose = () => {
-    setOpen(false);
-    setSkillsOpen(false);
-  };
-
-  const openSkillsDialog = () => {
-    setSkillsOpen(true);
-    setOpen(false);
   };
 
   return (
@@ -95,7 +61,7 @@ const AddToResumeSpeedDial = (props) => {
           icon={<WorkIcon />}
           tooltipTitle="Work Experience"
           tooltipOpen
-          onClick={openEditWorkExpDialog}
+          onClick={setWorkOpen}
           tooltipPlacement="right"
           sx={{
             "& .MuiSpeedDialAction-staticTooltipLabel": {
@@ -108,7 +74,7 @@ const AddToResumeSpeedDial = (props) => {
           icon={<SchoolIcon />}
           tooltipTitle="Education"
           tooltipOpen
-          onClick={openEditEducationExpDialog}
+          onClick={setEducationOpen}
           tooltipPlacement="right"
           sx={{
             "& .MuiSpeedDialAction-staticTooltipLabel": {
@@ -121,7 +87,7 @@ const AddToResumeSpeedDial = (props) => {
           icon={<BuildIcon />}
           tooltipTitle="Skills"
           tooltipOpen
-          onClick={openSkillsDialog}
+          onClick={setSkillsOpen}
           tooltipPlacement="right"
           sx={{
             "& .MuiSpeedDialAction-staticTooltipLabel": {
@@ -130,23 +96,6 @@ const AddToResumeSpeedDial = (props) => {
           }}
         />
       </SpeedDial>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <EditWorkExpForm
-          open={workOpen}
-          handleClose={handleWorkClose}
-          workHistory={resume._workHistory}
-          educationHistory={resume._educationHistory}
-          updateWorkInfo={updateWorkInfo}
-          updateEducationInfo={updateEducationInfo}
-          workMode={workMode}
-        />
-        <EditSkillsForm
-          open={skillsOpen}
-          handleClose={handleSkillsClose}
-          skills={resume._skills}
-          updateSkills={updateSkills}
-        />
-      </LocalizationProvider>
     </Box>
   );
 };
