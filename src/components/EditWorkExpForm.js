@@ -19,7 +19,6 @@ export default class EditWorkExpForm extends React.Component {
     this.resetState = this.resetState.bind(this);
 
     this.state = {
-      mode: "add",
       currentDate: Date.now(),
       startDate: Date.now(),
       endDate: Date.now(),
@@ -47,7 +46,6 @@ export default class EditWorkExpForm extends React.Component {
 
   resetState() {
     this.setState({
-      mode: "add",
       currentDate: Date.now(),
       startDate: Date.now(),
       endDate: Date.now(),
@@ -81,22 +79,25 @@ export default class EditWorkExpForm extends React.Component {
 
   saveFormInfo(e) {
     e.preventDefault();
-    const { updateWorkInfo, handleClose, updateEducationInfo, workMode } =
+    const { updateWorkInfo, handleClose, updateEducationInfo, workMode, mode } =
       this.props;
 
-    workMode === "work"
-      ? updateWorkInfo(this.state)
-      : updateEducationInfo(this.state);
+    if (mode === "add") {
+      workMode === "work"
+        ? updateWorkInfo(this.state)
+        : updateEducationInfo(this.state);
+    }
+
     this.resetState();
     handleClose();
   }
 
   render() {
-    const { open, handleClose, workMode } = this.props;
+    const { open, handleClose, workMode, idToPopulate, mode } = this.props;
 
     return (
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{this.modes[workMode][this.state.mode]}</DialogTitle>
+        <DialogTitle>{this.modes[workMode][mode]}</DialogTitle>
         <DialogContent>
           <form>
             <TextField
@@ -169,7 +170,7 @@ export default class EditWorkExpForm extends React.Component {
             <DialogActions>
               <Button onClick={handleClose}>Cancel</Button>
               <Button type="submit" onClick={this.saveFormInfo}>
-                Save
+                {idToPopulate !== "" ? "Edit" : "Save"}
               </Button>
             </DialogActions>
           </form>

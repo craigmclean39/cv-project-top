@@ -46,7 +46,7 @@ const ResumeWorkExperience = (props) => {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="caption">{`${workExperience.startDate} - ${workExperience.endDate}`}</Typography>
+        <Typography variant="caption">{`${workExperience._startDate} - ${workExperience._endDate}`}</Typography>
         <Typography variant="caption">{workExperience._location}</Typography>
       </Box>
       <Typography variant="caption">{workExperience._description}</Typography>

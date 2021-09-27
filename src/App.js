@@ -19,6 +19,7 @@ import { LocalizationProvider } from "@mui/lab";
 import EditContactForm from "./components/EditContactForm";
 import EditWorkExpForm from "./components/EditWorkExpForm";
 import EditSkillsForm from "./components/EditSkillsForm";
+import { format } from "date-fns";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -88,6 +89,7 @@ export default class App extends React.Component {
       contactOpen: false,
       workOpen: false,
       workMode: "work",
+      addEditMode: "add",
       skillsOpen: false,
       idToPopulate: "",
     };
@@ -113,6 +115,12 @@ export default class App extends React.Component {
     this.handleSkillsClose = this.handleSkillsClose.bind(this);
   }
 
+  setAddEditMode(value) {
+    this.setState({
+      addEditMode: value,
+    });
+  }
+
   setContactOpen() {
     this.setState({
       contactOpen: true,
@@ -121,15 +129,17 @@ export default class App extends React.Component {
 
   setWorkOpen() {
     this.setWorkMode("work");
-
+    this.setAddEditMode("add");
     this.setState({
       workOpen: true,
+      idToPopulate: "",
     });
   }
 
   setEducationOpen() {
     this.setWorkMode("education");
-    this.setState({ workOpen: true });
+    this.setAddEditMode("add");
+    this.setState({ workOpen: true, idToPopulate: "" });
   }
 
   setSkillsOpen() {
@@ -178,8 +188,8 @@ export default class App extends React.Component {
     work._jobTitle = info.title;
     work._orgName = info.company;
     work._location = info.location;
-    work._startDate = info.startDate;
-    work._endDate = info.endDate;
+    work._startDate = format(info.startDate, "yyyy/MM");
+    work._endDate = format(info.endDate, "yyyy/MM");
     work._description = info.description;
 
     this.setState((prevState) => {
@@ -193,6 +203,9 @@ export default class App extends React.Component {
 
   editWorkInfo = (info) => (event) => {
     console.log(info);
+    this.setAddEditMode("edit");
+    this.setWorkMode("work");
+    this.setState({ idToPopulate: info, workOpen: true });
   };
 
   deleteWorkInfo = (info) => (event) => {
@@ -231,6 +244,9 @@ export default class App extends React.Component {
 
   editEducationInfo = (info) => (event) => {
     console.log(info);
+    this.setAddEditMode("edit");
+    this.setWorkMode("education");
+    this.setState({ idToPopulate: info, workOpen: true });
   };
 
   deleteEducationInfo = (info) => (event) => {
@@ -261,13 +277,13 @@ export default class App extends React.Component {
   }
 
   updateEducationInfo(info) {
-    // console.log(info);
+    console.log(info);
     const education = new Education();
     education._educationTitle = info.title;
     education._orgName = info.company;
     education._location = info.location;
-    education._startDate = info.startDate;
-    education._endDate = info.endDate;
+    education._startDate = format(info.startDate, "yyyy/MM");
+    education._endDate = format(info.endDate, "yyyy/MM");
     education._description = info.description;
 
     this.setState((prevState) => {
@@ -384,6 +400,7 @@ export default class App extends React.Component {
               updateEducationInfo={this.updateEducationInfo}
               workMode={this.state.workMode}
               idToPopulate={this.state.idToPopulate}
+              mode={this.state.addEditMode}
             />
             <EditSkillsForm
               open={this.state.skillsOpen}

@@ -47,7 +47,7 @@ const ResumeEducationExperience = (props) => {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="caption">{`${educationExperience.startDate} - ${educationExperience.endDate}`}</Typography>
+        <Typography variant="caption">{`${educationExperience._startDate} - ${educationExperience._endDate}`}</Typography>
         <Typography variant="caption">
           {educationExperience._location}
         </Typography>
