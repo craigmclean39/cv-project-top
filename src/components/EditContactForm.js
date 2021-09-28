@@ -40,11 +40,12 @@ export default class EditContactForm extends React.Component {
 
   validatePhoneNumber = (name) => (event) => {
     const phoneRegex =
-      /^\(?\d{3}\)?(\s*)?-?(\s*)?\d{3}(\s*)?-?(\s*)?(\s*)?\d{4}$/;
+      /^\+?(\s*)?(\d{1,2})?(\s*)?-?(\s*)?\(?\d{3}\)?(\s*)?-?(\s*)?\d{3}(\s*)?-?(\s*)?(\s*)?\d{4}$/;
     if (!event.target.value.match(phoneRegex) && event.target.value !== "") {
       this.setState({
         phoneError: true,
-        phoneHelperText: "Enter 10 digit Phone Number, ###-###-####",
+        phoneHelperText:
+          "Enter 10 digit Phone Number with or without country code, #-###-###-####",
       });
     } else {
       this.setState({
