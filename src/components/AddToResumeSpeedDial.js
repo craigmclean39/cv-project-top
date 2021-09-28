@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Box } from "@mui/system";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import SchoolIcon from "@mui/icons-material/School";
 import BuildIcon from "@mui/icons-material/Build";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
+import { Backdrop, Box } from "@mui/material";
 
 const AddToResumeSpeedDial = (props) => {
   const [open, setOpen] = useState(false);
@@ -33,13 +33,8 @@ const AddToResumeSpeedDial = (props) => {
   };
 
   return (
-    <Box
-      sx={{
-        width: "200px",
-        transform: "translateZ(0px)",
-        flexGrow: 1,
-      }}
-    >
+    <Box>
+      <Backdrop open={open} sx={{ zIndex: 0 }} />
       <SpeedDial
         ariaLabel="Add to Resume"
         icon={<SpeedDialIcon />}
@@ -47,7 +42,12 @@ const AddToResumeSpeedDial = (props) => {
         onClick={handleClickOpen}
         open={open}
         direction="down"
-        sx={{ position: "absolute", top: 16, left: 16 }}
+        sx={{
+          position: "absolute",
+          top: 80,
+          left: 30,
+          zIndex: 1,
+        }}
       >
         <SpeedDialAction
           key="Contact Information"
