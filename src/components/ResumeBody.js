@@ -18,7 +18,7 @@ const ResumeBody = (props) => {
     <Box
       sx={{
         display: "flex",
-        minWidth: "100%",
+        width: "100%",
       }}
     >
       <Box
