@@ -42,6 +42,13 @@ export default class EditWorkExpForm extends React.Component {
         company: "University/College",
       },
     };
+
+    this.defaultValues = {
+      title: "",
+      company: "",
+      location: "",
+      description: "",
+    };
   }
 
   resetState() {
@@ -84,16 +91,86 @@ export default class EditWorkExpForm extends React.Component {
 
     if (mode === "add") {
       workMode === "work"
-        ? updateWorkInfo(this.state)
-        : updateEducationInfo(this.state);
+        ? updateWorkInfo(this.state, false)
+        : updateEducationInfo(this.state, false);
+    } else if (mode === "edit") {
+      workMode === "work"
+        ? updateWorkInfo(this.state, true)
+        : updateEducationInfo(this.state, true);
     }
 
     this.resetState();
     handleClose();
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (
+      prevProps.idToPopulate !== this.props.idToPopulate &&
+      this.props.idToPopulate !== ""
+    ) {
+      this.setState({
+        title: this.defaultValues["title"],
+        company: this.defaultValues["company"],
+        location: this.defaultValues["location"],
+        description: this.defaultValues["description"],
+      });
+    } else if (
+      prevProps.idToPopulate !== this.props.idToPopulate &&
+      this.props.idToPopulate === ""
+    ) {
+      this.defaultValues = {
+        title: "",
+        company: "",
+        location: "",
+        description: "",
+      };
+      this.setState({
+        title: this.defaultValues["title"],
+        company: this.defaultValues["company"],
+        location: this.defaultValues["location"],
+        description: this.defaultValues["description"],
+      });
+    }
+  }
+
   render() {
-    const { open, handleClose, workMode, idToPopulate, mode } = this.props;
+    const {
+      open,
+      handleClose,
+      workMode,
+      idToPopulate,
+      mode,
+      workHistory,
+      educationHistory,
+    } = this.props;
+
+    if (idToPopulate !== "") {
+      if (workMode === "work") {
+        const workEntry = workHistory.filter((element) => {
+          if (element._id === idToPopulate) {
+            return true;
+          }
+          return false;
+        });
+
+        this.defaultValues["title"] = workEntry[0]._jobTitle;
+        this.defaultValues["company"] = workEntry[0]._orgName;
+        this.defaultValues["location"] = workEntry[0]._location;
+        this.defaultValues["description"] = workEntry[0]._description;
+      } else if (workMode === "education") {
+        const educationEntry = educationHistory.filter((element) => {
+          if (element._id === idToPopulate) {
+            return true;
+          }
+          return false;
+        });
+
+        this.defaultValues["title"] = educationEntry[0]._educationTitle;
+        this.defaultValues["company"] = educationEntry[0]._orgName;
+        this.defaultValues["location"] = educationEntry[0]._location;
+        this.defaultValues["description"] = educationEntry[0]._description;
+      }
+    }
 
     return (
       <Dialog open={open} onClose={handleClose}>
@@ -108,7 +185,7 @@ export default class EditWorkExpForm extends React.Component {
               type="text"
               fullWidth
               variant="outlined"
-              defaultValue=""
+              defaultValue={this.defaultValues["title"]}
               onChange={this.handleChange("title")}
             />
             <div>
@@ -126,7 +203,7 @@ export default class EditWorkExpForm extends React.Component {
                   label={this.modes[workMode]["company"]}
                   type="text"
                   variant="outlined"
-                  defaultValue=""
+                  defaultValue={this.defaultValues["company"]}
                   onChange={this.handleChange("company")}
                 />
                 <TextField
@@ -135,7 +212,7 @@ export default class EditWorkExpForm extends React.Component {
                   label="Location"
                   type="text"
                   variant="outlined"
-                  defaultValue=""
+                  defaultValue={this.defaultValues["location"]}
                   onChange={this.handleChange("location")}
                 />
               </Box>
@@ -163,7 +240,7 @@ export default class EditWorkExpForm extends React.Component {
               type="text"
               fullWidth
               variant="outlined"
-              defaultValue=""
+              defaultValue={this.defaultValues["description"]}
               onChange={this.handleChange("description")}
             />
 

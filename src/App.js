@@ -183,8 +183,19 @@ export default class App extends React.Component {
     });
   }
 
-  updateWorkInfo(info) {
-    const work = new WorkExp();
+  updateWorkInfo(info, edit) {
+    let work;
+
+    if (!edit) {
+      work = new WorkExp();
+    } else {
+      work = this.state.resume._workHistory.filter((element) => {
+        if (element._id === this.state.idToPopulate) {
+          return true;
+        }
+        return false;
+      })[0];
+    }
     work._jobTitle = info.title;
     work._orgName = info.company;
     work._location = info.location;
@@ -195,10 +206,24 @@ export default class App extends React.Component {
     this.setState((prevState) => {
       let resume = Object.assign({}, prevState.resume);
 
-      resume._workHistory = [...resume._workHistory, work];
+      if (!edit) {
+        resume._workHistory = [...resume._workHistory, work];
+      } else {
+        resume._workHistory = resume._workHistory
+          .filter((element) => {
+            if (element._id !== this.state.idToPopulate) {
+              return true;
+            }
+            return false;
+          })
+          .concat(work);
+      }
+
       this.storageHelper.saveItem("resume", resume);
       return { resume };
     });
+
+    this.setState({ idToPopulate: "" });
   }
 
   editWorkInfo = (info) => (event) => {
@@ -239,6 +264,8 @@ export default class App extends React.Component {
       return { resume };
     });
 
+    this.setState({ idToPopulate: "" });
+
     this.closeDeleteConfirmation();
   }
 
@@ -273,12 +300,25 @@ export default class App extends React.Component {
       return { resume };
     });
 
+    this.setState({ idToPopulate: "" });
+
     this.closeDeleteConfirmation();
   }
 
-  updateEducationInfo(info) {
-    console.log(info);
-    const education = new Education();
+  updateEducationInfo(info, edit) {
+    let education;
+
+    if (!edit) {
+      education = new Education();
+    } else {
+      education = this.state.resume._educationHistory.filter((element) => {
+        if (element._id === this.state.idToPopulate) {
+          return true;
+        }
+        return false;
+      })[0];
+    }
+
     education._educationTitle = info.title;
     education._orgName = info.company;
     education._location = info.location;
@@ -289,10 +329,24 @@ export default class App extends React.Component {
     this.setState((prevState) => {
       let resume = Object.assign({}, prevState.resume);
 
-      resume._educationHistory = [...resume._educationHistory, education];
+      if (!edit) {
+        resume._educationHistory = [...resume._educationHistory, education];
+      } else {
+        resume._educationHistory = resume._educationHistory
+          .filter((element) => {
+            if (element._id !== this.state.idToPopulate) {
+              return true;
+            }
+            return false;
+          })
+          .concat(education);
+      }
+
       this.storageHelper.saveItem("resume", resume);
       return { resume };
     });
+
+    this.setState({ idToPopulate: "" });
   }
 
   updateSkills(info) {
