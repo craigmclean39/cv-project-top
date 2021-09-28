@@ -121,6 +121,8 @@ export default class App extends React.Component {
       resumeColor: resColor,
     };
 
+    this.generateTheme();
+
     this.customColors = [
       red,
       pink,
@@ -161,6 +163,105 @@ export default class App extends React.Component {
     this.handleSkillsClose = this.handleSkillsClose.bind(this);
     this.setCustomizeOpen = this.setCustomizeOpen.bind(this);
     this.handleCustomizeClose = this.handleCustomizeClose.bind(this);
+  }
+
+  generateTheme() {
+    this.resumeTheme = createTheme({
+      palette: {
+        primary: {
+          main: this.state.resumeColor[500],
+        },
+        info: {
+          main: this.state.resumeColor[700],
+        },
+      },
+
+      typography: {
+        h1: {
+          fontSize: "3rem",
+          "@media (min-width:600px)": {
+            fontSize: "6rem",
+          },
+        },
+        h2: {
+          fontSize: "1.875rem",
+          "@media (min-width:600px)": {
+            fontSize: "3.75rem",
+          },
+        },
+        h3: {
+          fontSize: "1.5rem",
+          "@media (min-width:600px)": {
+            fontSize: "3rem",
+          },
+        },
+        h4: {
+          fontSize: "1.0625rem",
+          "@media (min-width:600px)": {
+            fontSize: "2.125rem",
+          },
+        },
+        h5: {
+          fontSize: "0.75rem",
+          "@media (min-width:600px)": {
+            fontSize: "1.5rem",
+          },
+        },
+        h6: {
+          fontSize: "0.625rem",
+          "@media (min-width:600px)": {
+            fontSize: "1.25rem",
+          },
+        },
+        subtitle1: {
+          fontSize: "0.5rem",
+          "@media (min-width:600px)": {
+            fontSize: "1rem",
+          },
+        },
+        subtitle2: {
+          fontSize: "0.4375rem",
+          "@media (min-width:600px)": {
+            fontSize: ".875rem",
+          },
+        },
+        body1: {
+          fontSize: "0.5rem",
+          "@media (min-width:600px)": {
+            fontSize: "1rem",
+          },
+        },
+        body2: {
+          fontSize: "0.4375rem",
+          "@media (min-width:600px)": {
+            fontSize: ".875rem",
+          },
+        },
+        button: {
+          fontSize: "0.4375rem",
+          "@media (min-width:600px)": {
+            fontSize: ".875rem",
+          },
+        },
+        caption: {
+          fontSize: "0.375rem",
+          "@media (min-width:600px)": {
+            fontSize: ".75rem",
+          },
+        },
+        overline: {
+          fontSize: "0.375rem",
+          "@media (min-width:600px)": {
+            fontSize: ".75rem",
+          },
+        },
+      },
+
+      spacing: 8,
+      "@media (min-width:600px)": {
+        spacing: 4,
+      },
+    });
   }
 
   setAddEditMode(value) {
@@ -471,102 +572,8 @@ export default class App extends React.Component {
       },
     });
 
-    const resumeTheme = createTheme({
-      palette: {
-        primary: {
-          main: this.state.resumeColor[500],
-        },
-        info: {
-          main: this.state.resumeColor[700],
-        },
-      },
-
-      typography: {
-        h1: {
-          fontSize: "3rem",
-          "@media (min-width:600px)": {
-            fontSize: "6rem",
-          },
-        },
-        h2: {
-          fontSize: "1.875rem",
-          "@media (min-width:600px)": {
-            fontSize: "3.75rem",
-          },
-        },
-        h3: {
-          fontSize: "1.5rem",
-          "@media (min-width:600px)": {
-            fontSize: "3rem",
-          },
-        },
-        h4: {
-          fontSize: "1.0625rem",
-          "@media (min-width:600px)": {
-            fontSize: "2.125rem",
-          },
-        },
-        h5: {
-          fontSize: "0.75rem",
-          "@media (min-width:600px)": {
-            fontSize: "1.5rem",
-          },
-        },
-        h6: {
-          fontSize: "0.625rem",
-          "@media (min-width:600px)": {
-            fontSize: "1.25rem",
-          },
-        },
-        subtitle1: {
-          fontSize: "0.5rem",
-          "@media (min-width:600px)": {
-            fontSize: "1rem",
-          },
-        },
-        subtitle2: {
-          fontSize: "0.4375rem",
-          "@media (min-width:600px)": {
-            fontSize: ".875rem",
-          },
-        },
-        body1: {
-          fontSize: "0.5rem",
-          "@media (min-width:600px)": {
-            fontSize: "1rem",
-          },
-        },
-        body2: {
-          fontSize: "0.4375rem",
-          "@media (min-width:600px)": {
-            fontSize: ".875rem",
-          },
-        },
-        button: {
-          fontSize: "0.4375rem",
-          "@media (min-width:600px)": {
-            fontSize: ".875rem",
-          },
-        },
-        caption: {
-          fontSize: "0.375rem",
-          "@media (min-width:600px)": {
-            fontSize: ".75rem",
-          },
-        },
-        overline: {
-          fontSize: "0.375rem",
-          "@media (min-width:600px)": {
-            fontSize: ".75rem",
-          },
-        },
-      },
-
-      spacing: 8,
-      "@media (min-width:600px)": {
-        spacing: 4,
-      },
-    });
+    this.resumeTheme.palette.primary.main = this.state.resumeColor[500];
+    this.resumeTheme.palette.info.main = this.state.resumeColor[700];
 
     return (
       <React.Fragment>
@@ -638,7 +645,7 @@ export default class App extends React.Component {
             bgcolor: "background.paper",
           }}
         >
-          <ThemeProvider theme={resumeTheme}>
+          <ThemeProvider theme={this.resumeTheme}>
             <ResumeOutput
               resume={this.state.resume}
               editWorkInfo={this.editWorkInfo}
