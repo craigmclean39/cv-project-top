@@ -21,6 +21,8 @@ const ResumeOutput = (props) => {
     <Box
       sx={{
         minWidth: "max(max-content, 100%)",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
       <Card
