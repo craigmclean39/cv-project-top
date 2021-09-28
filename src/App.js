@@ -549,6 +549,7 @@ export default class App extends React.Component {
           sx={{
             display: "flex",
             bgcolor: "background.paper",
+            justifyContent: "center",
           }}
         >
           <ThemeProvider theme={resumeTheme}>
