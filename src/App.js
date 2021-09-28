@@ -547,7 +547,7 @@ export default class App extends React.Component {
         </ThemeProvider>
         <Box
           sx={{
-            display: "flex",
+            width: "max(max-content, 100%)",
             bgcolor: "background.paper",
           }}
         >

@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Box } from "@mui/material";
 import ResumeHeader from "./ResumeHeader";
 import ResumeBody from "./ResumeBody";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ResumeOutput = (props) => {
   const {
@@ -17,12 +18,13 @@ const ResumeOutput = (props) => {
     height: "776px",
   };
 
+  const matches = useMediaQuery("(min-width:600px)");
   return (
     <Box
       sx={{
-        width: "100%",
+        width: "max(100%, max-content)",
         display: "flex",
-        justifyContent: "center",
+        justifyContent: matches ? "center" : "flex-start",
       }}
     >
       <Card
@@ -30,6 +32,8 @@ const ResumeOutput = (props) => {
           width: "600px",
           height: "776px",
           m: 2,
+          mt: 10,
+          flexShrink: 0,
         }}
         elevation={12}
       >
