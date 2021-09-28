@@ -57,7 +57,8 @@ export default class App extends React.Component {
     contactInfo._website = "";
 
     if (storedResume != null) {
-      contactInfo._firstName = storedResume._contactInformation._firstName;
+      contactInfo._firstName =
+        storedResume._contactInformation._firstName.trim();
       contactInfo._lastName = "";
       contactInfo._title = storedResume._contactInformation._title;
       contactInfo._email = storedResume._contactInformation._email;

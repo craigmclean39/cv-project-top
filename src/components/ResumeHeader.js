@@ -21,7 +21,7 @@ const ResumeHeader = (props) => {
         }}
         variant="h4"
         component="h2"
-      >{`${contactInformation._firstName} ${contactInformation._lastName}`}</Typography>
+      >{`${contactInformation._firstName}`}</Typography>
       <Typography
         sx={{
           color: "primary.contrastText",

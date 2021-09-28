@@ -17,7 +17,7 @@ export default class EditContactForm extends React.Component {
     this.saveFormInfo = this.saveFormInfo.bind(this);
 
     this.state = {
-      name: contactInformation._firstName + " " + contactInformation._lastName,
+      name: contactInformation._firstName,
       title: contactInformation._title,
       email: contactInformation._email,
       phone: contactInformation._phoneNumber,
