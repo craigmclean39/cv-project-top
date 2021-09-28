@@ -8,7 +8,7 @@ const ResumeHeader = (props) => {
     <Box
       sx={{
         width: "100%",
-        bgcolor: "primary.dark",
+        bgcolor: "primary.main",
         mt: 2,
         minHeight: "80px",
       }}

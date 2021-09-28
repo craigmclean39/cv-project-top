@@ -19,7 +19,26 @@ import { LocalizationProvider } from "@mui/lab";
 import EditContactForm from "./components/EditContactForm";
 import EditWorkExpForm from "./components/EditWorkExpForm";
 import EditSkillsForm from "./components/EditSkillsForm";
+import CustomizeForm from "./components/CustomizeForm";
 import { format } from "date-fns";
+import {
+  red,
+  pink,
+  purple,
+  deepPurple,
+  indigo,
+  blue,
+  lightBlue,
+  cyan,
+  teal,
+  green,
+  lightGreen,
+  lime,
+  yellow,
+  amber,
+  orange,
+  deepOrange,
+} from "@mui/material/colors";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -79,6 +98,11 @@ export default class App extends React.Component {
       mode = "light";
     }
 
+    let resColor = this.storageHelper.retrieveItem("color");
+    if (resColor === null) {
+      resColor = blue;
+    }
+
     this.state = {
       resume: myResume,
       mode: mode,
@@ -91,8 +115,29 @@ export default class App extends React.Component {
       workMode: "work",
       addEditMode: "add",
       skillsOpen: false,
+      customizeOpen: false,
       idToPopulate: "",
+      resumeColor: resColor,
     };
+
+    this.customColors = [
+      red,
+      pink,
+      purple,
+      deepPurple,
+      indigo,
+      blue,
+      lightBlue,
+      cyan,
+      teal,
+      green,
+      lightGreen,
+      lime,
+      yellow,
+      amber,
+      orange,
+      deepOrange,
+    ];
 
     this.updateContactInfo = this.updateContactInfo.bind(this);
     this.updateWorkInfo = this.updateWorkInfo.bind(this);
@@ -113,6 +158,8 @@ export default class App extends React.Component {
     this.handleWorkClose = this.handleWorkClose.bind(this);
     this.setSkillsOpen = this.setSkillsOpen.bind(this);
     this.handleSkillsClose = this.handleSkillsClose.bind(this);
+    this.setCustomizeOpen = this.setCustomizeOpen.bind(this);
+    this.handleCustomizeClose = this.handleCustomizeClose.bind(this);
   }
 
   setAddEditMode(value) {
@@ -146,6 +193,10 @@ export default class App extends React.Component {
     this.setState({ skillsOpen: true });
   }
 
+  setCustomizeOpen() {
+    this.setState({ customizeOpen: true });
+  }
+
   setWorkMode(value) {
     this.setState({
       workMode: value,
@@ -158,6 +209,10 @@ export default class App extends React.Component {
 
   handleSkillsClose() {
     this.setState({ skillsOpen: false });
+  }
+
+  handleCustomizeClose() {
+    this.setState({ customizeOpen: false });
   }
 
   handleContactClose() {
@@ -376,6 +431,13 @@ export default class App extends React.Component {
     });
   };
 
+  updateColor = (info) => (event) => {
+    this.setState({
+      resumeColor: info,
+    });
+    this.storageHelper.saveItem("color", info);
+  };
+
   saveResumeToPdf() {
     const options = { scale: 2 };
     html2canvas(document.querySelector(".resume-to-capture"), options).then(
@@ -387,7 +449,6 @@ export default class App extends React.Component {
         });
         pdf.addImage(imgData, "JPEG", 0, 0.25, 8.5, 10.75);
         pdf.save("download.pdf");
-        //document.body.appendChild(canvas);
       }
     );
   }
@@ -405,6 +466,17 @@ export default class App extends React.Component {
     const myTheme = createTheme({
       palette: {
         mode: this.state.mode,
+      },
+    });
+
+    const resumeTheme = createTheme({
+      palette: {
+        primary: {
+          main: this.state.resumeColor[500],
+        },
+        info: {
+          main: this.state.resumeColor[700],
+        },
       },
     });
 
@@ -429,6 +501,7 @@ export default class App extends React.Component {
             setWorkOpen={this.setWorkOpen}
             setEducationOpen={this.setEducationOpen}
             setSkillsOpen={this.setSkillsOpen}
+            setCustomizeOpen={this.setCustomizeOpen}
           />
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DeleteConfirmation
@@ -463,6 +536,12 @@ export default class App extends React.Component {
               updateSkills={this.updateSkills}
               deleteSkill={this.deleteSkill}
             />
+            <CustomizeForm
+              open={this.state.customizeOpen}
+              handleClose={this.handleCustomizeClose}
+              customColors={this.customColors}
+              updateColor={this.updateColor}
+            />
           </LocalizationProvider>
         </ThemeProvider>
         <Box
@@ -471,13 +550,15 @@ export default class App extends React.Component {
             bgcolor: "background.paper",
           }}
         >
-          <ResumeOutput
-            resume={this.state.resume}
-            editWorkInfo={this.editWorkInfo}
-            deleteWorkInfo={this.deleteWorkInfo}
-            editEducationInfo={this.editEducationInfo}
-            deleteEducationInfo={this.deleteEducationInfo}
-          />
+          <ThemeProvider theme={resumeTheme}>
+            <ResumeOutput
+              resume={this.state.resume}
+              editWorkInfo={this.editWorkInfo}
+              deleteWorkInfo={this.deleteWorkInfo}
+              editEducationInfo={this.editEducationInfo}
+              deleteEducationInfo={this.deleteEducationInfo}
+            />
+          </ThemeProvider>
         </Box>
       </React.Fragment>
     );

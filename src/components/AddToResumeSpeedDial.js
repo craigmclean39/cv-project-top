@@ -5,11 +5,17 @@ import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import SchoolIcon from "@mui/icons-material/School";
 import BuildIcon from "@mui/icons-material/Build";
+import ColorLensIcon from "@mui/icons-material/ColorLens";
 
 const AddToResumeSpeedDial = (props) => {
   const [open, setOpen] = useState(false);
-  const { setContactOpen, setWorkOpen, setEducationOpen, setSkillsOpen } =
-    props;
+  const {
+    setContactOpen,
+    setWorkOpen,
+    setEducationOpen,
+    setSkillsOpen,
+    setCustomizeOpen,
+  } = props;
 
   const handleClickOpen = () => {
     if (open) {
@@ -88,6 +94,19 @@ const AddToResumeSpeedDial = (props) => {
           tooltipTitle="Skills"
           tooltipOpen
           onClick={setSkillsOpen}
+          tooltipPlacement="right"
+          sx={{
+            "& .MuiSpeedDialAction-staticTooltipLabel": {
+              width: "max-content",
+            },
+          }}
+        />
+        <SpeedDialAction
+          key="Customize"
+          icon={<ColorLensIcon />}
+          tooltipTitle="Customize"
+          tooltipOpen
+          onClick={setCustomizeOpen}
           tooltipPlacement="right"
           sx={{
             "& .MuiSpeedDialAction-staticTooltipLabel": {
