@@ -5,9 +5,13 @@ import EmailSharpIcon from "@mui/icons-material/EmailSharp";
 import ComputerSharpIcon from "@mui/icons-material/ComputerSharp";
 import ContactField from "./ContactField";
 import uniqid from "uniqid";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ResumeContactInfo = (props) => {
   const { contactInformation } = props;
+
+  const isLarge = useMediaQuery("(min-width:600px)");
+  const lineHeight = isLarge ? "24px" : "12px";
 
   let contactFields = [];
   if (contactInformation._phoneNumber !== "") {
@@ -45,8 +49,9 @@ const ResumeContactInfo = (props) => {
       <Box
         sx={{
           boxSizing: "border-box",
-          m: 1,
+          m: isLarge ? 1 : 0.5,
           overflow: "hidden",
+          lineHeight: lineHeight,
         }}
       >
         <Typography variant="button">Contact</Typography>
@@ -54,7 +59,8 @@ const ResumeContactInfo = (props) => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            p: 1,
+            p: isLarge ? 1 : 0.5,
+            lineHeight: lineHeight,
           }}
         >
           {contactFields}

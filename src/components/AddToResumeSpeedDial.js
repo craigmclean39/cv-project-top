@@ -6,8 +6,11 @@ import SchoolIcon from "@mui/icons-material/School";
 import BuildIcon from "@mui/icons-material/Build";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
 import { Backdrop, Box } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const AddToResumeSpeedDial = (props) => {
+  const isLarge = useMediaQuery("(min-width:600px)");
+
   const [open, setOpen] = useState(false);
   const {
     setContactOpen,
@@ -44,8 +47,8 @@ const AddToResumeSpeedDial = (props) => {
         direction="down"
         sx={{
           position: "absolute",
-          top: 80,
-          left: 30,
+          top: isLarge ? 80 : 65,
+          left: isLarge ? 30 : 15,
           zIndex: 1,
         }}
       >

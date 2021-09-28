@@ -1,23 +1,26 @@
 import { Typography, Box } from "@mui/material";
 import React from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const ResumeHeader = (props) => {
   const { contactInformation } = props;
+
+  const isLarge = useMediaQuery("(min-width:600px)");
 
   return (
     <Box
       sx={{
         width: "100%",
         bgcolor: "primary.main",
-        mt: 2,
-        minHeight: "80px",
+        mt: isLarge ? 2 : 1,
+        minHeight: isLarge ? "80px" : "40px",
       }}
     >
       <Typography
         sx={{
           color: "primary.contrastText",
-          pl: 2,
-          pt: 1,
+          pl: isLarge ? 2 : 1,
+          pt: isLarge ? 1 : 0.5,
         }}
         variant="h4"
         component="h2"
@@ -25,8 +28,8 @@ const ResumeHeader = (props) => {
       <Typography
         sx={{
           color: "primary.contrastText",
-          pb: 1,
-          pl: 3,
+          pb: isLarge ? 1 : 0.5,
+          pl: isLarge ? 3 : 1.5,
         }}
       >
         {contactInformation._title}

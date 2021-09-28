@@ -1,9 +1,13 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 
 const ContactField = (props) => {
   const { data } = props;
   const DisplayIcon = props.icon;
+  const isLarge = useMediaQuery("(min-width:600px)");
+
+  const lineHeight = isLarge ? "24px" : "12px";
 
   return (
     <Box
@@ -12,22 +16,17 @@ const ContactField = (props) => {
         flexDirection: "row",
         alignItems: "flex-end",
         flexWrap: "wrap",
+        lineHeight: lineHeight,
       }}
     >
       <DisplayIcon
         sx={{
-          pr: 1,
+          pr: isLarge ? 1 : 0.5,
+          fontSize: isLarge ? "24px" : "12px",
         }}
         color="primary"
       />
-      <Typography
-        sx={{
-          fontSize: "12px",
-          mb: "3px",
-        }}
-      >
-        {data}
-      </Typography>
+      <Typography variant="caption">{data}</Typography>
     </Box>
   );
 };

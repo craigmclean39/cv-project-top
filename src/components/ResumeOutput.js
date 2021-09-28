@@ -13,24 +13,25 @@ const ResumeOutput = (props) => {
     deleteEducationInfo,
   } = props;
 
+  const isLarge = useMediaQuery("(min-width:600px)");
+
   const mystyle = {
-    width: "600px",
-    height: "776px",
+    width: isLarge ? "600px" : "300px",
+    height: isLarge ? "776px" : "388px",
   };
 
-  const matches = useMediaQuery("(min-width:600px)");
   return (
     <Box
       sx={{
         width: "max(100%, max-content)",
         display: "flex",
-        justifyContent: matches ? "center" : "flex-start",
+        justifyContent: "center",
       }}
     >
       <Card
         sx={{
-          width: "600px",
-          height: "776px",
+          width: isLarge ? "600px" : "300px",
+          height: isLarge ? "776px" : "388px",
           m: 2,
           mt: 10,
           flexShrink: 0,

@@ -3,9 +3,11 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import React from "react";
+import { useMediaQuery } from "@mui/material";
 
 const AppHeader = (props) => {
   const { saveResumeToPdf, toggleDarkMode, mode } = props;
+  const isLarge = useMediaQuery("(min-width:600px)");
 
   let modeButton, iconColor;
   if (mode === "light") {
@@ -45,7 +47,7 @@ const AppHeader = (props) => {
             <IconButton
               aria-label="save as pdf"
               sx={{ color: iconColor }}
-              onClick={saveResumeToPdf}
+              onClick={() => saveResumeToPdf(isLarge)}
             >
               <PictureAsPdfIcon />
             </IconButton>
