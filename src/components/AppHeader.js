@@ -1,9 +1,17 @@
-import { AppBar, Toolbar, IconButton, Typography, Box } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Box,
+  Link,
+} from "@mui/material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import React from "react";
 import { useMediaQuery } from "@mui/material";
+import GitHubIcon from "@mui/icons-material/GitHub";
 
 const AppHeader = (props) => {
   const { saveResumeToPdf, toggleDarkMode, mode } = props;
@@ -39,9 +47,14 @@ const AppHeader = (props) => {
             justifyContent: "space-between",
           }}
         >
-          <Typography variant="h6" component="div">
-            Resume Creator
-          </Typography>
+          <Box>
+            <Typography variant="h6" component="div">
+              Resume Creator
+            </Typography>
+            <Typography variant="caption" component="div">
+              by Craig McLean
+            </Typography>
+          </Box>
           <Box>
             {modeButton}
             <IconButton
@@ -50,6 +63,14 @@ const AppHeader = (props) => {
               onClick={() => saveResumeToPdf(isLarge)}
             >
               <PictureAsPdfIcon />
+            </IconButton>
+            <IconButton aria-label="save as pdf" sx={{ color: iconColor }}>
+              <Link
+                href="https://github.com/craigmclean39/cv-project-top"
+                underline="none"
+              >
+                <GitHubIcon />
+              </Link>
             </IconButton>
           </Box>
         </Toolbar>
