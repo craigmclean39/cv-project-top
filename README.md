@@ -151,6 +151,8 @@ Resume Creator has the following features:
   <img src="readme-images/readme-pdf.png" width="752px" height="679px"  alt="">
 </p>
 
+- The resume, as well as dark/light mode preference is saved in localStorage
+
 <!-- CONTACT -->
 
 ## Contact
