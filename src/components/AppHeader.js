@@ -68,6 +68,7 @@ const AppHeader = (props) => {
               <Link
                 href="https://github.com/craigmclean39/cv-project-top"
                 underline="none"
+                sx={{ color: iconColor }}
               >
                 <GitHubIcon />
               </Link>
