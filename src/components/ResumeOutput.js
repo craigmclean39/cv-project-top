@@ -20,7 +20,7 @@ const ResumeOutput = (props) => {
   return (
     <Box
       sx={{
-        width: "100%",
+        minWidth: "max(max-content, 100%)",
         display: "flex",
         justifyContent: "center",
       }}
@@ -30,6 +30,7 @@ const ResumeOutput = (props) => {
           width: "600px",
           height: "776px",
           m: 2,
+          mt: 12,
         }}
         elevation={12}
       >
