@@ -48,6 +48,8 @@ export default class EditWorkExpForm extends React.Component {
       company: "",
       location: "",
       description: "",
+      startDate: Date.now(),
+      endDate: Date.now(),
     };
   }
 
@@ -103,6 +105,11 @@ export default class EditWorkExpForm extends React.Component {
     handleClose();
   }
 
+  // The purpose of this is to add to the state of the component those fields that are reloaded on an Edit action
+  // When the user clicks edit, we fill the defaultValues with information from the entry they wish to edit, however
+  // this was not actually updating the state, so if the user clicked edit, and then didn't modify any of the entries,
+  // handleChange wasn't going to be called to update the state, and thus the data sent up to the app, this function
+  // alleviates that issue
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (
       prevProps.idToPopulate !== this.props.idToPopulate &&
@@ -113,24 +120,38 @@ export default class EditWorkExpForm extends React.Component {
         company: this.defaultValues["company"],
         location: this.defaultValues["location"],
         description: this.defaultValues["description"],
+        startDate: this.defaultValues["startDate"],
+        endDate: this.defaultValues["endDate"],
       });
     } else if (
       prevProps.idToPopulate !== this.props.idToPopulate &&
       this.props.idToPopulate === ""
     ) {
+      //there is now no idToPopulate, so clear defaults
       this.defaultValues = {
         title: "",
         company: "",
         location: "",
         description: "",
+        startDate: Date.now(),
+        endDate: Date.now(),
       };
       this.setState({
         title: this.defaultValues["title"],
         company: this.defaultValues["company"],
         location: this.defaultValues["location"],
         description: this.defaultValues["description"],
+        startDate: this.defaultValues["startDate"],
+        endDate: this.defaultValues["endDate"],
       });
     }
+  }
+
+  getDateFromString(str) {
+    const year = str.match(/^\d{4}/);
+    const month = str.match(/\d{2}$/);
+
+    return new Date(Number(year), Number(month) - 1);
   }
 
   render() {
@@ -157,6 +178,11 @@ export default class EditWorkExpForm extends React.Component {
         this.defaultValues["company"] = workEntry[0]._orgName;
         this.defaultValues["location"] = workEntry[0]._location;
         this.defaultValues["description"] = workEntry[0]._description;
+
+        const sDate = this.getDateFromString(workEntry[0]._startDate);
+        const eDate = this.getDateFromString(workEntry[0]._endDate);
+        this.defaultValues["startDate"] = sDate;
+        this.defaultValues["endDate"] = eDate;
       } else if (workMode === "education") {
         const educationEntry = educationHistory.filter((element) => {
           if (element._id === idToPopulate) {
@@ -169,6 +195,10 @@ export default class EditWorkExpForm extends React.Component {
         this.defaultValues["company"] = educationEntry[0]._orgName;
         this.defaultValues["location"] = educationEntry[0]._location;
         this.defaultValues["description"] = educationEntry[0]._description;
+        const sDate = this.getDateFromString(educationEntry[0]._startDate);
+        const eDate = this.getDateFromString(educationEntry[0]._endDate);
+        this.defaultValues["startDate"] = sDate;
+        this.defaultValues["endDate"] = eDate;
       }
     }
 
