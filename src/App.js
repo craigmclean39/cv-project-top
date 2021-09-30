@@ -1,26 +1,26 @@
-import React from "react";
-import Resume from "./cv/Resume";
-import ContactInformation from "./cv/ContactInformation";
-import WorkExp from "./cv/WorkExp";
-import Education from "./cv/Education";
-import ResumeOutput from "./components/ResumeOutput";
-import AddToResumeSpeedDial from "./components/AddToResumeSpeedDial";
-import AppHeader from "./components/AppHeader";
-import { Box } from "@mui/system";
-import { createTheme, CssBaseline } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import uniqid from "uniqid";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
-import { LocalStorageHelper } from "./localStorageHelper";
-import DeleteConfirmation from "./components/DeleteConfirmation";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import { LocalizationProvider } from "@mui/lab";
-import EditContactForm from "./components/EditContactForm";
-import EditWorkExpForm from "./components/EditWorkExpForm";
-import EditSkillsForm from "./components/EditSkillsForm";
-import CustomizeForm from "./components/CustomizeForm";
-import { format } from "date-fns";
+import React, { useState } from 'react';
+import Resume from './cv/Resume';
+import ContactInformation from './cv/ContactInformation';
+import WorkExp from './cv/WorkExp';
+import Education from './cv/Education';
+import ResumeOutput from './components/ResumeOutput';
+import AddToResumeSpeedDial from './components/AddToResumeSpeedDial';
+import AppHeader from './components/AppHeader';
+import { Box } from '@mui/system';
+import { createTheme, CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import uniqid from 'uniqid';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { LocalStorageHelper } from './localStorageHelper';
+import DeleteConfirmation from './components/DeleteConfirmation';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { LocalizationProvider } from '@mui/lab';
+import EditContactForm from './components/EditContactForm';
+import EditWorkExpForm from './components/EditWorkExpForm';
+import EditSkillsForm from './components/EditSkillsForm';
+import CustomizeForm from './components/CustomizeForm';
+import { format } from 'date-fns';
 import {
   red,
   pink,
@@ -38,28 +38,151 @@ import {
   amber,
   orange,
   deepOrange,
-} from "@mui/material/colors";
+} from '@mui/material/colors';
 
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
+const useConstructor = (callBack = () => {}) => {
+  const [hasBeenCalled, setHasBeenCalled] = useState(false);
+  if (hasBeenCalled) return;
+  callBack();
+  setHasBeenCalled(true);
+};
 
-    this.storageHelper = new LocalStorageHelper();
-    let storedResume = this.storageHelper.retrieveItem("resume");
+const App = () => {
+  const [resume, setResume] = useState(null);
+  const [mode, setMode] = useState('light');
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+  const [deleteWorkKey, setDeleteWorkKey] = useState('');
+  const [deleteEduKey, setDeleteEduKey] = useState('');
+  const [contactOpen, setContactOpen] = useState(false);
+  const [workOpen, setWorkOpen] = useState(false);
+  const [workMode, setWorkMode] = useState('work');
+  const [addEditMode, setAddEditMode] = useState('add');
+  const [skillsOpen, setSkillsOpen] = useState(false);
+  const [customizeOpen, setCustomizeOpen] = useState(false);
+  const [idToPopulate, setIdToPopulate] = useState('');
+  const [resumeColor, setResumeColor] = useState('');
+  const [storageHelper] = useState(new LocalStorageHelper());
+  const [resumeTheme, setResumeTheme] = useState(null);
+  const [customColors, setCustomColors] = useState([]);
+  const [deleteMode, setDeleteMode] = useState('work');
+
+  const generateTheme = (resColor) => {
+    let newTheme = createTheme({
+      palette: {
+        primary: {
+          main: resColor[500],
+        },
+        info: {
+          main: resColor[700],
+        },
+      },
+
+      typography: {
+        h1: {
+          fontSize: '3rem',
+          '@media (min-width:600px)': {
+            fontSize: '6rem',
+          },
+        },
+        h2: {
+          fontSize: '1.875rem',
+          '@media (min-width:600px)': {
+            fontSize: '3.75rem',
+          },
+        },
+        h3: {
+          fontSize: '1.5rem',
+          '@media (min-width:600px)': {
+            fontSize: '3rem',
+          },
+        },
+        h4: {
+          fontSize: '1.0625rem',
+          '@media (min-width:600px)': {
+            fontSize: '2.125rem',
+          },
+        },
+        h5: {
+          fontSize: '0.75rem',
+          '@media (min-width:600px)': {
+            fontSize: '1.5rem',
+          },
+        },
+        h6: {
+          fontSize: '0.625rem',
+          '@media (min-width:600px)': {
+            fontSize: '1.25rem',
+          },
+        },
+        subtitle1: {
+          fontSize: '0.5rem',
+          '@media (min-width:600px)': {
+            fontSize: '1rem',
+          },
+        },
+        subtitle2: {
+          fontSize: '0.4375rem',
+          '@media (min-width:600px)': {
+            fontSize: '.875rem',
+          },
+        },
+        body1: {
+          fontSize: '0.5rem',
+          '@media (min-width:600px)': {
+            fontSize: '1rem',
+          },
+        },
+        body2: {
+          fontSize: '0.4375rem',
+          '@media (min-width:600px)': {
+            fontSize: '.875rem',
+          },
+        },
+        button: {
+          fontSize: '0.4375rem',
+          '@media (min-width:600px)': {
+            fontSize: '.875rem',
+          },
+        },
+        caption: {
+          fontSize: '0.375rem',
+          '@media (min-width:600px)': {
+            fontSize: '.75rem',
+          },
+        },
+        overline: {
+          fontSize: '0.375rem',
+          '@media (min-width:600px)': {
+            fontSize: '.75rem',
+          },
+        },
+      },
+
+      spacing: 8,
+      '@media (min-width:600px)': {
+        spacing: 4,
+      },
+    });
+
+    setResumeTheme(newTheme);
+  };
+
+  useConstructor(() => {
+    let storedResume = storageHelper.retrieveItem('resume');
 
     const myResume = new Resume();
     const contactInfo = new ContactInformation();
-    contactInfo._firstName = "";
-    contactInfo._lastName = "";
-    contactInfo._title = "";
-    contactInfo._email = "";
-    contactInfo._phoneNumber = "";
-    contactInfo._website = "";
+    contactInfo._firstName = '';
+    contactInfo._lastName = '';
+    contactInfo._title = '';
+    contactInfo._email = '';
+    contactInfo._phoneNumber = '';
+    contactInfo._website = '';
 
     if (storedResume != null) {
       contactInfo._firstName =
         storedResume._contactInformation._firstName.trim();
-      contactInfo._lastName = "";
+      contactInfo._lastName = '';
       contactInfo._title = storedResume._contactInformation._title;
       contactInfo._email = storedResume._contactInformation._email;
       contactInfo._phoneNumber = storedResume._contactInformation._phoneNumber;
@@ -94,36 +217,23 @@ export default class App extends React.Component {
 
     myResume._contactInformation = contactInfo;
 
-    let mode = this.storageHelper.retrieveItem("mode");
-    if (mode === null) {
-      mode = "light";
-    }
+    setResume(myResume);
 
-    let resColor = this.storageHelper.retrieveItem("color");
+    let storedMode = storageHelper.retrieveItem('mode');
+    if (storedMode === null) {
+      storedMode = 'light';
+    }
+    setMode(storedMode);
+
+    let resColor = storageHelper.retrieveItem('color');
     if (resColor === null) {
       resColor = blue;
     }
+    setResumeColor(resColor);
 
-    this.state = {
-      resume: myResume,
-      mode: mode,
-      deleteConfirmationOpen: false,
-      deleteWorkKey: "",
-      deleteEduKey: "",
-      deleteMode: "",
-      contactOpen: false,
-      workOpen: false,
-      workMode: "work",
-      addEditMode: "add",
-      skillsOpen: false,
-      customizeOpen: false,
-      idToPopulate: "",
-      resumeColor: resColor,
-    };
+    generateTheme(resColor);
 
-    this.generateTheme();
-
-    this.customColors = [
+    setCustomColors([
       red,
       pink,
       purple,
@@ -140,214 +250,70 @@ export default class App extends React.Component {
       amber,
       orange,
       deepOrange,
-    ];
+    ]);
+  });
 
-    this.updateContactInfo = this.updateContactInfo.bind(this);
-    this.updateWorkInfo = this.updateWorkInfo.bind(this);
-    this.updateEducationInfo = this.updateEducationInfo.bind(this);
-    this.updateSkills = this.updateSkills.bind(this);
-    this.saveResumeToPdf = this.saveResumeToPdf.bind(this);
-    this.toggleDarkMode = this.toggleDarkMode.bind(this);
-    this.closeDeleteConfirmation = this.closeDeleteConfirmation.bind(this);
-    this.confirmDeleteWorkInfo = this.confirmDeleteWorkInfo.bind(this);
-    this.confirmDeleteEducationInfo =
-      this.confirmDeleteEducationInfo.bind(this);
-    this.openEditContactInformationDialog =
-      this.openEditContactInformationDialog.bind(this);
-    this.setContactOpen = this.setContactOpen.bind(this);
-    this.handleContactClose = this.handleContactClose.bind(this);
-    this.setWorkOpen = this.setWorkOpen.bind(this);
-    this.setEducationOpen = this.setEducationOpen.bind(this);
-    this.handleWorkClose = this.handleWorkClose.bind(this);
-    this.setSkillsOpen = this.setSkillsOpen.bind(this);
-    this.handleSkillsClose = this.handleSkillsClose.bind(this);
-    this.setCustomizeOpen = this.setCustomizeOpen.bind(this);
-    this.handleCustomizeClose = this.handleCustomizeClose.bind(this);
-  }
-
-  generateTheme() {
-    this.resumeTheme = createTheme({
-      palette: {
-        primary: {
-          main: this.state.resumeColor[500],
-        },
-        info: {
-          main: this.state.resumeColor[700],
-        },
-      },
-
-      typography: {
-        h1: {
-          fontSize: "3rem",
-          "@media (min-width:600px)": {
-            fontSize: "6rem",
-          },
-        },
-        h2: {
-          fontSize: "1.875rem",
-          "@media (min-width:600px)": {
-            fontSize: "3.75rem",
-          },
-        },
-        h3: {
-          fontSize: "1.5rem",
-          "@media (min-width:600px)": {
-            fontSize: "3rem",
-          },
-        },
-        h4: {
-          fontSize: "1.0625rem",
-          "@media (min-width:600px)": {
-            fontSize: "2.125rem",
-          },
-        },
-        h5: {
-          fontSize: "0.75rem",
-          "@media (min-width:600px)": {
-            fontSize: "1.5rem",
-          },
-        },
-        h6: {
-          fontSize: "0.625rem",
-          "@media (min-width:600px)": {
-            fontSize: "1.25rem",
-          },
-        },
-        subtitle1: {
-          fontSize: "0.5rem",
-          "@media (min-width:600px)": {
-            fontSize: "1rem",
-          },
-        },
-        subtitle2: {
-          fontSize: "0.4375rem",
-          "@media (min-width:600px)": {
-            fontSize: ".875rem",
-          },
-        },
-        body1: {
-          fontSize: "0.5rem",
-          "@media (min-width:600px)": {
-            fontSize: "1rem",
-          },
-        },
-        body2: {
-          fontSize: "0.4375rem",
-          "@media (min-width:600px)": {
-            fontSize: ".875rem",
-          },
-        },
-        button: {
-          fontSize: "0.4375rem",
-          "@media (min-width:600px)": {
-            fontSize: ".875rem",
-          },
-        },
-        caption: {
-          fontSize: "0.375rem",
-          "@media (min-width:600px)": {
-            fontSize: ".75rem",
-          },
-        },
-        overline: {
-          fontSize: "0.375rem",
-          "@media (min-width:600px)": {
-            fontSize: ".75rem",
-          },
-        },
-      },
-
-      spacing: 8,
-      "@media (min-width:600px)": {
-        spacing: 4,
-      },
-    });
-  }
-
-  setAddEditMode(value) {
-    this.setState({
-      addEditMode: value,
-    });
-  }
-
-  setContactOpen() {
-    this.setState({
-      contactOpen: true,
-    });
-  }
-
-  setWorkOpen() {
-    this.setWorkMode("work");
-    this.setAddEditMode("add");
-    this.setState({
-      workOpen: true,
-      idToPopulate: "",
-    });
-  }
-
-  setEducationOpen() {
-    this.setWorkMode("education");
-    this.setAddEditMode("add");
-    this.setState({ workOpen: true, idToPopulate: "" });
-  }
-
-  setSkillsOpen() {
-    this.setState({ skillsOpen: true });
-  }
-
-  setCustomizeOpen() {
-    this.setState({ customizeOpen: true });
-  }
-
-  setWorkMode(value) {
-    this.setState({
-      workMode: value,
-    });
-  }
-
-  handleWorkClose() {
-    this.setState({ workOpen: false });
-  }
-
-  handleSkillsClose() {
-    this.setState({ skillsOpen: false });
-  }
-
-  handleCustomizeClose() {
-    this.setState({ customizeOpen: false });
-  }
-
-  handleContactClose() {
-    this.setState({ contactOpen: false });
-  }
-
-  openEditContactInformationDialog = () => {
-    this.setContactOpen(true);
+  const openWorkDialog = () => {
+    setWorkMode('work');
+    setAddEditMode('add');
+    setWorkOpen(true);
+    setIdToPopulate('');
   };
 
-  updateContactInfo(info) {
-    this.setState((prevState) => {
-      let resume = Object.assign({}, prevState.resume);
+  const openEducationDialog = () => {
+    setWorkMode('education');
+    setAddEditMode('add');
+    setWorkOpen(true);
+    setIdToPopulate('');
+  };
 
-      resume._contactInformation._firstName = info.name;
-      resume._contactInformation._lastName = "";
-      resume._contactInformation._title = info.title;
-      resume._contactInformation._email = info.email;
-      resume._contactInformation._phoneNumber = info.phone;
-      resume._contactInformation._website = info.website;
-      this.storageHelper.saveItem("resume", resume);
-      return { resume };
-    });
-  }
+  const openContactDialog = () => {
+    setContactOpen(true);
+  };
 
-  updateWorkInfo(info, edit) {
+  const openSkillsDialog = () => {
+    setSkillsOpen(true);
+  };
+
+  const openCustomizeDialog = () => {
+    setCustomizeOpen(true);
+  };
+
+  const handleWorkClose = () => {
+    setWorkOpen(false);
+  };
+
+  const handleSkillsClose = () => {
+    setSkillsOpen(false);
+  };
+
+  const handleCustomizeClose = () => {
+    setCustomizeOpen(false);
+  };
+
+  const handleContactClose = () => {
+    setContactOpen(false);
+  };
+
+  const updateContactInfo = (info) => {
+    let updatedResume = Object.assign({}, resume);
+    updatedResume._contactInformation._firstName = info.name;
+    updatedResume._contactInformation._lastName = '';
+    updatedResume._contactInformation._title = info.title;
+    updatedResume._contactInformation._email = info.email;
+    updatedResume._contactInformation._phoneNumber = info.phone;
+    updatedResume._contactInformation._website = info.website;
+    storageHelper.saveItem('resume', updatedResume);
+  };
+
+  const updateWorkInfo = (info, edit) => {
     let work;
 
     if (!edit) {
       work = new WorkExp();
     } else {
-      work = this.state.resume._workHistory.filter((element) => {
-        if (element._id === this.state.idToPopulate) {
+      work = resume._workHistory.filter((element) => {
+        if (element._id === idToPopulate) {
           return true;
         }
         return false;
@@ -356,120 +322,112 @@ export default class App extends React.Component {
     work._jobTitle = info.title;
     work._orgName = info.company;
     work._location = info.location;
-    work._startDate = format(info.startDate, "yyyy/MM");
-    work._endDate = format(info.endDate, "yyyy/MM");
+    work._startDate = format(info.startDate, 'yyyy/MM');
+    work._endDate = format(info.endDate, 'yyyy/MM');
     work._description = info.description;
 
-    this.setState((prevState) => {
-      let resume = Object.assign({}, prevState.resume);
+    let updatedResume = Object.assign({}, resume);
 
-      if (!edit) {
-        resume._workHistory = [...resume._workHistory, work];
-      } else {
-        resume._workHistory = resume._workHistory
-          .filter((element) => {
-            if (element._id !== this.state.idToPopulate) {
-              return true;
-            }
-            return false;
-          })
-          .concat(work);
-      }
+    if (!edit) {
+      updatedResume._workHistory = [...updatedResume._workHistory, work];
+    } else {
+      updatedResume._workHistory = updatedResume._workHistory
+        .filter((element) => {
+          if (element._id !== idToPopulate) {
+            return true;
+          }
+          return false;
+        })
+        .concat(work);
+    }
 
-      this.storageHelper.saveItem("resume", resume);
-      return { resume };
-    });
-
-    this.setState({ idToPopulate: "" });
-  }
-
-  editWorkInfo = (info) => (event) => {
-    console.log(info);
-    this.setAddEditMode("edit");
-    this.setWorkMode("work");
-    this.setState({ idToPopulate: info, workOpen: true });
+    storageHelper.saveItem('resume', resume);
+    setResume(updatedResume);
+    setIdToPopulate('');
   };
 
-  deleteWorkInfo = (info) => (event) => {
-    this.setState({
-      deleteConfirmationOpen: true,
-      deleteWorkKey: info,
-      deleteMode: "work",
-    });
+  const editWorkInfo = (info) => (event) => {
+    // console.log(info);
+    setAddEditMode('edit');
+    setWorkMode('work');
+    setIdToPopulate(info);
+    setWorkOpen(true);
   };
 
-  closeDeleteConfirmation() {
-    this.setState({
-      deleteConfirmationOpen: false,
-    });
-  }
+  const deleteWorkInfo = (info) => (event) => {
+    setDeleteConfirmationOpen(true);
+    setDeleteWorkKey(info);
+    setDeleteMode('work');
+  };
 
-  confirmDeleteWorkInfo(e) {
+  const closeDeleteConfirmation = () => {
+    setDeleteConfirmationOpen(false);
+  };
+
+  const confirmDeleteWorkInfo = (e) => {
     e.preventDefault();
     // console.log("DELETE " + this.state.deleteWorkKey);
 
-    this.setState((prevState) => {
-      let resume = Object.assign({}, prevState.resume);
-
-      resume._workHistory = resume._workHistory.filter((element) => {
-        if (element._id === this.state.deleteWorkKey) {
+    let updatedResume = Object.assign({}, resume);
+    updatedResume._workHistory = updatedResume._workHistory.filter(
+      (element) => {
+        if (element._id === deleteWorkKey) {
           return false;
         }
         return true;
-      });
-      this.storageHelper.saveItem("resume", resume);
-      return { resume };
-    });
+      }
+    );
 
-    this.setState({ idToPopulate: "" });
+    storageHelper.saveItem('resume', updatedResume);
 
-    this.closeDeleteConfirmation();
-  }
+    setResume(updatedResume);
+    setIdToPopulate('');
 
-  editEducationInfo = (info) => (event) => {
-    console.log(info);
-    this.setAddEditMode("edit");
-    this.setWorkMode("education");
-    this.setState({ idToPopulate: info, workOpen: true });
+    closeDeleteConfirmation();
   };
 
-  deleteEducationInfo = (info) => (event) => {
-    this.setState({
-      deleteConfirmationOpen: true,
-      deleteEduKey: info,
-      deleteMode: "education",
-    });
+  const editEducationInfo = (info) => (event) => {
+    // console.log(info);
+    setAddEditMode('edit');
+    setWorkMode('education');
+    setIdToPopulate(info);
+    setWorkOpen(true);
   };
 
-  confirmDeleteEducationInfo(e) {
+  const deleteEducationInfo = (info) => (event) => {
+    setDeleteConfirmationOpen(true);
+    setDeleteEduKey(info);
+    setDeleteMode('education');
+  };
+
+  const confirmDeleteEducationInfo = (e) => {
     e.preventDefault();
 
-    this.setState((prevState) => {
-      let resume = Object.assign({}, prevState.resume);
-
-      resume._educationHistory = resume._educationHistory.filter((element) => {
-        if (element._id === this.state.deleteEduKey) {
+    let updatedResume = Object.assign({}, resume);
+    updatedResume._educationHistory = updatedResume._educationHistory.filter(
+      (element) => {
+        if (element._id === deleteEduKey) {
           return false;
         }
         return true;
-      });
-      this.storageHelper.saveItem("resume", resume);
-      return { resume };
-    });
+      }
+    );
+    storageHelper.saveItem('resume', resume);
 
-    this.setState({ idToPopulate: "" });
+    setResume(updatedResume);
+    setIdToPopulate('');
 
-    this.closeDeleteConfirmation();
-  }
+    closeDeleteConfirmation();
+  };
 
-  updateEducationInfo(info, edit) {
+  const updateEducationInfo = (info, edit) => {
     let education;
 
     if (!edit) {
       education = new Education();
     } else {
-      education = this.state.resume._educationHistory.filter((element) => {
-        if (element._id === this.state.idToPopulate) {
+      education = resume._educationHistory.filter((element) => {
+        if (element._id === idToPopulate) {
           return true;
         }
         return false;
@@ -479,183 +437,181 @@ export default class App extends React.Component {
     education._educationTitle = info.title;
     education._orgName = info.company;
     education._location = info.location;
-    education._startDate = format(info.startDate, "yyyy/MM");
-    education._endDate = format(info.endDate, "yyyy/MM");
+    education._startDate = format(info.startDate, 'yyyy/MM');
+    education._endDate = format(info.endDate, 'yyyy/MM');
     education._description = info.description;
 
-    this.setState((prevState) => {
-      let resume = Object.assign({}, prevState.resume);
+    let updatedResume = Object.assign({}, resume);
 
-      if (!edit) {
-        resume._educationHistory = [...resume._educationHistory, education];
-      } else {
-        resume._educationHistory = resume._educationHistory
-          .filter((element) => {
-            if (element._id !== this.state.idToPopulate) {
-              return true;
-            }
-            return false;
-          })
-          .concat(education);
-      }
+    if (!edit) {
+      updatedResume._educationHistory = [
+        ...updatedResume._educationHistory,
+        education,
+      ];
+    } else {
+      updatedResume._educationHistory = updatedResume._educationHistory
+        .filter((element) => {
+          if (element._id !== idToPopulate) {
+            return true;
+          }
+          return false;
+        })
+        .concat(education);
+    }
 
-      this.storageHelper.saveItem("resume", resume);
-      return { resume };
-    });
+    storageHelper.saveItem('resume', updatedResume);
+    setResume(updatedResume);
+    setIdToPopulate('');
+  };
 
-    this.setState({ idToPopulate: "" });
-  }
+  const updateSkills = (info) => {
+    let updatedResume = Object.assign({}, resume);
 
-  updateSkills(info) {
-    this.setState((prevState) => {
-      let resume = Object.assign({}, prevState.resume);
+    updatedResume._skills = [
+      ...updatedResume._skills,
+      { skill: info, id: uniqid() },
+    ];
+    storageHelper.saveItem('resume', updatedResume);
+    setResume(updatedResume);
+  };
 
-      resume._skills = [...resume._skills, { skill: info, id: uniqid() }];
-      this.storageHelper.saveItem("resume", resume);
-      return { resume };
-    });
-  }
-
-  deleteSkill = (info) => (event) => {
+  const deleteSkill = (info) => (event) => {
     event.preventDefault();
 
-    this.setState((prevState) => {
-      let resume = Object.assign({}, prevState.resume);
+    let updatedResume = Object.assign({}, resume);
 
-      resume._skills = resume._skills.filter((element) => {
-        if (element.id === info) {
-          return false;
-        }
-        return true;
-      });
-      this.storageHelper.saveItem("resume", resume);
-      return { resume };
+    updatedResume._skills = updatedResume._skills.filter((element) => {
+      if (element.id === info) {
+        return false;
+      }
+      return true;
     });
+    storageHelper.saveItem('resume', updatedResume);
+    setResume(updatedResume);
   };
 
-  updateColor = (info) => (event) => {
-    this.setState({
-      resumeColor: info,
-    });
-    this.storageHelper.saveItem("color", info);
+  const updateColor = (info) => (event) => {
+    setResumeColor(info);
+    storageHelper.saveItem('color', info);
   };
 
-  saveResumeToPdf = (isLarge) => {
-    console.log("isLarge " + isLarge);
+  const saveResumeToPdf = (isLarge) => {
+    // console.log('isLarge ' + isLarge);
     const options = { scale: isLarge ? 2 : 4 };
-    html2canvas(document.querySelector(".resume-to-capture"), options).then(
+    html2canvas(document.querySelector('.resume-to-capture'), options).then(
       function (canvas) {
-        const imgData = canvas.toDataURL("image/png");
+        const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF({
-          unit: "in",
+          unit: 'in',
           format: [8.5, 11],
         });
-        pdf.addImage(imgData, "JPEG", 0, 0.25, 8.5, 10.75);
-        pdf.save("download.pdf");
+        pdf.addImage(imgData, 'JPEG', 0, 0.25, 8.5, 10.75);
+        pdf.save('download.pdf');
       }
     );
   };
 
-  toggleDarkMode() {
-    let newMode = this.state.mode === "light" ? "dark" : "light";
-    this.setState({
-      mode: newMode,
-    });
+  const toggleDarkMode = () => {
+    let newMode = mode === 'light' ? 'dark' : 'light';
+    setMode(newMode);
+    storageHelper.saveItem('mode', newMode);
+  };
 
-    this.storageHelper.saveItem("mode", newMode);
+  const myTheme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
+
+  if (resumeColor !== '') {
+    resumeTheme.palette.primary.main = resumeColor[500];
+    resumeTheme.palette.info.main = resumeColor[700];
   }
 
-  render() {
-    const myTheme = createTheme({
-      palette: {
-        mode: this.state.mode,
-      },
-    });
+  if (resume === null) {
+    return null;
+  }
+  return (
+    <React.Fragment>
+      <ThemeProvider theme={myTheme}>
+        <CssBaseline />
 
-    this.resumeTheme.palette.primary.main = this.state.resumeColor[500];
-    this.resumeTheme.palette.info.main = this.state.resumeColor[700];
+        <AppHeader
+          saveResumeToPdf={saveResumeToPdf}
+          toggleDarkMode={toggleDarkMode}
+          mode={mode}
+        />
 
-    return (
-      <React.Fragment>
-        <ThemeProvider theme={myTheme}>
-          <CssBaseline />
-
-          <AppHeader
-            saveResumeToPdf={this.saveResumeToPdf}
-            toggleDarkMode={this.toggleDarkMode}
-            mode={this.state.mode}
+        <AddToResumeSpeedDial
+          resume={resume}
+          updateContactInfo={updateContactInfo}
+          updateWorkInfo={updateWorkInfo}
+          updateEducationInfo={updateEducationInfo}
+          updateSkills={updateSkills}
+          setContactOpen={openContactDialog}
+          setWorkOpen={openWorkDialog}
+          setEducationOpen={openEducationDialog}
+          setSkillsOpen={openSkillsDialog}
+          setCustomizeOpen={openCustomizeDialog}
+        />
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DeleteConfirmation
+            open={deleteConfirmationOpen}
+            deleteMode={deleteMode}
+            handleClose={closeDeleteConfirmation}
+            deleteWork={confirmDeleteWorkInfo}
+            deleteEducation={confirmDeleteEducationInfo}
           />
 
-          <AddToResumeSpeedDial
-            resume={this.state.resume}
-            updateContactInfo={this.updateContactInfo}
-            updateWorkInfo={this.updateWorkInfo}
-            updateEducationInfo={this.updateEducationInfo}
-            updateSkills={this.updateSkills}
-            setContactOpen={this.setContactOpen}
-            setWorkOpen={this.setWorkOpen}
-            setEducationOpen={this.setEducationOpen}
-            setSkillsOpen={this.setSkillsOpen}
-            setCustomizeOpen={this.setCustomizeOpen}
+          <EditContactForm
+            open={contactOpen}
+            handleClose={handleContactClose}
+            contactInformation={resume._contactInformation}
+            updateContactInfo={updateContactInfo}
           />
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DeleteConfirmation
-              open={this.state.deleteConfirmationOpen}
-              deleteMode={this.state.deleteMode}
-              handleClose={this.closeDeleteConfirmation}
-              deleteWork={this.confirmDeleteWorkInfo}
-              deleteEducation={this.confirmDeleteEducationInfo}
-            />
-
-            <EditContactForm
-              open={this.state.contactOpen}
-              handleClose={this.handleContactClose}
-              contactInformation={this.state.resume._contactInformation}
-              updateContactInfo={this.updateContactInfo}
-            />
-            <EditWorkExpForm
-              open={this.state.workOpen}
-              handleClose={this.handleWorkClose}
-              workHistory={this.state.resume._workHistory}
-              educationHistory={this.state.resume._educationHistory}
-              updateWorkInfo={this.updateWorkInfo}
-              updateEducationInfo={this.updateEducationInfo}
-              workMode={this.state.workMode}
-              idToPopulate={this.state.idToPopulate}
-              mode={this.state.addEditMode}
-            />
-            <EditSkillsForm
-              open={this.state.skillsOpen}
-              handleClose={this.handleSkillsClose}
-              skills={this.state.resume._skills}
-              updateSkills={this.updateSkills}
-              deleteSkill={this.deleteSkill}
-            />
-            <CustomizeForm
-              open={this.state.customizeOpen}
-              handleClose={this.handleCustomizeClose}
-              customColors={this.customColors}
-              updateColor={this.updateColor}
-            />
-          </LocalizationProvider>
+          <EditWorkExpForm
+            open={workOpen}
+            handleClose={handleWorkClose}
+            workHistory={resume._workHistory}
+            educationHistory={resume._educationHistory}
+            updateWorkInfo={updateWorkInfo}
+            updateEducationInfo={updateEducationInfo}
+            workMode={workMode}
+            idToPopulate={idToPopulate}
+            mode={addEditMode}
+          />
+          <EditSkillsForm
+            open={skillsOpen}
+            handleClose={handleSkillsClose}
+            skills={resume._skills}
+            updateSkills={updateSkills}
+            deleteSkill={deleteSkill}
+          />
+          <CustomizeForm
+            open={customizeOpen}
+            handleClose={handleCustomizeClose}
+            customColors={customColors}
+            updateColor={updateColor}
+          />
+        </LocalizationProvider>
+      </ThemeProvider>
+      <Box
+        sx={{
+          width: 'max(max-content, 100%)',
+          bgcolor: 'background.paper',
+        }}>
+        <ThemeProvider theme={resumeTheme}>
+          <ResumeOutput
+            resume={resume}
+            editWorkInfo={editWorkInfo}
+            deleteWorkInfo={deleteWorkInfo}
+            editEducationInfo={editEducationInfo}
+            deleteEducationInfo={deleteEducationInfo}
+          />
         </ThemeProvider>
-        <Box
-          sx={{
-            width: "max(max-content, 100%)",
-            bgcolor: "background.paper",
-          }}
-        >
-          <ThemeProvider theme={this.resumeTheme}>
-            <ResumeOutput
-              resume={this.state.resume}
-              editWorkInfo={this.editWorkInfo}
-              deleteWorkInfo={this.deleteWorkInfo}
-              editEducationInfo={this.editEducationInfo}
-              deleteEducationInfo={this.deleteEducationInfo}
-            />
-          </ThemeProvider>
-        </Box>
-      </React.Fragment>
-    );
-  }
-}
+      </Box>
+    </React.Fragment>
+  );
+};
+
+export default App;

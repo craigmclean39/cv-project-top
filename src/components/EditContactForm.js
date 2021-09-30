@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   Button,
   TextField,
@@ -6,160 +6,162 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@mui/material";
-import { validate } from "email-validator";
+} from '@mui/material';
+import { validate } from 'email-validator';
+import { useState } from 'react';
 
-export default class EditContactForm extends React.Component {
-  constructor(props) {
-    super(props);
+const EditContactForm = (props) => {
+  const { contactInformation } = props;
+  const [name, setName] = useState(contactInformation._firstName);
+  const [title, setTitle] = useState(contactInformation._title);
+  const [email, setEmail] = useState(contactInformation._email);
+  const [phone, setPhone] = useState(contactInformation._phoneNumber);
+  const [website, setWebsite] = useState(contactInformation._website);
+  const [phoneError, setPhoneError] = useState(false);
+  const [phoneHelperText, setPhoneHelperText] = useState('');
+  const [phoneColor, setPhoneColor] = useState('');
+  const [emailError, setEmailError] = useState(false);
+  const [emailHelperText, setEmailHelperText] = useState('');
+  const [emailColor, setEmailColor] = useState('');
 
-    const { contactInformation } = this.props;
-    this.saveFormInfo = this.saveFormInfo.bind(this);
-
-    this.state = {
-      name: contactInformation._firstName,
-      title: contactInformation._title,
-      email: contactInformation._email,
-      phone: contactInformation._phoneNumber,
-      website: contactInformation._website,
-      phoneError: false,
-      phoneHelperText: "",
-      phoneColor: "",
-      emailError: false,
-      emailHelperText: "",
-      emailColor: "",
-    };
-  }
-
-  handleChange = (name) => (event) => {
-    this.setState({
-      ...this.state,
-      [name]: event.target.value,
-    });
+  const handleChange = (name) => (e) => {
+    switch (name) {
+      case 'name': {
+        setName(e.target.value);
+        break;
+      }
+      case 'title': {
+        setTitle(e.target.value);
+        break;
+      }
+      case 'email': {
+        setEmail(e.target.value);
+        break;
+      }
+      case 'phone': {
+        setPhone(e.target.value);
+        break;
+      }
+      case 'website': {
+        setWebsite(e.target.value);
+        break;
+      }
+      default:
+        break;
+    }
   };
 
-  validatePhoneNumber = (name) => (event) => {
+  const validatePhoneNumber = (event) => {
     const phoneRegex =
       /^\+?(\s*)?(\d{1,2})?(\s*)?-?(\s*)?\(?\d{3}\)?(\s*)?-?(\s*)?\d{3}(\s*)?-?(\s*)?(\s*)?\d{4}$/;
-    if (!event.target.value.match(phoneRegex) && event.target.value !== "") {
-      this.setState({
-        phoneError: true,
-        phoneHelperText:
-          "Enter 10 digit Phone Number with or without country code, #-###-###-####",
-      });
+    if (!event.target.value.match(phoneRegex) && event.target.value !== '') {
+      setPhoneError(true);
+      setPhoneHelperText(
+        'Enter 10 digit Phone Number with or without country code, #-###-###-####'
+      );
     } else {
-      this.setState({
-        ...this.state,
-        [name]: event.target.value,
-        phoneError: false,
-        phoneHelperText: "",
-        phoneColor: "success",
-      });
+      setPhone(event.target.value);
+      setPhoneError(false);
+      setPhoneHelperText('');
+      setPhoneColor('success');
     }
   };
 
-  validateEmail = (name) => (event) => {
-    if (!validate(event.target.value) && event.target.value !== "") {
-      this.setState({
-        emailError: true,
-        emailHelperText: "Enter valid email address",
-      });
+  const validateEmail = (event) => {
+    if (!validate(event.target.value) && event.target.value !== '') {
+      setEmailError(true);
+      setEmailHelperText('Enter valid email address');
     } else {
-      this.setState({
-        ...this.state,
-        [name]: event.target.value,
-        emailError: false,
-        emailHelperText: "",
-        emailColor: "success",
-      });
+      setEmailError(false);
+      setEmailHelperText('');
+      setEmailColor('success');
+      setEmail(event.target.value);
     }
   };
 
-  saveFormInfo(e) {
+  const saveFormInfo = (e) => {
     e.preventDefault();
-    const { updateContactInfo } = this.props;
-    updateContactInfo(this.state);
-    this.props.handleClose();
-  }
+    const { updateContactInfo } = props;
+    updateContactInfo({ name, title, email, phone, website });
+    props.handleClose();
+  };
 
-  render() {
-    const { open, handleClose, contactInformation } = this.props;
-    return (
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Contact Details</DialogTitle>
-        <DialogContent>
-          <form>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Name"
-              type="text"
-              fullWidth
-              variant="outlined"
-              defaultValue={
-                contactInformation._firstName +
-                " " +
-                contactInformation._lastName
-              }
-              onChange={this.handleChange("name")}
-            />
-            <TextField
-              margin="dense"
-              id="title"
-              label="Title"
-              type="text"
-              fullWidth
-              variant="outlined"
-              defaultValue={contactInformation._title}
-              onChange={this.handleChange("title")}
-            />
-            <TextField
-              margin="dense"
-              id="email"
-              label="Email Address"
-              type="email"
-              fullWidth
-              variant="outlined"
-              defaultValue={contactInformation._email}
-              onChange={this.validateEmail("email")}
-              error={this.state.emailError}
-              helperText={this.state.emailHelperText}
-              color={this.state.emailColor}
-            />
-            <TextField
-              margin="dense"
-              id="phone-number"
-              label="Phone Number"
-              type="text"
-              fullWidth
-              variant="outlined"
-              defaultValue={contactInformation._phoneNumber}
-              onChange={this.validatePhoneNumber("phone")}
-              error={this.state.phoneError}
-              helperText={this.state.phoneHelperText}
-              color={this.state.phoneColor}
-            />
-            <TextField
-              margin="dense"
-              id="website"
-              label="Website"
-              type="text"
-              fullWidth
-              variant="outlined"
-              defaultValue={contactInformation._website}
-              onChange={this.handleChange("website")}
-            />
+  const { open, handleClose } = props;
+  return (
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>Edit Contact Details</DialogTitle>
+      <DialogContent>
+        <form>
+          <TextField
+            autoFocus
+            margin='dense'
+            id='name'
+            label='Name'
+            type='text'
+            fullWidth
+            variant='outlined'
+            defaultValue={
+              contactInformation._firstName + ' ' + contactInformation._lastName
+            }
+            onChange={handleChange('name')}
+          />
+          <TextField
+            margin='dense'
+            id='title'
+            label='Title'
+            type='text'
+            fullWidth
+            variant='outlined'
+            defaultValue={contactInformation._title}
+            onChange={handleChange('title')}
+          />
+          <TextField
+            margin='dense'
+            id='email'
+            label='Email Address'
+            type='email'
+            fullWidth
+            variant='outlined'
+            defaultValue={contactInformation._email}
+            onChange={validateEmail}
+            error={emailError}
+            helperText={emailHelperText}
+            color={emailColor}
+          />
+          <TextField
+            margin='dense'
+            id='phone-number'
+            label='Phone Number'
+            type='text'
+            fullWidth
+            variant='outlined'
+            defaultValue={contactInformation._phoneNumber}
+            onChange={validatePhoneNumber}
+            error={phoneError}
+            helperText={phoneHelperText}
+            color={phoneColor}
+          />
+          <TextField
+            margin='dense'
+            id='website'
+            label='Website'
+            type='text'
+            fullWidth
+            variant='outlined'
+            defaultValue={contactInformation._website}
+            onChange={handleChange('website')}
+          />
 
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit" onClick={this.saveFormInfo}>
-                Save
-              </Button>
-            </DialogActions>
-          </form>
-        </DialogContent>
-      </Dialog>
-    );
-  }
-}
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button type='submit' onClick={saveFormInfo}>
+              Save
+            </Button>
+          </DialogActions>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default EditContactForm;
