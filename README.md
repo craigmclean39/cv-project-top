@@ -69,7 +69,7 @@
 ## About The Project
 
 <p align="center">
-  <img src="readme-images/readme-lightmode.png" width="784px" height="649px" alt=""><br>
+  <img src="readme-images/readme-lightmode.png" alt=""><br>
 </p>
 
 <p>
@@ -130,8 +130,8 @@ Resume Creator has the following features:
 - Customize the color palette of the resume
 <p>
   <img src="readme-images/readme-customizeform.png" alt=""><br>
-  <img src="readme-images/readme-custom1.png" width="373px" height="482px" alt="">
-  <img src="readme-images/readme-custom2.png" width="373px" height="482px" alt="">
+  <img src="readme-images/readme-custom1.png"  alt="">
+  <img src="readme-images/readme-custom2.png"  alt="">
 
 </p>
 - Editing and Deleting of work/education information is handled with buttons on the generated resume itself.
@@ -141,14 +141,14 @@ Resume Creator has the following features:
 
 - The site supports a dark and light mode
 <p>
-  <img src="readme-images/readme-darkmode.png"  width="780px" height="645px" alt="">
-  <img src="readme-images/readme-lightmode.png"  width="780px" height="645px" alt="">
+  <img src="readme-images/readme-darkmode.png" alt="">
+  <img src="readme-images/readme-lightmode.png" alt="">
 </p>
 
 - The resume can be exported as a pdf
 <p>
   <img src="readme-images/readme-headerbuttons.png" alt=""><br>
-  <img src="readme-images/readme-pdf.png" width="752px" height="679px"  alt="">
+  <img src="readme-images/readme-pdf.png" alt="">
 </p>
 
 - The resume, as well as dark/light mode preference is saved in localStorage
