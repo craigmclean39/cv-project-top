@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import Resume from './cv/Resume';
-import ContactInformation from './cv/ContactInformation';
-import WorkExp from './cv/WorkExp';
-import Education from './cv/Education';
 import ResumeOutput from './components/ResumeOutput';
 import AddToResumeSpeedDial from './components/AddToResumeSpeedDial';
 import AppHeader from './components/AppHeader';
 import { Box } from '@mui/system';
 import { createTheme, CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import uniqid from 'uniqid';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { LocalStorageHelper } from './localStorageHelper';
@@ -20,7 +15,6 @@ import EditContactForm from './components/EditContactForm';
 import EditWorkExpForm from './components/EditWorkExpForm';
 import EditSkillsForm from './components/EditSkillsForm';
 import CustomizeForm from './components/CustomizeForm';
-import { format } from 'date-fns';
 import {
   red,
   pink,
@@ -39,6 +33,8 @@ import {
   orange,
   deepOrange,
 } from '@mui/material/colors';
+import ResumeHandler from './cv/ResumeHandler';
+import generateTheme from './theme';
 
 const useConstructor = (callBack = () => {}) => {
   const [hasBeenCalled, setHasBeenCalled] = useState(false);
@@ -46,6 +42,8 @@ const useConstructor = (callBack = () => {}) => {
   callBack();
   setHasBeenCalled(true);
 };
+
+const resumeHandler = new ResumeHandler();
 
 const App = () => {
   const [resume, setResume] = useState(null);
@@ -60,178 +58,23 @@ const App = () => {
   const [skillsOpen, setSkillsOpen] = useState(false);
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [idToPopulate, setIdToPopulate] = useState('');
-  const [resumeColor, setResumeColor] = useState('');
   const [storageHelper] = useState(new LocalStorageHelper());
   const [resumeTheme, setResumeTheme] = useState(null);
   const [customColors, setCustomColors] = useState([]);
   const [deleteMode, setDeleteMode] = useState('work');
 
-  const generateTheme = (resColor) => {
-    let newTheme = createTheme({
-      palette: {
-        primary: {
-          main: resColor[500],
-        },
-        info: {
-          main: resColor[700],
-        },
-      },
-
-      typography: {
-        h1: {
-          fontSize: '3rem',
-          '@media (min-width:600px)': {
-            fontSize: '6rem',
-          },
-        },
-        h2: {
-          fontSize: '1.875rem',
-          '@media (min-width:600px)': {
-            fontSize: '3.75rem',
-          },
-        },
-        h3: {
-          fontSize: '1.5rem',
-          '@media (min-width:600px)': {
-            fontSize: '3rem',
-          },
-        },
-        h4: {
-          fontSize: '1.0625rem',
-          '@media (min-width:600px)': {
-            fontSize: '2.125rem',
-          },
-        },
-        h5: {
-          fontSize: '0.75rem',
-          '@media (min-width:600px)': {
-            fontSize: '1.5rem',
-          },
-        },
-        h6: {
-          fontSize: '0.625rem',
-          '@media (min-width:600px)': {
-            fontSize: '1.25rem',
-          },
-        },
-        subtitle1: {
-          fontSize: '0.5rem',
-          '@media (min-width:600px)': {
-            fontSize: '1rem',
-          },
-        },
-        subtitle2: {
-          fontSize: '0.4375rem',
-          '@media (min-width:600px)': {
-            fontSize: '.875rem',
-          },
-        },
-        body1: {
-          fontSize: '0.5rem',
-          '@media (min-width:600px)': {
-            fontSize: '1rem',
-          },
-        },
-        body2: {
-          fontSize: '0.4375rem',
-          '@media (min-width:600px)': {
-            fontSize: '.875rem',
-          },
-        },
-        button: {
-          fontSize: '0.4375rem',
-          '@media (min-width:600px)': {
-            fontSize: '.875rem',
-          },
-        },
-        caption: {
-          fontSize: '0.375rem',
-          '@media (min-width:600px)': {
-            fontSize: '.75rem',
-          },
-        },
-        overline: {
-          fontSize: '0.375rem',
-          '@media (min-width:600px)': {
-            fontSize: '.75rem',
-          },
-        },
-      },
-
-      spacing: 8,
-      '@media (min-width:600px)': {
-        spacing: 4,
-      },
-    });
-
-    setResumeTheme(newTheme);
-  };
-
   useConstructor(() => {
-    let storedResume = storageHelper.retrieveItem('resume');
-
-    const myResume = new Resume();
-    const contactInfo = new ContactInformation();
-    contactInfo._firstName = '';
-    contactInfo._lastName = '';
-    contactInfo._title = '';
-    contactInfo._email = '';
-    contactInfo._phoneNumber = '';
-    contactInfo._website = '';
-
-    if (storedResume != null) {
-      contactInfo._firstName =
-        storedResume._contactInformation._firstName.trim();
-      contactInfo._lastName = '';
-      contactInfo._title = storedResume._contactInformation._title;
-      contactInfo._email = storedResume._contactInformation._email;
-      contactInfo._phoneNumber = storedResume._contactInformation._phoneNumber;
-      contactInfo._website = storedResume._contactInformation._website;
-
-      for (let i = 0; i < storedResume._skills.length; i++) {
-        myResume.addSkill(storedResume._skills[i].skill);
-      }
-
-      for (let i = 0; i < storedResume._workHistory.length; i++) {
-        const work = new WorkExp();
-        work._jobTitle = storedResume._workHistory[i]._jobTitle;
-        work._orgName = storedResume._workHistory[i]._orgName;
-        work._location = storedResume._workHistory[i]._location;
-        work._startDate = storedResume._workHistory[i]._startDate;
-        work._endDate = storedResume._workHistory[i]._endDate;
-        work._description = storedResume._workHistory[i]._description;
-        myResume._workHistory.push(work);
-      }
-
-      for (let i = 0; i < storedResume._educationHistory.length; i++) {
-        const edu = new Education();
-        edu._educationTitle = storedResume._educationHistory[i]._educationTitle;
-        edu._orgName = storedResume._educationHistory[i]._orgName;
-        edu._location = storedResume._educationHistory[i]._location;
-        edu._startDate = storedResume._educationHistory[i]._startDate;
-        edu._endDate = storedResume._educationHistory[i]._endDate;
-        edu._description = storedResume._educationHistory[i]._description;
-        myResume._educationHistory.push(edu);
-      }
-    }
-
-    myResume._contactInformation = contactInfo;
-
-    setResume(myResume);
+    let storedResume = resumeHandler.getWorkingResume();
+    console.log('Stored Resume');
+    console.log(storedResume);
+    setResume(storedResume);
 
     let storedMode = storageHelper.retrieveItem('mode');
     if (storedMode === null) {
       storedMode = 'light';
     }
     setMode(storedMode);
-
-    let resColor = storageHelper.retrieveItem('color');
-    if (resColor === null) {
-      resColor = blue;
-    }
-    setResumeColor(resColor);
-
-    generateTheme(resColor);
+    setResumeTheme(generateTheme(storedResume._color));
 
     setCustomColors([
       red,
@@ -296,53 +139,17 @@ const App = () => {
   };
 
   const updateContactInfo = (info) => {
-    let updatedResume = Object.assign({}, resume);
-    updatedResume._contactInformation._firstName = info.name;
-    updatedResume._contactInformation._lastName = '';
-    updatedResume._contactInformation._title = info.title;
-    updatedResume._contactInformation._email = info.email;
-    updatedResume._contactInformation._phoneNumber = info.phone;
-    updatedResume._contactInformation._website = info.website;
-    storageHelper.saveItem('resume', updatedResume);
+    resumeHandler.updateContactInfo(info);
   };
 
   const updateWorkInfo = (info, edit) => {
-    let work;
-
-    if (!edit) {
-      work = new WorkExp();
+    if (edit) {
+      resumeHandler.editWorkInfo(info, idToPopulate);
     } else {
-      work = resume._workHistory.filter((element) => {
-        if (element._id === idToPopulate) {
-          return true;
-        }
-        return false;
-      })[0];
-    }
-    work._jobTitle = info.title;
-    work._orgName = info.company;
-    work._location = info.location;
-    work._startDate = format(info.startDate, 'yyyy/MM');
-    work._endDate = format(info.endDate, 'yyyy/MM');
-    work._description = info.description;
-
-    let updatedResume = Object.assign({}, resume);
-
-    if (!edit) {
-      updatedResume._workHistory = [...updatedResume._workHistory, work];
-    } else {
-      updatedResume._workHistory = updatedResume._workHistory
-        .filter((element) => {
-          if (element._id !== idToPopulate) {
-            return true;
-          }
-          return false;
-        })
-        .concat(work);
+      resumeHandler.addWorkInfo(info);
     }
 
-    storageHelper.saveItem('resume', resume);
-    setResume(updatedResume);
+    setResume(resumeHandler.getWorkingResume());
     setIdToPopulate('');
   };
 
@@ -366,23 +173,11 @@ const App = () => {
 
   const confirmDeleteWorkInfo = (e) => {
     e.preventDefault();
-    // console.log("DELETE " + this.state.deleteWorkKey);
 
-    let updatedResume = Object.assign({}, resume);
-    updatedResume._workHistory = updatedResume._workHistory.filter(
-      (element) => {
-        if (element._id === deleteWorkKey) {
-          return false;
-        }
-        return true;
-      }
-    );
+    resumeHandler.deleteWorkInfo(deleteWorkKey);
 
-    storageHelper.saveItem('resume', updatedResume);
-
-    setResume(updatedResume);
+    setResume(resumeHandler.getWorkingResume());
     setIdToPopulate('');
-
     closeDeleteConfirmation();
   };
 
@@ -403,95 +198,45 @@ const App = () => {
   const confirmDeleteEducationInfo = (e) => {
     e.preventDefault();
 
-    let updatedResume = Object.assign({}, resume);
-    updatedResume._educationHistory = updatedResume._educationHistory.filter(
-      (element) => {
-        if (element._id === deleteEduKey) {
-          return false;
-        }
-        return true;
-      }
-    );
-    storageHelper.saveItem('resume', resume);
+    resumeHandler.deleteEducationInfo(deleteEduKey);
 
-    setResume(updatedResume);
+    setResume(resumeHandler.getWorkingResume());
     setIdToPopulate('');
 
     closeDeleteConfirmation();
   };
 
   const updateEducationInfo = (info, edit) => {
-    let education;
-
-    if (!edit) {
-      education = new Education();
+    if (edit) {
+      resumeHandler.editEducationInfo(info, idToPopulate);
     } else {
-      education = resume._educationHistory.filter((element) => {
-        if (element._id === idToPopulate) {
-          return true;
-        }
-        return false;
-      })[0];
+      resumeHandler.addEducationInfo(info);
     }
 
-    education._educationTitle = info.title;
-    education._orgName = info.company;
-    education._location = info.location;
-    education._startDate = format(info.startDate, 'yyyy/MM');
-    education._endDate = format(info.endDate, 'yyyy/MM');
-    education._description = info.description;
-
-    let updatedResume = Object.assign({}, resume);
-
-    if (!edit) {
-      updatedResume._educationHistory = [
-        ...updatedResume._educationHistory,
-        education,
-      ];
-    } else {
-      updatedResume._educationHistory = updatedResume._educationHistory
-        .filter((element) => {
-          if (element._id !== idToPopulate) {
-            return true;
-          }
-          return false;
-        })
-        .concat(education);
-    }
-
-    storageHelper.saveItem('resume', updatedResume);
-    setResume(updatedResume);
+    setResume(resumeHandler.getWorkingResume());
     setIdToPopulate('');
   };
 
   const updateSkills = (info) => {
-    let updatedResume = Object.assign({}, resume);
-
-    updatedResume._skills = [
-      ...updatedResume._skills,
-      { skill: info, id: uniqid() },
-    ];
-    storageHelper.saveItem('resume', updatedResume);
-    setResume(updatedResume);
+    resumeHandler.updateSkills(info);
+    setResume(resumeHandler.getWorkingResume());
   };
 
   const deleteSkill = (info) => (event) => {
     event.preventDefault();
-
-    let updatedResume = Object.assign({}, resume);
-
-    updatedResume._skills = updatedResume._skills.filter((element) => {
-      if (element.id === info) {
-        return false;
-      }
-      return true;
-    });
-    storageHelper.saveItem('resume', updatedResume);
-    setResume(updatedResume);
+    resumeHandler.deleteSkill(info);
+    setResume(resumeHandler.getWorkingResume());
   };
 
   const updateColor = (info) => (event) => {
-    setResumeColor(info);
+    resumeHandler.updateColor(info);
+
+    let newTheme = Object.assign({}, resumeTheme);
+    newTheme.palette.primary.main =
+      resumeHandler.getWorkingResume()._color[500];
+    newTheme.palette.info.main = resumeHandler.getWorkingResume()._color[700];
+    setResumeTheme(newTheme);
+
     storageHelper.saveItem('color', info);
   };
 
@@ -522,11 +267,6 @@ const App = () => {
       mode: mode,
     },
   });
-
-  if (resumeColor !== '') {
-    resumeTheme.palette.primary.main = resumeColor[500];
-    resumeTheme.palette.info.main = resumeColor[700];
-  }
 
   if (resume === null) {
     return null;

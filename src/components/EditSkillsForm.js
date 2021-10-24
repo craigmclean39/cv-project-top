@@ -30,11 +30,11 @@ const EditSkillsForm = (props) => {
     return (
       <Chip
         sx={{ m: 0.5 }}
-        label={value.skill}
-        key={value.id}
+        label={value._skill}
+        key={value._id}
         size='small'
         color='primary'
-        onDelete={deleteSkill(value.id)}
+        onDelete={deleteSkill(value._id)}
       />
     );
   });

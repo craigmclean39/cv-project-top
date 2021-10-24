@@ -1,14 +1,12 @@
-import uniqid from "uniqid";
+import ContactInformation from './ContactInformation';
+import { blue } from '@mui/material/colors';
 
 export default class Resume {
   constructor() {
-    this._contactInformation = undefined;
+    this._contactInformation = new ContactInformation();
     this._educationHistory = [];
     this._workHistory = [];
     this._skills = [];
-  }
-
-  addSkill(newSkill) {
-    this._skills = [...this._skills, { skill: newSkill, id: uniqid() }];
+    this._color = blue;
   }
 }

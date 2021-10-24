@@ -1,13 +1,20 @@
-import uniqid from "uniqid";
+import uniqid from 'uniqid';
 
 export default class WorkExp {
-  constructor() {
-    this._jobTitle = "";
-    this._orgName = "";
-    this._location = "";
-    this._description = "";
-    this._startDate = "";
-    this._endDate = "";
+  constructor(
+    jobTitle = '',
+    orgName = '',
+    location = '',
+    description = '',
+    startDate = '',
+    endDate = ''
+  ) {
+    this._jobTitle = jobTitle;
+    this._orgName = orgName;
+    this._location = location;
+    this._description = description;
+    this._startDate = startDate;
+    this._endDate = endDate;
     this._id = uniqid();
   }
 }

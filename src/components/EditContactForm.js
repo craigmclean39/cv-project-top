@@ -100,9 +100,7 @@ const EditContactForm = (props) => {
             type='text'
             fullWidth
             variant='outlined'
-            defaultValue={
-              contactInformation._firstName + ' ' + contactInformation._lastName
-            }
+            defaultValue={contactInformation._firstName}
             onChange={handleChange('name')}
           />
           <TextField
