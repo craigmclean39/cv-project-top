@@ -26,8 +26,6 @@ export default class ResumeHandler {
   };
 
   convertStoredResumeToResume = (storedResume) => {
-    console.log(storedResume);
-
     let newResume = new Resume();
 
     let contactInformation = new ContactInformation(

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ResumeOutput from './components/ResumeOutput';
 import AddToResumeSpeedDial from './components/AddToResumeSpeedDial';
 import AppHeader from './components/AppHeader';
@@ -36,18 +36,17 @@ import {
 import ResumeHandler from './cv/ResumeHandler';
 import generateTheme from './theme';
 
-const useConstructor = (callBack = () => {}) => {
-  const [hasBeenCalled, setHasBeenCalled] = useState(false);
-  if (hasBeenCalled) return;
-  callBack();
-  setHasBeenCalled(true);
-};
-
-const resumeHandler = new ResumeHandler();
-
 const App = () => {
-  const [resume, setResume] = useState(null);
-  const [mode, setMode] = useState('light');
+  const resumeHandlerRef = useRef(new ResumeHandler());
+  const resumeHandler = resumeHandlerRef.current;
+
+  const storageHelperRef = useRef(new LocalStorageHelper());
+  const storageHelper = storageHelperRef.current;
+
+  const [resume, setResume] = useState(resumeHandler.getWorkingResume());
+  const [mode, setMode] = useState(
+    storageHelper.retrieveItem('mode') ?? 'light'
+  );
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [deleteWorkKey, setDeleteWorkKey] = useState('');
   const [deleteEduKey, setDeleteEduKey] = useState('');
@@ -58,43 +57,48 @@ const App = () => {
   const [skillsOpen, setSkillsOpen] = useState(false);
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [idToPopulate, setIdToPopulate] = useState('');
-  const [storageHelper] = useState(new LocalStorageHelper());
-  const [resumeTheme, setResumeTheme] = useState(null);
-  const [customColors, setCustomColors] = useState([]);
+
+  const [resumeTheme, setResumeTheme] = useState(
+    generateTheme(resumeHandler.getWorkingResume()._color)
+  );
   const [deleteMode, setDeleteMode] = useState('work');
+  const [siteTheme, setSiteTheme] = useState(
+    createTheme({
+      palette: {
+        mode: 'light',
+      },
+    })
+  );
 
-  useConstructor(() => {
-    let storedResume = resumeHandler.getWorkingResume();
-    console.log('Stored Resume');
-    console.log(storedResume);
-    setResume(storedResume);
+  const customColors = useRef([
+    red,
+    pink,
+    purple,
+    deepPurple,
+    indigo,
+    blue,
+    lightBlue,
+    cyan,
+    teal,
+    green,
+    lightGreen,
+    lime,
+    yellow,
+    amber,
+    orange,
+    deepOrange,
+  ]);
 
-    let storedMode = storageHelper.retrieveItem('mode');
-    if (storedMode === null) {
-      storedMode = 'light';
-    }
-    setMode(storedMode);
-    setResumeTheme(generateTheme(storedResume._color));
-
-    setCustomColors([
-      red,
-      pink,
-      purple,
-      deepPurple,
-      indigo,
-      blue,
-      lightBlue,
-      cyan,
-      teal,
-      green,
-      lightGreen,
-      lime,
-      yellow,
-      amber,
-      orange,
-      deepOrange,
-    ]);
-  });
+  //Update siteTheme when mode updates
+  useEffect(() => {
+    setSiteTheme(
+      createTheme({
+        palette: {
+          mode: mode,
+        },
+      })
+    );
+  }, [mode]);
 
   const openWorkDialog = () => {
     setWorkMode('work');
@@ -237,8 +241,6 @@ const App = () => {
       resumeHandler.getWorkingResume()._color[500];
     newTheme.palette.info.main = resumeHandler.getWorkingResume()._color[700];
     setResumeTheme(newTheme);
-
-    storageHelper.saveItem('color', info);
   };
 
   const saveResumeToPdf = (isLarge) => {
@@ -263,18 +265,12 @@ const App = () => {
     storageHelper.saveItem('mode', newMode);
   };
 
-  const myTheme = createTheme({
-    palette: {
-      mode: mode,
-    },
-  });
-
   if (resume === null) {
     return null;
   }
   return (
     <React.Fragment>
-      <ThemeProvider theme={myTheme}>
+      <ThemeProvider theme={siteTheme}>
         <CssBaseline />
 
         <AppHeader
@@ -331,7 +327,7 @@ const App = () => {
           <CustomizeForm
             open={customizeOpen}
             handleClose={handleCustomizeClose}
-            customColors={customColors}
+            customColors={customColors.current}
             updateColor={updateColor}
           />
         </LocalizationProvider>
