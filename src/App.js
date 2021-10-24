@@ -139,7 +139,8 @@ const App = () => {
   };
 
   const updateContactInfo = (info) => {
-    resumeHandler.updateContactInfo(info);
+    resumeHandler.updateContactInformation(info);
+    setResume(resumeHandler.getWorkingResume());
   };
 
   const updateWorkInfo = (info, edit) => {

@@ -4,7 +4,6 @@ import Education from './Education';
 import Resume from './Resume';
 import WorkExp from './WorkExp';
 import { format } from 'date-fns';
-import uniqid from 'uniqid';
 import Skill from './Skill';
 
 export default class ResumeHandler {
