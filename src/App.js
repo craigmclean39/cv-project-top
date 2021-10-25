@@ -33,17 +33,16 @@ import {
   orange,
   deepOrange,
 } from '@mui/material/colors';
-import ResumeHandler from './cv/ResumeHandler';
+
 import generateTheme from './theme';
+import { useResume } from './hooks/useResume';
 
 const App = () => {
-  const resumeHandlerRef = useRef(new ResumeHandler());
-  const resumeHandler = resumeHandlerRef.current;
+  const { resume, resumeDispatch } = useResume();
 
   const storageHelperRef = useRef(new LocalStorageHelper());
   const storageHelper = storageHelperRef.current;
 
-  const [resume, setResume] = useState(resumeHandler.getWorkingResume());
   const [mode, setMode] = useState(
     storageHelper.retrieveItem('mode') ?? 'light'
   );
@@ -58,9 +57,7 @@ const App = () => {
   const [customizeOpen, setCustomizeOpen] = useState(false);
   const [idToPopulate, setIdToPopulate] = useState('');
 
-  const [resumeTheme, setResumeTheme] = useState(
-    generateTheme(resumeHandler.getWorkingResume()._color)
-  );
+  const [resumeTheme, setResumeTheme] = useState(generateTheme(resume._color));
   const [deleteMode, setDeleteMode] = useState('work');
   const [siteTheme, setSiteTheme] = useState(
     createTheme({
@@ -99,6 +96,11 @@ const App = () => {
       })
     );
   }, [mode]);
+
+  useEffect(() => {
+    let newTheme = generateTheme(resume._color);
+    setResumeTheme(newTheme);
+  }, [resume]);
 
   const openWorkDialog = () => {
     setWorkMode('work');
@@ -143,18 +145,15 @@ const App = () => {
   };
 
   const updateContactInfo = (info) => {
-    resumeHandler.updateContactInformation(info);
-    setResume(resumeHandler.getWorkingResume());
+    resumeDispatch({ type: 'updateContactInformation', payload: info });
   };
 
   const updateWorkInfo = (info, edit) => {
     if (edit) {
-      resumeHandler.editWorkInfo(info, idToPopulate);
+      resumeDispatch({ type: 'editWorkInfo', payload: { info, idToPopulate } });
     } else {
-      resumeHandler.addWorkInfo(info);
+      resumeDispatch({ type: 'addWorkInfo', payload: info });
     }
-
-    setResume(resumeHandler.getWorkingResume());
     setIdToPopulate('');
   };
 
@@ -179,9 +178,8 @@ const App = () => {
   const confirmDeleteWorkInfo = (e) => {
     e.preventDefault();
 
-    resumeHandler.deleteWorkInfo(deleteWorkKey);
+    resumeDispatch({ type: 'deleteWorkInfo', payload: deleteWorkKey });
 
-    setResume(resumeHandler.getWorkingResume());
     setIdToPopulate('');
     closeDeleteConfirmation();
   };
@@ -203,44 +201,35 @@ const App = () => {
   const confirmDeleteEducationInfo = (e) => {
     e.preventDefault();
 
-    resumeHandler.deleteEducationInfo(deleteEduKey);
-
-    setResume(resumeHandler.getWorkingResume());
+    resumeDispatch({ type: 'deleteEducationInfo', payload: deleteEduKey });
     setIdToPopulate('');
-
     closeDeleteConfirmation();
   };
 
   const updateEducationInfo = (info, edit) => {
     if (edit) {
-      resumeHandler.editEducationInfo(info, idToPopulate);
+      resumeDispatch({
+        type: 'editEducationInfo',
+        payload: { info, idToPopulate },
+      });
     } else {
-      resumeHandler.addEducationInfo(info);
+      resumeDispatch({ type: 'addEducationInfo', payload: info });
     }
 
-    setResume(resumeHandler.getWorkingResume());
     setIdToPopulate('');
   };
 
   const updateSkills = (info) => {
-    resumeHandler.updateSkills(info);
-    setResume(resumeHandler.getWorkingResume());
+    resumeDispatch({ type: 'updateSkills', payload: info });
   };
 
   const deleteSkill = (info) => (event) => {
     event.preventDefault();
-    resumeHandler.deleteSkill(info);
-    setResume(resumeHandler.getWorkingResume());
+    resumeDispatch({ type: 'deleteSkill', payload: info });
   };
 
   const updateColor = (info) => (event) => {
-    resumeHandler.updateColor(info);
-
-    let newTheme = Object.assign({}, resumeTheme);
-    newTheme.palette.primary.main =
-      resumeHandler.getWorkingResume()._color[500];
-    newTheme.palette.info.main = resumeHandler.getWorkingResume()._color[700];
-    setResumeTheme(newTheme);
+    resumeDispatch({ type: 'updateColor', payload: info });
   };
 
   const saveResumeToPdf = (isLarge) => {
