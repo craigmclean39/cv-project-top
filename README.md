@@ -73,7 +73,7 @@
 </p>
 
 <p>
-This project was part of The Odin Project Full Stack JavaScript curriculum. This was my first project created using React. It was primarily made as practice with props and state. This project uses both functional and class based components. I primarily used the setState method of setting the state, and except in one instance I didn't use any lifecycle methods. I heavily used the useMediaQuery hook throughout the project to make it responsive. In addition to utilizing React I also delved into the latest version of Material UI. I used Dialogs, TextFields, a SpeedDial menu, as well as Buttons, Boxes, Typography, and a host of other components. I also utilized the ThemeProvider system to theme the app in a light and dark mode as well as for setting colors on the resume and providing responsive font sizes.
+This is a refactor of my first React project created for The Odin Project Full Stack JavaScript curriculum. Initially the project was created with class base components and setState. I've refactored it to use exclusively functional components and hooks. I've created a custom hook, useResume, to handle the loading and editing of the resume. The Resume is stored with the useReducer hook, which is then returned from this useResume hook and updated through the dispatch function. I've also used the latest version of Material UI, v5. I used Dialogs, TextFields, a SpeedDial menu, as well as Buttons, Boxes, Typography, and a host of other components. I also utilized the ThemeProvider system to theme the app in a light and dark mode as well as for setting colors on the resume and providing responsive font sizes.
 </p>
 
 ### Built With
@@ -130,8 +130,8 @@ Resume Creator has the following features:
 - Customize the color palette of the resume
 <p>
   <img src="readme-images/readme-customizeform.png" alt=""><br>
-  <img src="readme-images/readme-custom1.png" alt="">
-  <img src="readme-images/readme-custom2.png" alt="">
+  <img src="readme-images/readme-custom1.png"  alt="">
+  <img src="readme-images/readme-custom2.png"  alt="">
 
 </p>
 - Editing and Deleting of work/education information is handled with buttons on the generated resume itself.

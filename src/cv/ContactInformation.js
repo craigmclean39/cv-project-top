@@ -1,10 +1,15 @@
 export default class ContactInformation {
-  constructor() {
-    this._firstName = "";
-    this._lastName = "";
-    this._title = "";
-    this._phoneNumber = "";
-    this._email = "";
-    this._website = "";
+  constructor(
+    firstName = '',
+    title = '',
+    phoneNumber = '',
+    email = '',
+    website = ''
+  ) {
+    this._firstName = firstName;
+    this._title = title;
+    this._phoneNumber = phoneNumber;
+    this._email = email;
+    this._website = website;
   }
 }
