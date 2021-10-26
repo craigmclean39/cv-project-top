@@ -8,9 +8,9 @@ import ContactInformation from '../cv/ContactInformation';
 import { format } from 'date-fns';
 
 const resumeReducer = (state, action) => {
-  console.log('resumeReducer ' + action.type);
+  /* console.log('resumeReducer ' + action.type);
   console.dir(state);
-  console.dir(action);
+  console.dir(action); */
 
   switch (action.type) {
     case 'loadResume': {
@@ -190,14 +190,14 @@ const convertStoredResumeToResume = (storedResume) => {
 };
 
 const useResume = () => {
-  console.log('useResume');
+  // console.log('useResume');
 
   const storageHelper = useRef(new LocalStorageHelper());
   const [resume, resumeDispatch] = useReducer(resumeReducer, new Resume());
   const [resumeLoaded, setResumeLoaded] = useState(false);
 
   useEffect(() => {
-    console.log('useResume->useEffect');
+    // console.log('useResume->useEffect');
     const storedResume = storageHelper.current.retrieveItem('resume');
     let formattedResume;
     if (storedResume != null) {
