@@ -15,7 +15,16 @@ import { useMediaQuery } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 const AppHeader = (props) => {
-  const { saveResumeToPdf, toggleDarkMode, mode } = props;
+  const {
+    saveResumeToPdf,
+    toggleDarkMode,
+    mode,
+    signIn,
+    signOut,
+    signedIn,
+    profilePicUrl,
+    userName,
+  } = props;
   const isLarge = useMediaQuery('(min-width:600px)');
 
   let modeButton, iconColor;
@@ -58,7 +67,14 @@ const AppHeader = (props) => {
             sx={{
               display: 'flex',
             }}>
-            <Avatar />
+            <Avatar
+              sx={{
+                cursor: 'pointer',
+              }}
+              alt={userName}
+              src={profilePicUrl}
+              onClick={signedIn ? signOut : signIn}
+            />
             <Box>
               {modeButton}
               <IconButton

@@ -50,7 +50,74 @@ import {
   signOut,
 } from 'firebase/auth';
 
+const firebaseConfig = {
+  apiKey: 'AIzaSyAM0Q-A-Y9SyIC3tP8_1edQTxQF9C6cKf4',
+  authDomain: 'resume-creator-3ef3e.firebaseapp.com',
+  projectId: 'resume-creator-3ef3e',
+  storageBucket: 'resume-creator-3ef3e.appspot.com',
+  messagingSenderId: '91020095700',
+  appId: '1:91020095700:web:484ab557ad398553618b41',
+};
+
+const initFirebaseAuth = (authStateObserver) => {
+  onAuthStateChanged(getAuth(), authStateObserver);
+};
+
+const useFirebase = (authStateObserverCallback) => {
+  const authStateObserver = useRef(authStateObserverCallback);
+
+  useEffect(() => {
+    initializeApp(firebaseConfig);
+    initFirebaseAuth(authStateObserver.current);
+  }, []);
+
+  async function signIn() {
+    let provider = new GoogleAuthProvider();
+    await signInWithPopup(getAuth(), provider);
+  }
+
+  const signOutUser = () => {
+    signOut(getAuth());
+  };
+
+  const getProfilePicUrl = () => {
+    return getAuth().currentUser.photoURL;
+  };
+
+  const getUserName = () => {
+    return getAuth().currentUser.displayName;
+  };
+
+  return {
+    signIn,
+    signOutUser,
+    getProfilePicUrl,
+    getUserName,
+  };
+};
+
 const App = () => {
+  const authStateObserver = (user) => {
+    if (user) {
+      console.log(`${getAuth().currentUser.displayName} has signed in`);
+      setSignedIn(true);
+      setProfilePicUrl(getProfilePicUrl());
+      setUserName(getUserName());
+    } else {
+      console.log('User has signed out');
+      setSignedIn(false);
+      setProfilePicUrl('');
+      setUserName('');
+    }
+  };
+
+  const { signIn, signOutUser, getProfilePicUrl, getUserName } =
+    useFirebase(authStateObserver);
+
+  const [signedIn, setSignedIn] = useState(false);
+  const [profilePicUrl, setProfilePicUrl] = useState('');
+  const [userName, setUserName] = useState('');
+
   const { resume, resumeDispatch } = useResume();
   const { saveItem: saveMode, retrieveItem: retrieveMode } =
     useLocalStorage('mode');
@@ -276,6 +343,11 @@ const App = () => {
           saveResumeToPdf={saveResumeToPdf}
           toggleDarkMode={toggleDarkMode}
           mode={mode}
+          signIn={signIn}
+          signOut={signOutUser}
+          signedIn={signedIn}
+          profilePicUrl={profilePicUrl}
+          userName={userName}
         />
 
         <AddToResumeSpeedDial
