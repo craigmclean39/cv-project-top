@@ -1,20 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
+
+import generateTheme from './theme';
+import { useResume } from './hooks/useResume';
+import { useLocalStorage } from './hooks/useLocalStorage';
+
 import ResumeOutput from './components/ResumeOutput';
 import AddToResumeSpeedDial from './components/AddToResumeSpeedDial';
 import AppHeader from './components/AppHeader';
-import { Box } from '@mui/system';
-import { createTheme, CssBaseline } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { LocalStorageHelper } from './localStorageHelper';
 import DeleteConfirmation from './components/DeleteConfirmation';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { LocalizationProvider } from '@mui/lab';
 import EditContactForm from './components/EditContactForm';
 import EditWorkExpForm from './components/EditWorkExpForm';
 import EditSkillsForm from './components/EditSkillsForm';
 import CustomizeForm from './components/CustomizeForm';
+
+import { Box } from '@mui/system';
+import { createTheme, CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { LocalizationProvider } from '@mui/lab';
 import {
   red,
   pink,
@@ -34,18 +37,15 @@ import {
   deepOrange,
 } from '@mui/material/colors';
 
-import generateTheme from './theme';
-import { useResume } from './hooks/useResume';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const App = () => {
   const { resume, resumeDispatch } = useResume();
+  const { saveItem: saveMode, retrieveItem: retrieveMode } =
+    useLocalStorage('mode');
 
-  const storageHelperRef = useRef(new LocalStorageHelper());
-  const storageHelper = storageHelperRef.current;
-
-  const [mode, setMode] = useState(
-    storageHelper.retrieveItem('mode') ?? 'light'
-  );
+  const [mode, setMode] = useState(retrieveMode() ?? 'light');
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [deleteWorkKey, setDeleteWorkKey] = useState('');
   const [deleteEduKey, setDeleteEduKey] = useState('');
@@ -251,7 +251,7 @@ const App = () => {
   const toggleDarkMode = () => {
     let newMode = mode === 'light' ? 'dark' : 'light';
     setMode(newMode);
-    storageHelper.saveItem('mode', newMode);
+    saveMode(newMode);
   };
 
   if (resume === null) {
