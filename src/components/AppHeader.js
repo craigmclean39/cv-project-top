@@ -6,6 +6,7 @@ import {
   Box,
   Link,
   Avatar,
+  Button,
 } from '@mui/material';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -27,9 +28,10 @@ const AppHeader = (props) => {
   } = props;
   const isLarge = useMediaQuery('(min-width:600px)');
 
-  let modeButton, iconColor;
+  let modeButton, iconColor, buttonColor;
   if (mode === 'light') {
     iconColor = 'primary.contrastText';
+    buttonColor = 'white';
     modeButton = (
       <IconButton
         aria-label='dark mode'
@@ -40,6 +42,7 @@ const AppHeader = (props) => {
     );
   } else {
     iconColor = 'default';
+    buttonColor = 'primary';
     modeButton = (
       <IconButton aria-label='light mode' onClick={toggleDarkMode}>
         <LightModeIcon />
@@ -63,18 +66,11 @@ const AppHeader = (props) => {
               by Craig McLean
             </Typography>
           </Box>
+
           <Box
             sx={{
               display: 'flex',
             }}>
-            <Avatar
-              sx={{
-                cursor: 'pointer',
-              }}
-              alt={userName}
-              src={profilePicUrl}
-              onClick={signedIn ? signOut : signIn}
-            />
             <Box>
               {modeButton}
               <IconButton
@@ -91,6 +87,25 @@ const AppHeader = (props) => {
                   <GitHubIcon />
                 </Link>
               </IconButton>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+              onClick={signedIn ? signOut : signIn}>
+              <Button sx={{ mx: 1, color: buttonColor }}>
+                {signedIn ? 'Logout' : 'Sign In'}
+              </Button>
+              <Avatar
+                sx={{
+                  width: '36px',
+                  height: '36px',
+                }}
+                alt={userName}
+                src={profilePicUrl}
+              />
             </Box>
           </Box>
         </Toolbar>
