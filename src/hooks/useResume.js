@@ -189,15 +189,20 @@ const convertStoredResumeToResume = (storedResume) => {
   return newResume;
 };
 
-const useResume = () => {
+const useResume = (
+  saveToServer,
+  serverResume,
+  loadingInProgress,
+  setLoadingInProgress
+) => {
   // console.log('useResume');
 
   const storageHelper = useRef(new LocalStorageHelper());
   const [resume, resumeDispatch] = useReducer(resumeReducer, new Resume());
   const [resumeLoaded, setResumeLoaded] = useState(false);
-
   useEffect(() => {
     // console.log('useResume->useEffect');
+
     const storedResume = storageHelper.current.retrieveItem('resume');
     let formattedResume;
     if (storedResume != null) {
@@ -207,9 +212,21 @@ const useResume = () => {
     setResumeLoaded(true);
   }, []);
 
-  if (resumeLoaded) {
-    storageHelper.current.saveItem('resume', resume);
-  }
+  useEffect(() => {
+    if (serverResume) {
+      const formattedResume = convertStoredResumeToResume(serverResume);
+      resumeDispatch({ type: 'loadResume', payload: formattedResume });
+      setLoadingInProgress(false);
+    }
+  }, [serverResume, loadingInProgress, setLoadingInProgress]);
+
+  useEffect(() => {
+    if (!loadingInProgress) {
+      storageHelper.current.saveItem('resume', resume);
+      saveToServer(resume);
+    }
+  }, [resume, saveToServer, loadingInProgress]);
+
   return { resume, resumeDispatch };
 };
 
