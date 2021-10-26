@@ -78,6 +78,7 @@ const App = () => {
           setServerResume(JSON.parse(docSnap.data().resume));
         } else {
           console.log('DocSnap does not exist');
+          setLoadingInProgress(false);
         }
       } catch (error) {
         console.error('Error loading from firestore', error);
