@@ -40,6 +40,16 @@ import {
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
+// FIREBASE
+import { initializeApp } from 'firebase/app';
+import {
+  getAuth,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
+
 const App = () => {
   const { resume, resumeDispatch } = useResume();
   const { saveItem: saveMode, retrieveItem: retrieveMode } =
